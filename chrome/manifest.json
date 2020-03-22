@@ -1,0 +1,37 @@
+{
+  "version": "0.0.1",
+  "name": "chrome-react-boilerplate",
+  "manifest_version": 2,
+  "description": "chrome-react-boilerplate",
+  "browser_action": {
+    "default_title": "chrome-react-boilerplate",
+    "default_popup": "popup/index.html"
+  },
+  "icons": {
+    "16": "img/logo.png"
+  },
+  "web_accessible_resources": [
+    "*.js",
+    "*.css"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://*.github.com/*"],
+      "js": [
+        "content_script.bundle.js"
+      ],
+      "run_at": "document_start"
+    }
+  ],
+  "background": {
+    "persistent": false,
+    "scripts": [
+      "background.bundle.js"
+    ]
+  },
+  "permissions": [
+    
+  ],
+  "options_page": "options/index.html",
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+}
