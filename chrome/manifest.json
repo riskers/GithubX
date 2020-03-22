@@ -1,10 +1,10 @@
 {
   "version": "0.0.1",
-  "name": "chrome-react-boilerplate",
+  "name": "github-plus",
   "manifest_version": 2,
-  "description": "chrome-react-boilerplate",
+  "description": "github-plus",
   "browser_action": {
-    "default_title": "chrome-react-boilerplate",
+    "default_title": "github-plus",
     "default_popup": "popup/index.html"
   },
   "icons": {
