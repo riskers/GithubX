@@ -1,5 +1,6 @@
 const path = require('path');
 const ROOT = path.resolve(__dirname);
+const CopyPlugin = require('copy-webpack-plugin');
 
 const entry = {
   background: [
@@ -53,4 +54,16 @@ module.exports = {
       '@': ROOT + '/src',
     },
   },
+  plugins: [
+    new CopyPlugin([
+      {
+        from: 'src/manifest.json',
+        to: './'
+      },
+      {
+        from: 'src/assets',
+        to: './assets'
+      }
+    ])
+  ]
 }

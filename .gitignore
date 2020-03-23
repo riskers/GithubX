@@ -11,3 +11,5 @@ yarn-error.log
 *.crx
 *.pem
 update.xml
+chrome/manifest.json
+chrome/assets
