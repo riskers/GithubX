@@ -5,11 +5,9 @@ npm-debug.log
 yarn-error.log
 .DS_Store
 
-*.bundle.js
 
 *.zip
 *.crx
 *.pem
 update.xml
-chrome/manifest.json
-chrome/assets
+chrome/*
