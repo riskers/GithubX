@@ -1,2 +1,0 @@
-export const NAME = 'CHROME-REACT-BOILERPLATE';
-export const PRO = 'CHROME-REACT-BOILERPLATE';

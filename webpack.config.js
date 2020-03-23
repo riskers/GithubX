@@ -3,10 +3,10 @@ const ROOT = path.resolve(__dirname);
 
 const entry = {
   background: [
-    ROOT + '/src/background.js',
+    ROOT + '/src/background',
   ],
   content_script: [
-    ROOT + '/src/content_script/index.js',
+    ROOT + '/src/content_script/index',
   ],
   'options/index': [
     ROOT + '/src/options/index',
@@ -32,6 +32,10 @@ module.exports = {
         use: ['babel-loader'],
       },
       {
+        test: /\.ts[x]?$/,
+        loader: 'awesome-typescript-loader'
+      },
+      {
         test: /\.css$/,
         include: ROOT + '/src',
         use: [{
@@ -44,7 +48,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
     alias: {
       '@': ROOT + '/src',
     },
