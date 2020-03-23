@@ -6,7 +6,7 @@ const entry = {
     ROOT + '/src/background.js',
   ],
   content_script: [
-    ROOT + '/src/content_script.js',
+    ROOT + '/src/content_script/index.js',
   ],
   'options/index': [
     ROOT + '/src/options/index',
