@@ -1,6 +1,9 @@
 const path = require('path');
 const ROOT = path.resolve(__dirname);
 const CopyPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+const env = process.env.NODE_ENV
 
 const entry = {
   background: [
@@ -19,7 +22,7 @@ const entry = {
 
 module.exports = {
   entry: entry,
-  devtool: 'eval-source-map',
+  mode: env,
   output: {
     path: ROOT + '/chrome',
     filename: '[name].bundle.js',
@@ -64,6 +67,26 @@ module.exports = {
         from: 'src/assets',
         to: './assets'
       }
-    ])
+    ]),
+    new HtmlWebpackPlugin({
+      filename: 'popup/index.html',
+      template: 'src/popup/index.html',
+      inject: true,
+      chunks: ['popup/index'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'options/index.html',
+      template: 'src/options/index.html',
+      inject: true,
+      chunks: ['options/index'],
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      }
+    }),
   ]
 }

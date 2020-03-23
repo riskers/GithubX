@@ -3,8 +3,10 @@
     "start": "npm run dev",
     "precommit": "lint-staged",
     "dev": "MODE=development webpack -w --mode=development",
-    "build": "MODE=production webpack --mode=production",
-    "lint": "eslint src --ext=js,jsx"
+    "build": "npm run clean && MODE=production webpack --mode=production && npm run pack",
+    "lint": "eslint src --ext=js,jsx",
+    "clean": "rimraf chrome",
+    "pack": "cd chrome && bestzip ../github-plus.zip *"
   },
   "lint-staged": {
     "src/**/*.{js,jsx}": "eslint"
@@ -22,6 +24,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "babel-runtime": "^6.26.0",
+    "bestzip": "^2.1.5",
     "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^1.0.0",
     "eslint": "^5.1.0",
@@ -29,8 +32,10 @@
     "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-jsx-a11y": "^6.1.0",
     "eslint-plugin-react": "^7.10.0",
+    "html-webpack-plugin": "^4.0.1",
     "husky": "^0.14.3",
     "lint-staged": "^7.2.0",
+    "rimraf": "^3.0.2",
     "style-loader": "^0.21.0",
     "webpack": "^4.15.1",
     "webpack-cli": "^3.0.8"
