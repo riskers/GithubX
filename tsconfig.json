@@ -12,7 +12,7 @@
     "removeComments": true,
     "allowSyntheticDefaultImports": false,
     "jsx": "react",
-    "allowJs": true,
+    "allowJs": false,
     "baseUrl": "./",
-  }
+  },
 }
