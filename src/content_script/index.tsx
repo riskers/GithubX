@@ -4,6 +4,7 @@ import { render } from 'react-dom';
 import { getUsername } from '../common/tools';
 import Followers from './followers';
 import User from './user';
+import Gist from './gist';
 
 window.addEventListener('load', () => {
   const href = location.href;
@@ -26,5 +27,15 @@ window.addEventListener('load', () => {
     document.querySelector('.vcard-names').appendChild(dom);
 
     render(<User />, dom);
+  }
+
+  if (href.match(/^https:\/\/gist.github.com\/\w*/gi)) {
+    const dom = document.createElement('div');
+    dom.setAttribute('style', `position: fixed;
+    top: 60px;
+    left: 30px`)
+
+    document.body.appendChild(dom)
+    render(<Gist />, dom)
   }
 });
