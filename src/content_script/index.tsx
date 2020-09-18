@@ -2,9 +2,10 @@ import * as React from 'react';
 import { render } from 'react-dom';
 
 import { getUsername } from '../common/tools';
-import Followers from './followers';
-import User from './user';
-import Gist from './gist';
+import Followers from './pages/followers';
+import User from './pages/user';
+import Sidebar from './pages/gist/Sidebar';
+import AddBtn from './pages/gist/AddBtn';
 
 window.addEventListener('load', () => {
   const href = location.href;
@@ -29,13 +30,24 @@ window.addEventListener('load', () => {
     render(<User />, dom);
   }
 
+  // GIST
   if (href.match(/^https:\/\/gist.github.com\/\w*/gi)) {
-    const dom = document.createElement('div');
-    dom.setAttribute('style', `position: fixed;
-    top: 60px;
-    left: 30px`)
+    const sidebar = document.createElement('div');
+    sidebar.setAttribute(
+      'style',
+        `
+        width: 200px;
+        position: fixed;
+        top: 60px;
+        left: 0px;
+        background-color: #ccc;
+        `
+    );
+    document.body.appendChild(sidebar)
+    render(<Sidebar />, sidebar)
 
-    document.body.appendChild(dom)
-    render(<Gist />, dom)
+    const addBtn = document.createElement('li')
+    document.querySelector('.d-md-flex.d-none.pagehead-actions.float-none').prepend(addBtn)
+    render(<AddBtn />, addBtn)
   }
 });

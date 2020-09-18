@@ -2,7 +2,7 @@ import * as React from 'react';
 import TreeView from '@material-ui/lab/TreeView';
 import TreeItem from '@material-ui/lab/TreeItem';
 
-const Gist = () => {
+const Sidebar = () => {
   return (
     <TreeView>
       <TreeItem nodeId="1" label="Applications">
@@ -23,4 +23,4 @@ const Gist = () => {
   );
 };
 
-export default Gist;
+export default Sidebar;
