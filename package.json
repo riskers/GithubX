@@ -44,6 +44,7 @@
     "@material-ui/core": "^4.9.8",
     "@material-ui/lab": "^4.0.0-alpha.47",
     "classnames": "^2.2.6",
+    "leancloud-storage": "^4.6.1",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-redux": "^5.0.7",
