@@ -6,12 +6,4 @@ AV.init({
   serverURL: 'https://leancloud.cn:443'
 });
 
-const Gist = AV.Object.extend('gist')
-
-const gist = new Gist()
-gist.set('name', 'xx')
-gist.set('content', 'cxzzxcc')
-
-gist.save().then((x) => {
-  console.log(x)
-})
+export default AV

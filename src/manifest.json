@@ -20,7 +20,7 @@
       "js": [
         "content_script.bundle.js"
       ],
-      "run_at": "document_start"
+      "run_at": "document_idle"
     }
   ],
   "background": {

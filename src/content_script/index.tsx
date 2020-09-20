@@ -5,7 +5,7 @@ import { getUsername } from '../common/tools';
 import Followers from './pages/followers';
 import User from './pages/user';
 import Sidebar from './pages/gist/Sidebar';
-import AddBtn from './pages/gist/AddBtn';
+import AddGistBtn from './pages/gist/AddGistBtn';
 
 window.addEventListener('load', () => {
   const href = location.href;
@@ -48,6 +48,6 @@ window.addEventListener('load', () => {
 
     const addBtn = document.createElement('li')
     document.querySelector('.d-md-flex.d-none.pagehead-actions.float-none').prepend(addBtn)
-    render(<AddBtn />, addBtn)
+    render(<AddGistBtn />, addBtn)
   }
 });
