@@ -3,7 +3,7 @@ import AV from 'leancloud-storage'
 AV.init({
   appId: "En0YUDrDK6O2aecV9qGaVKbD-gzGzoHsz",
   appKey: "mFOxOKdtEWTnF9gRVYNtNupx",
-  // serverURL: "https://cn.leancloud.En0YUDrDK6O2aecV9qGaVKbD-gzGzoHsz"
+  serverURL: 'https://leancloud.cn:443'
 });
 
 const Gist = AV.Object.extend('gist')
