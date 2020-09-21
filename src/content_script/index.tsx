@@ -36,11 +36,12 @@ window.addEventListener('load', () => {
     sidebar.setAttribute(
       'style',
         `
-        width: 200px;
+        width: 280px;
         position: fixed;
         top: 60px;
-        left: 0px;
+        left: 10px;
         background-color: #ccc;
+        font-size: 14px;
         `
     );
     document.body.appendChild(sidebar)

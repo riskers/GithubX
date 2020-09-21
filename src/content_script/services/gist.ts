@@ -10,22 +10,29 @@ export const addGist = async (gistParam: Partial<IGist>) => {
   return await gist.save()
 }
 
-export type IGistResponse = IGist & ILeanCloudBaseResponse;
-
 const fetchGist = async <T>(offset: number = 0, limit: number = 100): Promise<T[]> => {
   const query = new leancloud.Query('Gist')
   query.limit(limit)
   query.skip(offset)
 
+  let res: T[] = []
   let t = null
   try {
     t = await query.find()
+    res = t.map(item => {
+      return {
+        objectId: item.id,
+        title: item.get('title'),
+        url: item.get('url')
+      }
+    })
   } catch(err) {
 
   }
-  return t
+
+  return res
 }
 
 export const getAllGistList = async () => {
-  return await fetchGist<IGistResponse>()
+  return await fetchGist<IGist>()
 }
