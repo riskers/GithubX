@@ -3,15 +3,17 @@ import Btn from '@/content_script/components/btn';
 import { addGist, isExistsGist } from '@/content_script/services/gist';
 import delay from '@/utils/delay';
 import React, { useCallback, useEffect, useState } from 'react';
+import { delGist } from '../../services/gist';
 
 const AddGistBtn = () => {
   const [isLoading, setIsLoading] = useState(false)
-
   const [isExist, setIsExist] = useState(true)
+
+  const URL = location.href
 
   useEffect(() => {
     const fetchIsExist = async () => {
-      const exist = await isExistsGist(location.href)
+      const exist = await isExistsGist(URL)
       setIsExist(exist)
     }
 
@@ -22,7 +24,7 @@ const AddGistBtn = () => {
     setIsLoading(true)
     await delay(1000)
     const res = await addGist({
-      url: location.href,
+      url: URL,
       title: getGistTitle(),
     })
 
@@ -31,7 +33,11 @@ const AddGistBtn = () => {
 
   return (
     <Btn text={isExist ? '-' : '+'} isLoading={isLoading} className="btn btn-sm" onClick={async () => {
-      await fetchAddGist()
+      if (isExist) {
+        await delGist(URL)
+      } else {
+        await fetchAddGist()
+      }
     }} />
   )
 }

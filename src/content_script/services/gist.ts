@@ -24,6 +24,15 @@ export const addGist = async (gistParam: Partial<IGist>) => {
   return await gist.save()
 }
 
+export const delGist = async (url: string) => {
+  const query = new leancloud.Query(LEANCLOUD_CLASS_NAME)
+  query.equalTo('url', url)
+
+  const gist = await query.find()
+
+  leancloud.Object.createWithoutData(LEANCLOUD_CLASS_NAME, gist[0].id).destroy()
+}
+
 const fetchGist = async <T>(offset: number = 0, limit: number = 100): Promise<T[]> => {
   const query = new leancloud.Query(LEANCLOUD_CLASS_NAME)
   query.limit(limit)
