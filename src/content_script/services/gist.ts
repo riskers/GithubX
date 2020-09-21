@@ -2,6 +2,20 @@ import leancloud from '@/utils/leancloud';
 
 import Gist, { IGist } from '../model/Gist';
 
+const LEANCLOUD_CLASS_NAME = 'Gist'
+
+export const isExistsGist = async (url: string): Promise<boolean> => {
+  const query = new leancloud.Query(LEANCLOUD_CLASS_NAME)
+  query.equalTo('url', url)
+
+  const gistList = await query.find()
+  if (gistList.length == 0) {
+    return false
+  }
+
+  return true
+}
+
 export const addGist = async (gistParam: Partial<IGist>) => {
   const gist = new Gist();
   gist.set('title', gistParam.title)
@@ -11,7 +25,7 @@ export const addGist = async (gistParam: Partial<IGist>) => {
 }
 
 const fetchGist = async <T>(offset: number = 0, limit: number = 100): Promise<T[]> => {
-  const query = new leancloud.Query('Gist')
+  const query = new leancloud.Query(LEANCLOUD_CLASS_NAME)
   query.limit(limit)
   query.skip(offset)
 
