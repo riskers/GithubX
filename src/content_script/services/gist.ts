@@ -2,7 +2,7 @@ import leancloud from '@/utils/leancloud';
 
 import Gist, { IGist } from '../model/Gist';
 
-export const addGist = async (gistParam: IGist) => {
+export const addGist = async (gistParam: Partial<IGist>) => {
   const gist = new Gist();
   gist.set('title', gistParam.title)
   gist.set('url', gistParam.url)
