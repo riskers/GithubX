@@ -30,14 +30,27 @@ const AddGistBtn = () => {
     setIsLoading(false);
   };
 
+  const deleteGist = async () => {
+    setIsLoading(true);
+    await delGist(URL);
+    setIsLoading(false);
+  };
+
+  const getBtnText = () => {
+    if (isLoading) {
+      return '';
+    }
+    return isExist ? '-' : '+';
+  };
+
   return (
     <Btn
-      text={isExist ? '-' : '+'}
+      text={getBtnText()}
       isLoading={isLoading}
       className="btn btn-sm"
       onClick={async () => {
         if (isExist) {
-          await delGist(URL);
+          await deleteGist();
         } else {
           await fetchAddGist();
         }

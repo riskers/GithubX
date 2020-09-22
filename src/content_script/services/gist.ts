@@ -30,7 +30,7 @@ export const delGist = async (url: string) => {
 
   const gist = await query.find();
 
-  leancloud.Object.createWithoutData(
+  await leancloud.Object.createWithoutData(
     LEANCLOUD_CLASS_NAME,
     gist[0].id
   ).destroy();
