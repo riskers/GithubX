@@ -1,0 +1,8 @@
+.github-plus-gist-sidebar {
+  width: 280px;
+  position: fixed;
+  top: 60px;
+  left: 10px;
+  background-color: #ccc;
+  font-size: 14px;
+}

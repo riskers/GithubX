@@ -6,6 +6,7 @@ import Followers from './pages/followers';
 import AddGistBtn from './pages/gist/AddGistBtn';
 import Sidebar from './pages/gist/Sidebar';
 import User from './pages/user';
+import Gist from '@/content_script/pages/gist';
 
 window.addEventListener('load', () => {
   const href = location.href;
@@ -32,25 +33,11 @@ window.addEventListener('load', () => {
 
   // GIST
   if (href.match(/^https:\/\/gist.github.com\/\w*/gi)) {
-    const sidebar = document.createElement('div');
-    sidebar.setAttribute(
-      'style',
-      `
-        width: 280px;
-        position: fixed;
-        top: 60px;
-        left: 10px;
-        background-color: #ccc;
-        font-size: 14px;
-        `
-    );
-    document.body.appendChild(sidebar);
-    render(<Sidebar />, sidebar);
+    const oDiv = document.createElement('li');
+    render(<Gist />, oDiv);
 
-    const addBtn = document.createElement('li');
     document
       .querySelector('.d-md-flex.d-none.pagehead-actions.float-none')
-      .prepend(addBtn);
-    render(<AddGistBtn />, addBtn);
+      .prepend(oDiv);
   }
 });

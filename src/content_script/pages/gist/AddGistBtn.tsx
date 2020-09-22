@@ -4,7 +4,7 @@ import { addGist, isExistsGist, delGist } from '@/content_script/services/gist';
 import delay from '@/utils/delay';
 import React, { useEffect, useState } from 'react';
 
-const AddGistBtn = () => {
+const AddGistBtn: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isExist, setIsExist] = useState(true);
 
