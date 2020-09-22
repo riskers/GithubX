@@ -18,7 +18,7 @@ const AddGistBtn = () => {
     };
 
     fetchIsExist();
-  }, []);
+  }, [isLoading]);
 
   const fetchAddGist = async () => {
     setIsLoading(true);
