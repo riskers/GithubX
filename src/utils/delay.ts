@@ -1,7 +1,8 @@
-const delay = (ms :number) => new Promise((resolve, reject) => {
-  setTimeout(() => {
-    resolve()
-  }, ms)
-})
+const delay = (ms: number) =>
+  new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, ms);
+  });
 
-export default delay
+export default delay;

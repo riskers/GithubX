@@ -1,4 +1,4 @@
-import AV from "@/utils/leancloud"
+import AV from '@/utils/leancloud';
 
 export interface IGist {
   objectId: string;
@@ -7,11 +7,11 @@ export interface IGist {
   desc: string;
 }
 
-export default class Gist extends AV.Object implements IGist{
+export default class Gist extends AV.Object implements IGist {
   public objectId: string;
   public title: string;
   public url: string;
   public desc: string;
 }
 
-AV.Object.register(Gist)
+AV.Object.register(Gist);

@@ -1,12 +1,10 @@
 import * as React from 'react';
-import './style.css'
+import './style.css';
 
-interface IProps {
-
-}
+interface IProps {}
 
 const Loading: React.FunctionComponent = (props: IProps) => {
-  return <div className="github-plus-loading"></div>
-}
+  return <div className="github-plus-loading"></div>;
+};
 
-export default Loading
+export default Loading;

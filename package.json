@@ -4,16 +4,18 @@
     "precommit": "lint-staged",
     "dev": "MODE=development webpack -w --mode=development",
     "build": "npm run clean && MODE=production webpack --mode=production && npm run pack",
-    "lint": "eslint src --ext=js,jsx",
+    "lint": "eslint src --ext=ts,tsx",
     "clean": "rimraf chrome",
     "pack": "cd chrome && bestzip ../github-plus.zip *"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx}": "eslint"
+    "src/**/*.{ts,tsx}": "eslint"
   },
   "devDependencies": {
     "@types/react": "^16.9.25",
     "@types/react-dom": "^16.9.5",
+    "@typescript-eslint/eslint-plugin": "^4.2.0",
+    "@typescript-eslint/parser": "^4.2.0",
     "awesome-typescript-loader": "^5.2.1",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.6",
@@ -29,12 +31,16 @@
     "css-loader": "^1.0.0",
     "eslint": "^5.1.0",
     "eslint-config-airbnb": "^17.0.0",
+    "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-jsx-a11y": "^6.1.0",
-    "eslint-plugin-react": "^7.10.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.20.6",
+    "eslint-plugin-react-hooks": "^4.1.2",
     "html-webpack-plugin": "^4.0.1",
     "husky": "^0.14.3",
     "lint-staged": "^7.2.0",
+    "prettier": "^2.1.2",
     "rimraf": "^3.0.2",
     "style-loader": "^0.21.0",
     "webpack": "^4.15.1",

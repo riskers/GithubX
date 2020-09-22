@@ -1,33 +1,34 @@
+import { IGist } from '@/content_script/model/Gist';
+import { getAllGistList } from '@/content_script/services/gist';
 import TreeItem from '@material-ui/lab/TreeItem';
 import TreeView from '@material-ui/lab/TreeView';
 import React from 'react';
 
-import { IGist } from '@/content_script/model/Gist';
-import { getAllGistList } from '@/content_script/services/gist';
-
 const Sidebar: React.FunctionComponent = () => {
-  const [list, setList] = React.useState<IGist[]>([])
+  const [list, setList] = React.useState<IGist[]>([]);
 
   React.useEffect(() => {
     const fetchData = async () => {
-      const res = await getAllGistList()
-      setList(res)
-    }
+      const res = await getAllGistList();
+      setList(res);
+    };
 
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
 
   return (
     <TreeView>
-      {list.map(gist => {
-        return <TreeItem
-          key={gist.objectId}
-          nodeId={gist.objectId}
-          label={gist.desc ?? gist.title}
-          onLabelClick={() => {
-            location.href = gist.url
-          }}
-        />
+      {list.map((gist) => {
+        return (
+          <TreeItem
+            key={gist.objectId}
+            nodeId={gist.objectId}
+            label={gist.desc ?? gist.title}
+            onLabelClick={() => {
+              location.href = gist.url;
+            }}
+          />
+        );
       })}
     </TreeView>
     // <TreeView>

@@ -1,15 +1,14 @@
 import { getGistTitle } from '@/common/tools';
 import Btn from '@/content_script/components/btn';
-import { addGist, isExistsGist } from '@/content_script/services/gist';
+import { addGist, isExistsGist, delGist } from '@/content_script/services/gist';
 import delay from '@/utils/delay';
-import React, { useCallback, useEffect, useState } from 'react';
-import { delGist } from '../../services/gist';
+import React, { useEffect, useState } from 'react';
 
 const AddGistBtn = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isExist, setIsExist] = useState(true);
 
-  const URL = location.href;
+  const URL = window.location.href;
 
   useEffect(() => {
     const fetchIsExist = async () => {

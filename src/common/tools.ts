@@ -1,6 +1,8 @@
 export const getUsername = () => {
   try {
-    const $dropdown = document.querySelector('.dropdown-menu.dropdown-menu-sw.mt-2');
+    const $dropdown = document.querySelector(
+      '.dropdown-menu.dropdown-menu-sw.mt-2'
+    );
     const $user = <HTMLElement>$dropdown.querySelector('.css-truncate-target');
     return $user.innerText;
   } catch (err) {
@@ -11,13 +13,17 @@ export const getUsername = () => {
 };
 
 export const getGistTitle = () => {
-  let gistTitle = ''
+  let gistTitle = '';
   try {
-    const $about = <HTMLElement>document.querySelector('#gist-pjax-container > div.container-lg.px-3.new-discussion-timeline > div > div > div:nth-child(1)')
+    const $about = <HTMLElement>(
+      document.querySelector(
+        '#gist-pjax-container > div.container-lg.px-3.new-discussion-timeline > div > div > div:nth-child(1)'
+      )
+    );
     gistTitle = $about.innerText;
   } catch (err) {
     //
   }
 
-  return gistTitle
-}
+  return gistTitle;
+};
