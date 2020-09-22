@@ -1,23 +1,13 @@
 import { getGistTitle } from '@/common/tools';
 import Btn from '@/content_script/components/btn';
-import { addGist, isExistsGist, delGist } from '@/content_script/services/gist';
+import { addGist, delGist } from '@/content_script/services/gist';
 import delay from '@/utils/delay';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { gistContext, URL } from '@/content_script/pages/gist';
 
 const AddGistBtn: React.FC = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isExist, setIsExist] = useState(true);
-
-  const URL = window.location.href;
-
-  useEffect(() => {
-    const fetchIsExist = async () => {
-      const exist = await isExistsGist(URL);
-      setIsExist(exist);
-    };
-
-    fetchIsExist();
-  }, [isLoading]);
+  const { isExist, setIsExist } = React.useContext(gistContext);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const fetchAddGist = async () => {
     setIsLoading(true);
@@ -30,6 +20,11 @@ const AddGistBtn: React.FC = () => {
     setIsLoading(false);
   };
 
+  const fetchDelGist = async () => {
+    await delGist(URL);
+    await delay(1000);
+  };
+
   return (
     <Btn
       text={isExist ? '-' : '+'}
@@ -37,10 +32,11 @@ const AddGistBtn: React.FC = () => {
       className="btn btn-sm"
       onClick={async () => {
         if (isExist) {
-          await delGist(URL);
+          await fetchDelGist();
         } else {
           await fetchAddGist();
         }
+        setIsExist(!isExist);
       }}
     />
   );

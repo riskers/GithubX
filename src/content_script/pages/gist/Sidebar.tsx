@@ -3,9 +3,10 @@ import { getAllGistList } from '@/content_script/services/gist';
 import TreeItem from '@material-ui/lab/TreeItem';
 import TreeView from '@material-ui/lab/TreeView';
 import React from 'react';
+import { gistContext } from './index';
 
-const Sidebar: React.FunctionComponent = () => {
-  const [list, setList] = React.useState<IGist[]>([]);
+const Sidebar: React.FC = () => {
+  const { isExist, list, setList } = React.useContext(gistContext);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -14,7 +15,7 @@ const Sidebar: React.FunctionComponent = () => {
     };
 
     fetchData();
-  }, []);
+  }, [isExist]);
 
   return (
     <TreeView>
