@@ -6,40 +6,45 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { delGist } from '../../services/gist';
 
 const AddGistBtn = () => {
-  const [isLoading, setIsLoading] = useState(false)
-  const [isExist, setIsExist] = useState(true)
+  const [isLoading, setIsLoading] = useState(false);
+  const [isExist, setIsExist] = useState(true);
 
-  const URL = location.href
+  const URL = location.href;
 
   useEffect(() => {
     const fetchIsExist = async () => {
-      const exist = await isExistsGist(URL)
-      setIsExist(exist)
-    }
+      const exist = await isExistsGist(URL);
+      setIsExist(exist);
+    };
 
-    fetchIsExist()
-  }, [])
+    fetchIsExist();
+  }, []);
 
-  const fetchAddGist = useCallback(async () => {
-    setIsLoading(true)
-    await delay(1000)
-    const res = await addGist({
+  const fetchAddGist = async () => {
+    setIsLoading(true);
+    await delay(1000);
+    await addGist({
       url: URL,
       title: getGistTitle(),
-    })
+    });
 
-    setIsLoading(false)
-  }, [isLoading])
+    setIsLoading(false);
+  };
 
   return (
-    <Btn text={isExist ? '-' : '+'} isLoading={isLoading} className="btn btn-sm" onClick={async () => {
-      if (isExist) {
-        await delGist(URL)
-      } else {
-        await fetchAddGist()
-      }
-    }} />
-  )
-}
+    <Btn
+      text={isExist ? '-' : '+'}
+      isLoading={isLoading}
+      className="btn btn-sm"
+      onClick={async () => {
+        if (isExist) {
+          await delGist(URL);
+        } else {
+          await fetchAddGist();
+        }
+      }}
+    />
+  );
+};
 
 export default AddGistBtn;
