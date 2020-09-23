@@ -1,0 +1,19 @@
+.github-plus-user-desc,
+.github-plus-user-tags {
+  margin-top: 10px;
+}
+
+.github-plus-user-desc {
+  font-size: 16px;
+  color: #333;
+}
+
+.github-plus-user-tags span {
+  color: #666;
+  font-size: 14px;
+  margin-right: 4px;
+  border-radius: 3px;
+  background: #eee;
+  padding: 3px;
+  border: 1px solid #565656;
+}

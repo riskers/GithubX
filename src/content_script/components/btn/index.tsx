@@ -7,7 +7,7 @@ interface IProps {
   text: string;
   className?: string;
   isLoading?: boolean;
-  onClick?: () => {};
+  onClick?: () => void;
 }
 
 const Btn: React.FunctionComponent<IProps> = (props: IProps) => {
