@@ -36,9 +36,10 @@ const User: React.FC = () => {
       />
       <div className="github-plus-user-desc">{desc}</div>
       <div className="github-plus-user-tags">
-        {tags && tags.split(',').map((tag, index) => {
-          return <span key={index}>{tag}</span>;
-        })}
+        {tags &&
+          tags.split(',').map((tag, index) => {
+            return <span key={index}>{tag}</span>;
+          })}
       </div>
 
       <Dialog open={open}>
