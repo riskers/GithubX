@@ -15,6 +15,12 @@
     "prettier/prettier": "error"
   },
   "plugins": [
-    "prettier"
-  ]
+    "prettier",
+    "react-hooks"
+  ],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
 }
