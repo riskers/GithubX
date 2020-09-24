@@ -9,7 +9,7 @@ export const isExistsGist = async (url: string): Promise<boolean> => {
   query.equalTo('url', url);
 
   const gistList = await query.find();
-  if (gistList.length == 0) {
+  if (gistList.length === 0) {
     return false;
   }
 
@@ -30,16 +30,10 @@ export const delGist = async (url: string) => {
 
   const gist = await query.find();
 
-  await leancloud.Object.createWithoutData(
-    LEANCLOUD_CLASS_NAME,
-    gist[0].id
-  ).destroy();
+  await leancloud.Object.createWithoutData(LEANCLOUD_CLASS_NAME, gist[0].id).destroy();
 };
 
-const fetchGist = async <T>(
-  offset: number = 0,
-  limit: number = 100
-): Promise<T[]> => {
+const fetchGist = async <T>(offset = 0, limit = 100): Promise<T[]> => {
   const query = new leancloud.Query(LEANCLOUD_CLASS_NAME);
   query.limit(limit);
   query.skip(offset);

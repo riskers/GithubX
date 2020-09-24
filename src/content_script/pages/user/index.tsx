@@ -1,13 +1,6 @@
 import Btn from '@/content_script/components/btn';
 import { addUser, fetchUser } from '@/content_script/services/user';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  TextField,
-} from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core';
 import * as React from 'react';
 import './style.css';
 
@@ -36,10 +29,9 @@ const User: React.FC = () => {
       />
       <div className="github-plus-user-desc">{desc}</div>
       <div className="github-plus-user-tags">
-        {tags &&
-          tags.split(',').map((tag, index) => {
-            return <span key={index}>{tag}</span>;
-          })}
+        {tags?.split(',').map((tag, index) => {
+          return <span key={index}>{tag}</span>;
+        })}
       </div>
 
       <Dialog open={open}>

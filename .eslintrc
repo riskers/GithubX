@@ -1,15 +1,8 @@
 {
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "ecmaVersion": 2017,
-    "sourceType": "module",
-    "ecmaFeatures": {
-      "jsx": true
-    }
-  },
   "extends": [
-    "prettier/@typescript-eslint",
-    "plugin:prettier/recommended"
+    "alloy",
+    "alloy/react",
+    "alloy/typescript"
   ],
   "globals": {
     "chrome": true
@@ -19,26 +12,9 @@
     "node": true
   },
   "rules": {
-    "react/forbid-prop-types": 0,
-    "react/prop-types": 0,
-    "import/no-unresolved": 0,
-    "import/prefer-default-export": 0,
-    "import/no-extraneous-dependencies": 0,
-    "react/prefer-stateless-function": 0,
-    "react/jsx-filename-extension": 0,
-    "jsx-a11y/no-static-element-interactions": 0,
-    "jsx-a11y/label-has-for": 0,
-    "arrow-body-style": 0,
-    "no-plusplus": 0,
-    "no-restricted-syntax": 0,
-    "no-await-in-loop": 0,
-    "consistent-return": 0,
-    "spaced-comment": 0,
-    "global-require": 0
+    "prettier/prettier": "error"
   },
   "plugins": [
-    "react",
-    "@typescript-eslint",
-    "react-hooks"
+    "prettier"
   ]
 }

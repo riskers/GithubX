@@ -1,10 +1,8 @@
-import * as React from 'react';
-import * as ReactDOM from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-class Popup extends React.Component {
-  render() {
-    return <div>this is popup!</div>;
-  }
-}
+const Popup: React.FC = () => {
+  return <div>this is popup!</div>;
+};
 
 ReactDOM.render(<Popup />, document.getElementById('app'));

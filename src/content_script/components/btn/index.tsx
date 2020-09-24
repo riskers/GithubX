@@ -12,10 +12,7 @@ interface IProps {
 
 const Btn: React.FunctionComponent<IProps> = (props: IProps) => {
   return (
-    <button
-      className={props.className + ' github-plus-btn'}
-      onClick={props.onClick}
-    >
+    <button className={props.className + ' github-plus-btn'} onClick={props.onClick}>
       {props.text}
       {props.isLoading ? <Loading /> : null}
     </button>

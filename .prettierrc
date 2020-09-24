@@ -1,8 +1,17 @@
 {
+  "printWidth": 120,
   "singleQuote": true,
-  "trailingComma": "es5",
+  "trailingComma": "all",
   "useTabs": false,
   "tabWidth": 2,
   "semi": true,
-  "endOfLine": "lf"
+  "endOfLine": "lf",
+  "quoteProps": "as-needed",
+  "bracketSpacing": true,
+  "overrides": [
+    {
+      "files": ".editorconfig",
+      "options": { "parser": "yaml" }
+    }
+  ]
 }

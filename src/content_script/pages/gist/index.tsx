@@ -4,7 +4,6 @@ import AddGistBtn from '@/content_script/pages/gist/AddGistBtn';
 import Sidebar from '@/content_script/pages/gist/Sidebar';
 import { isExistsGist, getAllGistList } from '@/content_script/services/gist';
 import * as React from 'react';
-import useEffect from 'react';
 import { IGist } from '@/content_script/model/Gist';
 
 export const gistContext = React.createContext(null);
@@ -24,7 +23,14 @@ const Gist: React.FC = () => {
   }, []);
 
   return (
-    <gistContext.Provider value={{ isExist, setIsExist, list, setList }}>
+    <gistContext.Provider
+      value={{
+        isExist,
+        setIsExist,
+        list,
+        setList,
+      }}
+    >
       <AddGistBtn />
       <div className="github-plus-gist-sidebar">
         <Sidebar />
