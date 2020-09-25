@@ -17,10 +17,16 @@ export const fetchUser = async (url: string) => {
   query.equalTo('url', url);
 
   const res = await query.find();
-
   return {
-    objectId: res[0].id,
-    desc: res[0].get('desc'),
-    tags: res[0].get('tags'),
+    objectId: res[0]?.id,
+    desc: res[0]?.get('desc'),
+    tags: res[0]?.get('tags'),
   };
+};
+
+export const editUser = async (id: string, userParam: Pick<IGithubUser, 'desc' | 'tags'>) => {
+  const user = leancloud.Object.createWithoutData(LEANCLOUD_CLASS_NAME, id);
+  user.set('desc', userParam.desc);
+  user.set('tags', userParam.tags);
+  user.save();
 };
