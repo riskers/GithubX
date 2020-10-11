@@ -24,6 +24,9 @@ export const addGist = async (gistParam: Partial<IGist>) => {
   return await gist.save();
 };
 
+/**
+ * TODO: 使用 objectId
+ */
 export const delGist = async (url: string) => {
   const query = new leancloud.Query(LEANCLOUD_CLASS_NAME);
   query.equalTo('url', url);

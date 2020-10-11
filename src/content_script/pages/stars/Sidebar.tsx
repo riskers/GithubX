@@ -1,13 +1,17 @@
-import React, { useEffect } from 'react';
-import TreeView from '@material-ui/lab/TreeView';
+import { getAllStarListFromCloud } from '@/content_script/services/stars';
 import TreeItem from '@material-ui/lab/TreeItem';
-import { getStarList, addStar } from '@/content_script/services/stars';
+import TreeView from '@material-ui/lab/TreeView';
+import React, { useEffect, useState } from 'react';
+import { IStar } from '../../model/Star';
 
 const Sidebar = () => {
+  const [starList, setStarList] = useState<IStar[]>([]);
+
   useEffect(() => {
     (async () => {
-      const res = await getStarList(1);
-      await addStar(res);
+      // await init();
+      const r = await getAllStarListFromCloud();
+      console.log(r);
     })();
   }, []);
 
