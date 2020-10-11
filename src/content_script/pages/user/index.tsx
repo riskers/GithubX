@@ -10,6 +10,18 @@ const User: React.FC = () => {
   const [tags, setTags] = React.useState<string>('');
   const [id, setId] = React.useState<string>();
 
+  const clickStarBtn = (e: Event) => {
+    if ((e.target as Element).classList.contains('btn-with-count')) {
+      // 点击了 STAR 按钮
+    }
+  };
+
+  React.useEffect(() => {
+    document.addEventListener('click', clickStarBtn, false);
+
+    return () => document.removeEventListener('click', clickStarBtn);
+  }, []);
+
   React.useEffect(() => {
     const getUserInfo = async () => {
       const res = await fetchUser(window.location.href);

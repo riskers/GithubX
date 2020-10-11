@@ -1,7 +1,8 @@
 export const getUsername = () => {
   try {
-    const $dropdown = document.querySelector('.dropdown-menu.dropdown-menu-sw.mt-2');
-    const $user = $dropdown.querySelector('.css-truncate-target') as HTMLElement;
+    const $user = document.querySelector(
+      '#js-pjax-container > div.container-xl.px-3.px-md-4.px-lg-5 > div > div.flex-shrink-0.col-12.col-md-3.mb-4.mb-md-0 > div > div.clearfix.d-flex.d-md-block.flex-items-center.mb-4.mb-md-0 > div.vcard-names-container.float-left.col-10.col-md-12.pt-1.pt-md-3.pb-1.pb-md-3.js-sticky.js-user-profile-sticky-fields > h1 > span.p-nickname.vcard-username.d-block',
+    ) as HTMLElement;
     return $user.innerText;
   } catch (err) {
     //
