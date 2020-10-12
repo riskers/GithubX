@@ -24,3 +24,15 @@ export const getGistTitle = () => {
 
   return gistTitle;
 };
+
+// repo page
+export const getFullName = () => {
+  location.href.match(/(?:github.com)\/(\w+\/\w+)/gi);
+
+  return RegExp.$1;
+};
+
+export const getHtmlUrl = () => {
+  const m = location.href.match(/(github.com\/\w+\/\w+)/gi);
+  return m[0];
+};

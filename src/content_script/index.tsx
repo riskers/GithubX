@@ -4,6 +4,7 @@ import { getUsername } from '../common/tools';
 import User from './pages/user';
 import Gist from '@/content_script/pages/gist';
 import Stars from '@/content_script/pages/stars';
+import Repo from '@/content_script/pages/repo';
 
 window.addEventListener('load', () => {
   const href = location.href;
@@ -26,14 +27,15 @@ window.addEventListener('load', () => {
   //   render(<User />, dom);
   // }
 
-  if (href === 'https://github.com/doodlewind/jshistory-cn') {
+  // REPO page
+  if (href === 'https://github.com/airbnb/visx') {
     const dom = document.createElement('div');
     document.body.appendChild(dom);
 
-    render(<User />, dom);
+    render(<Repo />, dom);
   }
 
-  // GIST
+  // GIST page
   if (href.match(/^https:\/\/gist.github.com\/\w*/gi)) {
     const oDiv = document.createElement('li');
     render(<Gist />, oDiv);
@@ -41,7 +43,7 @@ window.addEventListener('load', () => {
     document.querySelector('.d-md-flex.d-none.pagehead-actions.float-none').prepend(oDiv);
   }
 
-  // STAR
+  // STAR list
   if (href === `https://github.com/${username}?tab=stars`) {
     const oDiv = document.createElement('div');
     render(<Stars />, oDiv);
