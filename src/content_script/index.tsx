@@ -5,10 +5,15 @@ import User from './pages/user';
 import Gist from '@/content_script/pages/gist';
 import Stars from '@/content_script/pages/stars';
 import Repo from '@/content_script/pages/repo';
+import App from '@/content_script/pages/app';
 
 window.addEventListener('load', () => {
   const href = location.href;
   const username = getUsername();
+
+  const appContainer = document.createElement('div');
+  render(<App />, appContainer);
+  document.body.append(appContainer);
 
   /* if (href === `https://github.com/${username}?tab=following`) {
     const userDom = document.querySelectorAll('.d-table-cell.col-9.v-align-top.pr-3');
@@ -28,25 +33,25 @@ window.addEventListener('load', () => {
   // }
 
   // REPO page
-  if (href === 'https://github.com/airbnb/visx') {
-    const dom = document.createElement('div');
-    document.body.appendChild(dom);
+  // if (href === 'https://github.com/airbnb/visx') {
+  //   const dom = document.createElement('div');
+  //   document.body.appendChild(dom);
 
-    render(<Repo />, dom);
-  }
+  //   render(<Repo />, dom);
+  // }
 
   // GIST page
-  if (href.match(/^https:\/\/gist.github.com\/\w*/gi)) {
-    const oDiv = document.createElement('li');
-    render(<Gist />, oDiv);
+  // if (href.match(/^https:\/\/gist.github.com\/\w*/gi)) {
+  //   const oDiv = document.createElement('li');
+  //   render(<Gist />, oDiv);
 
-    document.querySelector('.d-md-flex.d-none.pagehead-actions.float-none').prepend(oDiv);
-  }
+  //   document.querySelector('.d-md-flex.d-none.pagehead-actions.float-none').prepend(oDiv);
+  // }
 
   // STAR list
-  if (href === `https://github.com/${username}?tab=stars`) {
-    const oDiv = document.createElement('div');
-    render(<Stars />, oDiv);
-    document.body.appendChild(oDiv);
-  }
+  // if (href === `https://github.com/${username}?tab=stars`) {
+  //   const oDiv = document.createElement('div');
+  //   render(<Stars />, oDiv);
+  //   document.body.appendChild(oDiv);
+  // }
 });
