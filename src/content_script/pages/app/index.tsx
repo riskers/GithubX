@@ -3,6 +3,7 @@ import TreeView from '@material-ui/lab/TreeView';
 import TreeItem from '@material-ui/lab/TreeItem';
 import './style.css';
 import { Tabs, Tab, AppBar } from '@material-ui/core';
+import { refresh } from '@/content_script/services/stars';
 
 const App: React.FC = () => {
   const [tabIndex, setTabIndex] = React.useState<number>(0);
@@ -10,6 +11,13 @@ const App: React.FC = () => {
   const handleChange = (event: React.ChangeEvent<{}>, index: number) => {
     setTabIndex(index);
   };
+
+  // refresh list
+  React.useEffect(() => {
+    (async () => {
+      await refresh();
+    })();
+  }, []);
 
   return (
     <div className="github-plus-sidebar">

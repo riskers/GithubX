@@ -13,7 +13,7 @@ export interface IGithubStar {
   repo: IRepo;
 }
 
-export const init = async () => {
+export const refresh = async () => {
   const res = await getAllStarListFromGithub();
   await addStarList(res);
 };
@@ -41,7 +41,7 @@ export const getAllStarListFromCloud = async (offset = 0, limit = 100) => {
 };
 
 export const getAllStarListFromGithub = async () => {
-  let page = 1;
+  let page = 0;
   let ending = false;
   let res: IGithubStar[] = [];
 
@@ -77,10 +77,12 @@ export const addStarList = async (list: IGithubStar[]) => {
     x.set('fullName', star.repo.full_name);
     x.set('htmlUrl', star.repo.html_url);
     x.set('starredAt', star.starred_at);
+    x.set('group', '');
+    x.set('tag', []);
 
     return x;
   });
-
+  console.log(starList);
   leancloud.Object.saveAll(starList);
 };
 
