@@ -12,6 +12,7 @@
     "src/**/*.{ts,tsx}": "eslint"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.162",
     "@types/react": "^16.9.25",
     "@types/react-dom": "^16.9.5",
     "@typescript-eslint/eslint-plugin": "^4.2.0",
@@ -53,10 +54,12 @@
     "@material-ui/lab": "^4.0.0-alpha.56",
     "classnames": "^2.2.6",
     "leancloud-storage": "^4.6.1",
+    "lodash": "^4.17.20",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
+    "react-treebeard": "^3.2.4",
     "redux": "^4.0.0",
     "redux-thunk": "^2.3.0"
   }

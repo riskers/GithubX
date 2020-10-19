@@ -15,6 +15,8 @@ const Repo: React.FC = () => {
           starredAt: '',
           fullName,
           htmlUrl: getHtmlUrl(),
+          group: '',
+          tags: [],
         });
       } else {
         // 点击了 UNSTAR 按钮

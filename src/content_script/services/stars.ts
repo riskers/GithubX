@@ -18,7 +18,7 @@ export const refresh = async () => {
   await addStarList(res);
 };
 
-export const getAllStarListFromCloud = async (offset = 0, limit = 100) => {
+export const getAllStarListFromCloud = async (offset = 0, limit = 100): Promise<IStar[]> => {
   const query = new leancloud.Query(LEANCLOUD_CLASS_NAME);
   query.limit(limit);
   query.skip(offset);
@@ -33,6 +33,8 @@ export const getAllStarListFromCloud = async (offset = 0, limit = 100) => {
         starredAt: item.get('starredAt'),
         htmlUrl: item.get('htmlUrl'),
         fullName: item.get('fullName'),
+        group: item.get('group'),
+        tags: item.get('tags'),
       };
     });
   } catch (err) {}
@@ -41,7 +43,7 @@ export const getAllStarListFromCloud = async (offset = 0, limit = 100) => {
 };
 
 export const getAllStarListFromGithub = async () => {
-  let page = 0;
+  let page = 17;
   let ending = false;
   let res: IGithubStar[] = [];
 
@@ -77,8 +79,8 @@ export const addStarList = async (list: IGithubStar[]) => {
     x.set('fullName', star.repo.full_name);
     x.set('htmlUrl', star.repo.html_url);
     x.set('starredAt', star.starred_at);
-    x.set('group', '');
-    x.set('tag', []);
+    x.set('group', 'Ungrouped');
+    x.set('tags', []);
 
     return x;
   });

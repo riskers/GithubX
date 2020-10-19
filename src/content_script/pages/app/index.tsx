@@ -1,54 +1,70 @@
+/* eslint-disable no-undef */
+/* eslint-disable @typescript-eslint/no-invalid-this */
+import { getAllStarListFromCloud } from '@/content_script/services/stars';
+import { forOwn, groupBy } from 'lodash';
 import * as React from 'react';
-import TreeView from '@material-ui/lab/TreeView';
-import TreeItem from '@material-ui/lab/TreeItem';
+import { Treebeard, TreeNode } from 'react-treebeard';
 import './style.css';
-import { Tabs, Tab, AppBar } from '@material-ui/core';
-import { refresh } from '@/content_script/services/stars';
+
+type ITreeStar = TreeNode;
 
 const App: React.FC = () => {
-  const [tabIndex, setTabIndex] = React.useState<number>(0);
-
-  const handleChange = (event: React.ChangeEvent<{}>, index: number) => {
-    setTabIndex(index);
-  };
+  const [data, setData] = React.useState<ITreeStar>({ name: 'root' });
+  const [cursor, setCursor] = React.useState<ITreeStar>({ name: '' });
 
   // refresh list
   React.useEffect(() => {
     (async () => {
-      await refresh();
+      // await refresh();
     })();
   }, []);
 
+  React.useEffect(() => {
+    (async () => {
+      let sourceData = await getAllStarListFromCloud();
+
+      let m = sourceData.map((s) => {
+        return {
+          ...s,
+          name: s.fullName,
+        };
+      });
+
+      // 已分组信息
+      const groupedData = groupBy(m, 'group');
+
+      let starList: ITreeStar[] = [];
+      forOwn(groupedData, (v, k) => {
+        starList.push({
+          name: k,
+          children: v,
+        });
+      });
+
+      console.log(starList);
+      setData({
+        ...data,
+        children: starList,
+      });
+    })();
+  }, []);
+
+  const onToggle = (node, toggled) => {
+    if (cursor) {
+      cursor.active = false;
+    }
+
+    node.active = true;
+    if (node.children) {
+      node.toggled = toggled;
+    }
+    setCursor(node);
+    setData({ ...data });
+  };
+
   return (
     <div className="github-plus-sidebar">
-      <AppBar position="static">
-        <Tabs
-          value={tabIndex}
-          onChange={handleChange}
-          indicatorColor="primary"
-          textColor="primary"
-          variant="fullWidth"
-          aria-label="full width tabs example"
-        >
-          <Tab label="1" id="1" />
-          <Tab label="1" id="2" />
-          <Tab label="1" id="3" />
-        </Tabs>
-        <TreeView>
-          {/* {list.map((gist) => {
-        return (
-          <TreeItem
-            key={gist.objectId}
-            nodeId={gist.objectId}
-            label={gist.desc ?? gist.title}
-            onLabelClick={() => {
-              location.href = gist.url;
-            }}
-          />
-        );
-      })} */}
-        </TreeView>
-      </AppBar>
+      <Treebeard data={data} onToggle={onToggle} />
     </div>
   );
 };

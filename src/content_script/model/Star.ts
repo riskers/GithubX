@@ -13,12 +13,22 @@ export interface IStar {
    * 项目链接
    */
   htmlUrl: string;
+  /**
+   * 分组
+   */
+  group: string;
+  /**
+   * 标签
+   */
+  tags: string[];
 }
 
 export default class Star extends AV.Object implements IStar {
   public starredAt: string;
   public fullName: string;
   public htmlUrl: string;
+  public group: string;
+  public tags: string[];
 }
 
 AV.Object.register(Star);
