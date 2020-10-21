@@ -1,10 +1,23 @@
-/* eslint-disable no-undef */
-/* eslint-disable @typescript-eslint/no-invalid-this */
 import { getAllStarListFromCloud } from '@/content_script/services/stars';
 import { forOwn, groupBy } from 'lodash';
 import * as React from 'react';
 import { Treebeard, TreeNode } from 'react-treebeard';
 import './style.css';
+import { makeStyles, createStyles, Theme } from '@material-ui/core';
+import TreeItem from '@material-ui/lab/TreeItem';
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      width: '100%',
+      maxWidth: 360,
+      backgroundColor: theme.palette.background.paper,
+    },
+    nested: {
+      paddingLeft: theme.spacing(4),
+    },
+  }),
+);
 
 type ITreeStar = TreeNode;
 
@@ -49,24 +62,27 @@ const App: React.FC = () => {
     })();
   }, []);
 
-  const onToggle = (node, toggled) => {
-    if (cursor) {
-      cursor.active = false;
-    }
+  // const onToggle = (node, toggled) => {
+  //   if (cursor) {
+  //     cursor.active = false;
+  //   }
 
-    node.active = true;
-    if (node.children) {
-      node.toggled = toggled;
-    }
-    setCursor(node);
-    setData({ ...data });
+  //   node.active = true;
+  //   if (node.children) {
+  //     node.toggled = toggled;
+  //   }
+  //   setCursor(node);
+  //   setData({ ...data });
+  // };
+
+  const classes = useStyles();
+  const [open, setOpen] = React.useState(true);
+
+  const handleClick = () => {
+    setOpen(!open);
   };
 
-  return (
-    <div className="github-plus-sidebar">
-      <Treebeard data={data} onToggle={onToggle} />
-    </div>
-  );
+  return <div className="github-plus-sidebar" />;
 };
 
 export default App;
