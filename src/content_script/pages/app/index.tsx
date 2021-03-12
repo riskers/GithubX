@@ -22,45 +22,45 @@ const useStyles = makeStyles((theme: Theme) =>
 type ITreeStar = TreeNode;
 
 const App: React.FC = () => {
-  const [data, setData] = React.useState<ITreeStar>({ name: 'root' });
-  const [cursor, setCursor] = React.useState<ITreeStar>({ name: '' });
+  // const [data, setData] = React.useState<ITreeStar>({ name: 'root' });
+  // const [cursor, setCursor] = React.useState<ITreeStar>({ name: '' });
 
-  // refresh list
-  React.useEffect(() => {
-    (async () => {
-      // await refresh();
-    })();
-  }, []);
+  // // refresh list
+  // React.useEffect(() => {
+  //   (async () => {
+  //     // await refresh();
+  //   })();
+  // }, []);
 
-  React.useEffect(() => {
-    (async () => {
-      let sourceData = await getAllStarListFromCloud();
+  // React.useEffect(() => {
+  //   (async () => {
+  //     let sourceData = await getAllStarListFromCloud();
 
-      let m = sourceData.map((s) => {
-        return {
-          ...s,
-          name: s.fullName,
-        };
-      });
+  //     let m = sourceData.map((s) => {
+  //       return {
+  //         ...s,
+  //         name: s.fullName,
+  //       };
+  //     });
 
-      // 已分组信息
-      const groupedData = groupBy(m, 'group');
+  //     // 已分组信息
+  //     const groupedData = groupBy(m, 'group');
 
-      let starList: ITreeStar[] = [];
-      forOwn(groupedData, (v, k) => {
-        starList.push({
-          name: k,
-          children: v,
-        });
-      });
+  //     let starList: ITreeStar[] = [];
+  //     forOwn(groupedData, (v, k) => {
+  //       starList.push({
+  //         name: k,
+  //         children: v,
+  //       });
+  //     });
 
-      console.log(starList);
-      setData({
-        ...data,
-        children: starList,
-      });
-    })();
-  }, []);
+  //     console.log(starList);
+  //     setData({
+  //       ...data,
+  //       children: starList,
+  //     });
+  //   })();
+  // }, []);
 
   // const onToggle = (node, toggled) => {
   //   if (cursor) {
@@ -75,12 +75,12 @@ const App: React.FC = () => {
   //   setData({ ...data });
   // };
 
-  const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
+  // const classes = useStyles();
+  // const [open, setOpen] = React.useState(true);
 
-  const handleClick = () => {
-    setOpen(!open);
-  };
+  // const handleClick = () => {
+  //   setOpen(!open);
+  // };
 
   return <div className="github-plus-sidebar" />;
 };

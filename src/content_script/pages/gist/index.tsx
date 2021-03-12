@@ -2,7 +2,7 @@ import './style.css';
 
 import AddGistBtn from '@/content_script/pages/gist/AddGistBtn';
 import Sidebar from '@/content_script/pages/gist/Sidebar';
-import { isExistsGist, getAllGistList } from '@/content_script/services/gist';
+import { isExistsGist } from '@/content_script/services/gist';
 import * as React from 'react';
 import { IGist } from '@/content_script/model/Gist';
 
@@ -31,8 +31,8 @@ const Gist: React.FC = () => {
         setList,
       }}
     >
-      <AddGistBtn />
       <div className="github-plus-gist-sidebar">
+        <AddGistBtn />
         <Sidebar />
       </div>
     </gistContext.Provider>

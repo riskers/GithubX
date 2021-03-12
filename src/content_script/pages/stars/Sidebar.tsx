@@ -3,33 +3,63 @@ import TreeItem from '@material-ui/lab/TreeItem';
 import TreeView from '@material-ui/lab/TreeView';
 import React, { useEffect, useState } from 'react';
 import { IStar } from '../../model/Star';
+import { getGroupList } from '@/content_script/services/group';
+import { IGroup } from '@/content_script/model/Group';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
 const Sidebar = () => {
-  const [starList, setStarList] = useState<IStar[]>([]);
+  const [starListMap, setStarListMap] = useState({});
+  const [groupList, setGroupList] = useState<IGroup[]>([]);
+  const [currentGroup, setCurrentGroup] = useState<string>();
 
   useEffect(() => {
     (async () => {
-      // await init();
-      const r = await getAllStarListFromCloud();
-      console.log(r);
+      const groupList = await getGroupList();
+      setGroupList(groupList);
     })();
   }, []);
 
-  const list = [];
+  const toggleGroup = async (group: string) => {
+    // 再次点击 如果还是这个 group，不会请求
+    if (group === currentGroup) return;
+
+    setCurrentGroup(group);
+    const list = await getAllStarListFromCloud(group);
+    const tmp = {
+      [group]: list,
+      ...starListMap,
+    };
+
+    setStarListMap(tmp);
+  };
 
   return (
     <div className="github-plus-stars-list">
-      <TreeView>
-        {list.map((gist) => {
+      <TreeView defaultCollapseIcon={<ExpandMoreIcon />} defaultExpandIcon={<ChevronRightIcon />}>
+        {groupList.map((group: IGroup) => {
           return (
             <TreeItem
-              key={gist.objectId}
-              nodeId={gist.objectId}
-              label={gist.desc ?? gist.title}
+              key={group.objectId}
+              nodeId={group.objectId}
+              label={group.groupName}
               onLabelClick={() => {
-                location.href = gist.url;
+                toggleGroup(group.groupName);
               }}
-            />
+            >
+              {starListMap[group.groupName]?.map((star: IStar) => {
+                return (
+                  <TreeItem
+                    key={star.objectId}
+                    nodeId={star.objectId}
+                    label={star.fullName}
+                    onLabelClick={() => {
+                      location.href = star.htmlUrl;
+                    }}
+                  />
+                );
+              })}
+            </TreeItem>
           );
         })}
       </TreeView>

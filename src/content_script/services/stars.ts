@@ -18,10 +18,11 @@ export const refresh = async () => {
   await addStarList(res);
 };
 
-export const getAllStarListFromCloud = async (offset = 0, limit = 100): Promise<IStar[]> => {
+export const getAllStarListFromCloud = async (group = '', offset = 0, limit = 100): Promise<IStar[]> => {
   const query = new leancloud.Query(LEANCLOUD_CLASS_NAME);
   query.limit(limit);
   query.skip(offset);
+  query.equalTo('group', group);
 
   let res: IStar[] = [];
   let t = null;

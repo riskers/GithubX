@@ -2,6 +2,10 @@ import AV from '@/utils/leancloud';
 
 export interface IStar {
   /**
+   * github repo id
+   */
+  objectId?: string;
+  /**
    * star 时间
    */
   starredAt: string;
@@ -24,6 +28,7 @@ export interface IStar {
 }
 
 export default class Star extends AV.Object implements IStar {
+  public objectId: string;
   public starredAt: string;
   public fullName: string;
   public htmlUrl: string;
