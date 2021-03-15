@@ -4,7 +4,7 @@
   --text-color: #fff;
 }
 
-.github-plus-sidebar {
+/* .github-plus-sidebar {
   width: 280px;
   position: fixed;
   z-index: 99999;
@@ -13,4 +13,4 @@
   background-color: var(--bg-color);
   font-size: 14px;
   color: var(--text-color);
-}
+} */

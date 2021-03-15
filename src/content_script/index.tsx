@@ -6,14 +6,17 @@ import Gist from '@/content_script/pages/gist';
 import Stars from '@/content_script/pages/stars';
 import Repo from '@/content_script/pages/repo';
 import App from '@/content_script/pages/app';
+import './style.css';
+
+document.querySelector('body').classList.add('github-plus-sidebar');
 
 window.addEventListener('load', () => {
   const href = location.href;
   const username = getUsername();
 
-  const appContainer = document.createElement('div');
-  render(<App />, appContainer);
-  document.body.append(appContainer);
+  // const appContainer = document.createElement('div');
+  // render(<App />, appContainer);
+  // document.body.append(appContainer);
 
   /* if (href === `https://github.com/${username}?tab=following`) {
     const userDom = document.querySelectorAll('.d-table-cell.col-9.v-align-top.pr-3');
