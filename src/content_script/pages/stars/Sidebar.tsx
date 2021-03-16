@@ -7,6 +7,15 @@ import { getGroupList } from '@/content_script/services/group';
 import { IGroup } from '@/content_script/model/Group';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import { FixedSizeList } from 'react-window';
+
+const Row = ({ index, style }) => {
+  return (
+    <div className={index % 2 ? 'ListItemOdd' : 'ListItemEven'} style={style}>
+      Row {index}
+    </div>
+  );
+};
 
 const Sidebar = () => {
   const [starListMap, setStarListMap] = useState({});
@@ -34,9 +43,22 @@ const Sidebar = () => {
     setStarListMap(tmp);
   };
 
+  const XX = ({ index, style }) => {
+    console.log(groupList);
+    console.log(index);
+    if (groupList.length === 0) return null;
+
+    const group = groupList[index];
+    return <div style={style}>{group.groupName}</div>;
+  };
+
   return (
     <div className="github-plus-stars-list">
-      <TreeView defaultCollapseIcon={<ExpandMoreIcon />} defaultExpandIcon={<ChevronRightIcon />}>
+      <FixedSizeList itemCount={groupList.length} height={150} width={280} itemSize={37}>
+        {XX}
+      </FixedSizeList>
+
+      {/* <TreeView defaultCollapseIcon={<ExpandMoreIcon />} defaultExpandIcon={<ChevronRightIcon />}>
         {groupList.map((group: IGroup) => {
           return (
             <TreeItem
@@ -62,7 +84,7 @@ const Sidebar = () => {
             </TreeItem>
           );
         })}
-      </TreeView>
+      </TreeView> */}
     </div>
   );
 };

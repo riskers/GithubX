@@ -8,8 +8,6 @@ import Repo from '@/content_script/pages/repo';
 import App from '@/content_script/pages/app';
 import './style.css';
 
-document.querySelector('body').classList.add('github-plus-sidebar');
-
 window.addEventListener('load', () => {
   const href = location.href;
   const username = getUsername();
@@ -53,6 +51,8 @@ window.addEventListener('load', () => {
 
   // STAR list
   if (href === `https://github.com/${username}?tab=stars`) {
+    document.querySelector('body').classList.add('github-plus-sidebar');
+
     const oDiv = document.createElement('div');
     render(<Stars />, oDiv);
     document.body.appendChild(oDiv);
