@@ -7,6 +7,12 @@ interface IProps {
   onClick: (event: React.MouseEvent<HTMLElement, MouseEvent>, node: any) => void;
 }
 
-const Node = (props: IProps) => {};
+const Node = (props: IProps) => {
+  return (
+    <a href={props.url}>
+      <div>1</div>
+    </a>
+  );
+};
 
 export default Node;
