@@ -1,5 +1,5 @@
 import Btn from '@/content_script/components/btn';
-import { addUser, fetchUser, editUser } from '@/content_script/services/user';
+import { addUser, fetchUser, editUser } from '@/content_script/services/leancloud/user';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@material-ui/core';
 import * as React from 'react';
 import './style.css';

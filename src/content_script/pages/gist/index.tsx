@@ -2,7 +2,7 @@ import './style.css';
 
 import AddGistBtn from '@/content_script/pages/gist/AddGistBtn';
 import Sidebar from '@/content_script/pages/gist/Sidebar';
-import { isExistsGist } from '@/content_script/services/gist';
+import { isExistsGist } from '@/content_script/services/leancloud/gist';
 import * as React from 'react';
 import { IGist } from '@/content_script/model/Gist';
 
@@ -24,12 +24,14 @@ const Gist: React.FC = () => {
 
   return (
     <gistContext.Provider
-      value={{
-        isExist,
-        setIsExist,
-        list,
-        setList,
-      }}
+      value={React.useMemo(() => {
+        return {
+          isExist,
+          setIsExist,
+          list,
+          setList,
+        };
+      }, [])}
     >
       <div className="github-plus-gist-sidebar">
         <AddGistBtn />

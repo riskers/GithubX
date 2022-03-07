@@ -1,17 +1,18 @@
-export const getUsername = () => {
-  try {
-    const $user = document.querySelector(
-      '#js-pjax-container > div.container-xl.px-3.px-md-4.px-lg-5 > div > div.flex-shrink-0.col-12.col-md-3.mb-4.mb-md-0 > div > div.clearfix.d-flex.d-md-block.flex-items-center.mb-4.mb-md-0 > div.vcard-names-container.float-left.col-10.col-md-12.pt-1.pt-md-3.pb-1.pb-md-3.js-sticky.js-user-profile-sticky-fields > h1 > span.p-nickname.vcard-username.d-block',
-    ) as HTMLElement;
-    return $user.innerText;
-  } catch (err) {
-    //
-  }
+import ChromeStorage from '@/common/storage';
 
-  return '';
+const CHROME_STORAGE_KEY = 'USERNAME';
+
+export const setUsername = async (username: string): Promise<void> => {
+  const cs = new ChromeStorage();
+  await cs.set(CHROME_STORAGE_KEY, username);
 };
 
-export const getGistTitle = () => {
+export const getUsername = async (): Promise<string> => {
+  const cs = new ChromeStorage();
+  return (await cs.get(CHROME_STORAGE_KEY)) as string;
+};
+
+export const getGistTitle = (): string => {
   let gistTitle = '';
   try {
     const $about = document.querySelector(
@@ -26,13 +27,13 @@ export const getGistTitle = () => {
 };
 
 // repo page
-export const getFullName = () => {
+export const getFullName = (): string => {
   location.href.match(/(?:github.com)\/(\w+\/\w+)/gi);
 
   return RegExp.$1;
 };
 
-export const getHtmlUrl = () => {
+export const getHtmlUrl = (): string => {
   const m = location.href.match(/(github.com\/\w+\/\w+)/gi);
   return m[0];
 };

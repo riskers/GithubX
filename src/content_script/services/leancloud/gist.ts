@@ -1,6 +1,6 @@
 import leancloud from '@/utils/leancloud';
 
-import Gist, { IGist } from '../model/Gist';
+import Gist, { IGist } from '../../model/Gist';
 
 const LEANCLOUD_CLASS_NAME = 'Gist';
 

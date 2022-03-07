@@ -1,13 +1,12 @@
-import { getAllStarListFromCloud } from '@/content_script/services/stars';
+import { IStar } from '@/common/api';
+import { setUsername } from '@/common/tools';
+import { getGroupList, IGroup, resetGroup } from '@/content_script/services/local/group';
+import { getAllStarList, resetStars } from '@/content_script/services/local/stars';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import TreeItem from '@material-ui/lab/TreeItem';
 import TreeView from '@material-ui/lab/TreeView';
 import React, { useEffect, useState } from 'react';
-import { IStar } from '../../model/Star';
-import { getGroupList } from '@/content_script/services/group';
-import { IGroup } from '@/content_script/model/Group';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import { FixedSizeList } from 'react-window';
 
 const Row = ({ index, style }) => {
   return (
@@ -18,9 +17,22 @@ const Row = ({ index, style }) => {
 };
 
 const Sidebar = () => {
-  const [starListMap, setStarListMap] = useState({});
+  /**
+   * group list
+   */
   const [groupList, setGroupList] = useState<IGroup[]>([]);
-  const [currentGroup, setCurrentGroup] = useState<string>();
+
+  /**
+   * star list
+   */
+  const [starsList, setStarsList] = useState<IStar[]>();
+
+  useEffect(() => {
+    (async () => {
+      const starList = await getAllStarList();
+      setStarsList(starList);
+    })();
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -29,62 +41,72 @@ const Sidebar = () => {
     })();
   }, []);
 
-  const toggleGroup = async (group: string) => {
-    // 再次点击 如果还是这个 group，不会请求
-    if (group === currentGroup) return;
-
-    setCurrentGroup(group);
-    const list = await getAllStarListFromCloud(group);
-    const tmp = {
-      [group]: list,
-      ...starListMap,
-    };
-
-    setStarListMap(tmp);
-  };
-
-  const XX = ({ index, style }) => {
-    console.log(groupList);
-    console.log(index);
-    if (groupList.length === 0) return null;
-
-    const group = groupList[index];
-    return <div style={style}>{group.groupName}</div>;
-  };
-
   return (
     <div className="github-plus-stars-list">
-      <FixedSizeList itemCount={groupList.length} height={150} width={280} itemSize={37}>
-        {XX}
-      </FixedSizeList>
+      <button
+        onClick={async () => {
+          await setUsername('riskers');
+          await resetStars();
+          await resetGroup();
+        }}
+      >
+        reset riskers
+      </button>
 
-      {/* <TreeView defaultCollapseIcon={<ExpandMoreIcon />} defaultExpandIcon={<ChevronRightIcon />}>
-        {groupList.map((group: IGroup) => {
-          return (
-            <TreeItem
-              key={group.objectId}
-              nodeId={group.objectId}
-              label={group.groupName}
-              onLabelClick={() => {
-                toggleGroup(group.groupName);
-              }}
-            >
-              {starListMap[group.groupName]?.map((star: IStar) => {
-                return (
-                  <TreeItem
-                    key={star.objectId}
-                    nodeId={star.objectId}
-                    label={star.fullName}
-                    onLabelClick={() => {
-                      location.href = star.htmlUrl;
-                    }}
-                  />
-                );
-              })}
-            </TreeItem>
-          );
-        })}
-      </TreeView> */}
+      {/* <button
+        onClick={() => {
+          addStar({ fullName: 'ss', group: '', htmlUrl: '', tags: [], id: 1423 });
+        }}
+      >
+        click
+      </button>
+      <button
+        onClick={() => {
+          delStar('');
+        }}
+      >
+        del
+      </button> */}
+
+      <button
+        onClick={async () => {
+          const x = await getAllStarList();
+        }}
+      >
+        all
+      </button>
+
+      {starsList && groupList && (
+        <TreeView defaultCollapseIcon={<ExpandMoreIcon />} defaultExpandIcon={<ChevronRightIcon />}>
+          {groupList.map((group: IGroup) => {
+            return (
+              <TreeItem
+                key={group.id}
+                nodeId={group.id.toString()}
+                label={group.name}
+                onLabelClick={() => {
+                  // toggleGroup(group.groupName);
+                }}
+              >
+                {starsList
+                  .filter((star) => star.group === group.name)
+                  ?.map((star: IStar) => {
+                    return (
+                      <TreeItem
+                        key={star.id}
+                        nodeId={star.id.toString()}
+                        label={star.fullName}
+                        onLabelClick={() => {
+                          location.href = star.htmlUrl;
+                        }}
+                      />
+                    );
+                  })}
+              </TreeItem>
+            );
+          })}
+        </TreeView>
+      )}
     </div>
   );
 };

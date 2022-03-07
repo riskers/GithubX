@@ -1,6 +1,6 @@
 import { getGistTitle } from '@/common/tools';
 import Btn from '@/content_script/components/btn';
-import { addGist, delGist } from '@/content_script/services/gist';
+import { addGist, delGist } from '@/content_script/services/leancloud/gist';
 import delay from '@/utils/delay';
 import React from 'react';
 import { gistContext, URL } from '@/content_script/pages/gist';

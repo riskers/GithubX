@@ -1,5 +1,4 @@
 import { getFullName, getHtmlUrl } from '@/common/tools';
-import { addStar, delStar } from '@/content_script/services/stars';
 import React from 'react';
 
 const Repo: React.FC = () => {
@@ -11,17 +10,17 @@ const Repo: React.FC = () => {
       if (parent.classList.contains('unstarred')) {
         // 点击了 STAR 按钮
         console.log('star');
-        addStar({
-          starredAt: '',
-          fullName,
-          htmlUrl: getHtmlUrl(),
-          group: '',
-          tags: [],
-        });
+        // addStar({
+        //   starredAt: '',
+        //   fullName,
+        //   htmlUrl: getHtmlUrl(),
+        //   group: '',
+        //   tags: [],
+        // });
       } else {
         // 点击了 UNSTAR 按钮
         console.log('unstar');
-        delStar(fullName);
+        // delStar(fullName);
       }
     }
   };

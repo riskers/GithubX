@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { render } from 'react-dom';
-import { getUsername } from '../common/tools';
 import User from './pages/user';
 import Gist from '@/content_script/pages/gist';
 import Stars from '@/content_script/pages/stars';
@@ -10,7 +9,6 @@ import './style.css';
 
 window.addEventListener('load', () => {
   const href = location.href;
-  const username = getUsername();
 
   // const appContainer = document.createElement('div');
   // render(<App />, appContainer);
@@ -50,7 +48,7 @@ window.addEventListener('load', () => {
   }
 
   // STAR list
-  if (href === `https://github.com/${username}?tab=stars`) {
+  if (href.match(/^https:\/\/github.com\/\w*\?tab=stars/gi) || href.match(/^https:\/\/github.com\/stars\/\w*/gi)) {
     document.querySelector('body').classList.add('github-plus-sidebar');
 
     const oDiv = document.createElement('div');

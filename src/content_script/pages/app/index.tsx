@@ -1,4 +1,3 @@
-import { getAllStarListFromCloud } from '@/content_script/services/stars';
 import { forOwn, groupBy } from 'lodash';
 import * as React from 'react';
 import { Treebeard, TreeNode } from 'react-treebeard';
