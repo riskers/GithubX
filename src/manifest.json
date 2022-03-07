@@ -29,6 +29,10 @@
     "service_worker": "background.bundle.js",
     "type": "module"
   },
+  "permissions": [
+    "storage",
+    "unlimitedStorage"
+  ],
   "host_permissions": [
     "<all_urls>"
   ],

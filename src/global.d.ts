@@ -4,7 +4,7 @@ declare module 'react-treebeard' {
   type TreeDecoratorTypes = 'Loading' | 'Toggle' | 'Header' | 'Container';
   type CSS = React.CSSProperties;
 
-  export type TreeAnimations = Object;
+  export type TreeAnimations = unknown;
   export interface TreeTheme {
     tree: {
       base: CSS;

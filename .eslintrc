@@ -1,8 +1,15 @@
 {
+  "root": true,
+  "parser": "@typescript-eslint/parser",
   "extends": [
     "alloy",
     "alloy/react",
-    "alloy/typescript"
+    "alloy/typescript",
+    "prettier"
+  ],
+  "plugins": [
+    "prettier",
+    "react-hooks"
   ],
   "globals": {
     "chrome": true
@@ -14,10 +21,6 @@
   "rules": {
     "prettier/prettier": "error"
   },
-  "plugins": [
-    "prettier",
-    "react-hooks"
-  ],
   "settings": {
     "react": {
       "version": "detect"
