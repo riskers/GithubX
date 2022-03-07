@@ -3,22 +3,14 @@ const ROOT = path.resolve(__dirname);
 const CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const env = process.env.NODE_ENV
+const env = process.env.NODE_ENV;
 
 const entry = {
-  background: [
-    ROOT + '/src/background',
-  ],
-  content_script: [
-    ROOT + '/src/content_script/index',
-  ],
-  'options/index': [
-    ROOT + '/src/options/index',
-  ],
-  'popup/index': [
-    ROOT + '/src/popup/index',
-  ]
-}
+  background: [ROOT + '/src/background'],
+  content_script: [ROOT + '/src/content_script/index'],
+  'options/index': [ROOT + '/src/options/index'],
+  'popup/index': [ROOT + '/src/popup/index'],
+};
 
 module.exports = {
   entry: entry,
@@ -28,6 +20,7 @@ module.exports = {
     filename: '[name].bundle.js',
     sourceMapFilename: '[name].bundle.map.js',
   },
+  devtool: 'cheap-module-source-map',
   module: {
     rules: [
       {
@@ -37,19 +30,21 @@ module.exports = {
       },
       {
         test: /\.ts[x]?$/,
-        loader: 'awesome-typescript-loader'
+        loader: 'awesome-typescript-loader',
       },
       {
         test: /\.css$/,
         include: ROOT + '/src',
-        use: [{
-          loader: 'style-loader',
-        },
-        {
-          loader: 'css-loader',
-        }]
-      }
-    ]
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+          },
+        ],
+      },
+    ],
   },
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
@@ -61,12 +56,12 @@ module.exports = {
     new CopyPlugin([
       {
         from: 'src/manifest.json',
-        to: './'
+        to: './',
       },
       {
         from: 'src/assets',
-        to: './assets'
-      }
+        to: './assets',
+      },
     ]),
     new HtmlWebpackPlugin({
       filename: 'popup/index.html',
@@ -75,8 +70,8 @@ module.exports = {
       chunks: ['popup/index'],
       minify: {
         removeComments: true,
-        collapseWhitespace: true
-      }
+        collapseWhitespace: true,
+      },
     }),
     new HtmlWebpackPlugin({
       filename: 'options/index.html',
@@ -85,8 +80,8 @@ module.exports = {
       chunks: ['options/index'],
       minify: {
         removeComments: true,
-        collapseWhitespace: true
-      }
+        collapseWhitespace: true,
+      },
     }),
-  ]
-}
+  ],
+};

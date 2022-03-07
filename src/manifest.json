@@ -1,9 +1,9 @@
 {
+  "manifest_version": 3,
   "version": "0.0.1",
   "name": "github-plus",
-  "manifest_version": 2,
   "description": "github-plus",
-  "browser_action": {
+  "action": {
     "default_title": "github-plus",
     "default_popup": "popup/index.html"
   },
@@ -11,8 +11,10 @@
     "16": "assets/logo.png"
   },
   "web_accessible_resources": [
-    "*.js",
-    "*.css"
+    {
+      "resources": ["*.js", "*.css"],
+      "matches": ["<all_urls>"]
+    }
   ],
   "content_scripts": [
     {
@@ -24,14 +26,14 @@
     }
   ],
   "background": {
-    "persistent": false,
-    "scripts": [
-      "background.bundle.js"
-    ]
+    "service_worker": "background.bundle.js",
+    "type": "module"
   },
-  "permissions": [
-
+  "host_permissions": [
+    "<all_urls>"
   ],
   "options_page": "options/index.html",
-  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; script-src-elem 'self' 'unsafe-inline'"
+  }
 }
