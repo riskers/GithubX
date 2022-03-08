@@ -1,5 +1,9 @@
+// https://github.com/myungjaeyu/chrome-storage/blob/master/README.md
+
 /* eslint-disable */
 class ChromeStorage {
+  STORAGE_TYPE: string;
+
   constructor(storageType = 'local') {
     if (!chrome.storage) throw 'invalid chrome.storage';
 
@@ -106,8 +110,8 @@ class ChromeStorage {
 
     !keys.length
       ? verify(data)
-        ? data.push(value)
-        : ((data = []), data.push(value))
+        ? (data as any).push(value)
+        : ((data = []), (data as any).push(value))
       : (data = handleRefer((temp, key) =>
           verify(temp[key]) ? temp[key].push(value) : ((temp[key] = []), temp[key].push(value)),
         ));
@@ -125,3 +129,5 @@ class ChromeStorage {
     });
   }
 }
+
+export default ChromeStorage;

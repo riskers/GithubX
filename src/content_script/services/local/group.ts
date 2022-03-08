@@ -1,4 +1,4 @@
-import ChromeStorage from '@/common/storage';
+import ChromeStorage from '@/common/ChromeStorage';
 import { uniqueId } from 'lodash';
 
 export interface IGroup {

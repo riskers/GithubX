@@ -2,8 +2,10 @@ import { forOwn, groupBy } from 'lodash';
 import * as React from 'react';
 import { Treebeard, TreeNode } from 'react-treebeard';
 import './style.css';
-import { makeStyles, createStyles, Theme } from '@material-ui/core';
-import TreeItem from '@material-ui/lab/TreeItem';
+import { Theme } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import createStyles from '@mui/styles/createStyles';
+import TreeItem from '@mui/lab/TreeItem';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

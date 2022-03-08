@@ -1,11 +1,12 @@
 import { IStar } from '@/common/api';
+import { ACTION_SHOW_OPTION_PAGE } from '@/common/constants';
 import { setUsername } from '@/common/tools';
 import { getGroupList, IGroup, resetGroup } from '@/content_script/services/local/group';
 import { getAllStarList, resetStars } from '@/content_script/services/local/stars';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import TreeItem from '@material-ui/lab/TreeItem';
-import TreeView from '@material-ui/lab/TreeView';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import TreeItem from '@mui/lab/TreeItem';
+import TreeView from '@mui/lab/TreeView';
 import React, { useEffect, useState } from 'react';
 
 const Row = ({ index, style }) => {
@@ -53,6 +54,14 @@ const Sidebar = () => {
         reset riskers
       </button>
 
+      <button
+        onClick={() => {
+          chrome.runtime.sendMessage(ACTION_SHOW_OPTION_PAGE);
+        }}
+      >
+        open option
+      </button>
+
       {/* <button
         onClick={() => {
           addStar({ fullName: 'ss', group: '', htmlUrl: '', tags: [], id: 1423 });
@@ -84,9 +93,9 @@ const Sidebar = () => {
                 key={group.id}
                 nodeId={group.id.toString()}
                 label={group.name}
-                onLabelClick={() => {
-                  // toggleGroup(group.groupName);
-                }}
+                // onLabelClick={() => {
+                //   // toggleGroup(group.groupName);
+                // }}
               >
                 {starsList
                   .filter((star) => star.group === group.name)
@@ -96,9 +105,9 @@ const Sidebar = () => {
                         key={star.id}
                         nodeId={star.id.toString()}
                         label={star.fullName}
-                        onLabelClick={() => {
-                          location.href = star.htmlUrl;
-                        }}
+                        // onLabelClick={() => {
+                        //   location.href = star.htmlUrl;
+                        // }}
                       />
                     );
                   })}

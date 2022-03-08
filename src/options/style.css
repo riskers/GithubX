@@ -1,0 +1,12 @@
+.github-plus-app {
+  display: flex;
+  justify-content: space-around;
+}
+
+.sidebar {
+  width: 400px;
+}
+
+.main {
+  flex: 1;
+}

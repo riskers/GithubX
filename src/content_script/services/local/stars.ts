@@ -1,5 +1,5 @@
 import { getAllStarListFromGithub, IStar } from '@/common/api';
-import ChromeStorage from '@/common/storage';
+import ChromeStorage from '@/common/ChromeStorage';
 import { getUsername } from '@/common/tools';
 
 const CHROME_STORAGE_KEY = 'STAR_LIST';

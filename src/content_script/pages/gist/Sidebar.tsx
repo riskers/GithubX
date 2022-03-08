@@ -1,7 +1,7 @@
 import { IGist } from '@/content_script/model/Gist';
 import { getAllGistList } from '@/content_script/services/leancloud/gist';
-import TreeItem from '@material-ui/lab/TreeItem';
-import TreeView from '@material-ui/lab/TreeView';
+import TreeItem from '@mui/lab/TreeItem';
+import TreeView from '@mui/lab/TreeView';
 import React from 'react';
 import { gistContext } from './index';
 
@@ -25,9 +25,9 @@ const Sidebar: React.FC = () => {
             key={gist.objectId}
             nodeId={gist.objectId}
             label={gist.desc ?? gist.title}
-            onLabelClick={() => {
-              location.href = gist.url;
-            }}
+            // onLabelClick={() => {
+            //   location.href = gist.url;
+            // }}
           />
         );
       })}

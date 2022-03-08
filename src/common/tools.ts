@@ -1,4 +1,4 @@
-import ChromeStorage from '@/common/storage';
+import ChromeStorage from '@/common/ChromeStorage';
 
 const CHROME_STORAGE_KEY = 'USERNAME';
 

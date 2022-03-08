@@ -60,3 +60,22 @@ export const getStarListFromGithub = async (username: string, page: number): Pro
     return response.json();
   }
 };
+
+export interface IReadmeResponse {
+  url: string;
+  content: string;
+}
+
+export const getRepoContent = async (fullname: string): Promise<IReadmeResponse> => {
+  const url = `https://api.github.com/repos/${fullname}/readme`;
+
+  const response = await fetch(`${url}`, {
+    headers: {
+      Accept: 'application/vnd.github.v3+json',
+    },
+  });
+
+  if (response.ok) {
+    return response.json();
+  }
+};
