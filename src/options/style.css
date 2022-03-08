@@ -1,12 +1,26 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+img {
+  max-width: 100%;
+}
+
 .github-plus-app {
-  display: flex;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: 400px auto;
+  column-gap: 30px;
+  min-height: 100vh;
 }
 
 .sidebar {
   width: 400px;
+  background: #13283a;
+  color: #000;
 }
 
 .main {
-  flex: 1;
+  grid-column: 2/5;
 }

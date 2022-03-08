@@ -3,22 +3,21 @@ import * as React from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeSanitize from 'rehype-sanitize';
+import { AppContext } from '@/options';
 
-interface IProps {
-  fullname: string;
-}
+const Main: React.FC = () => {
+  const { fullName } = React.useContext(AppContext);
 
-const Main = (props: IProps) => {
   const [readme, setReadme] = React.useState<string>('');
-  console.log(props);
+
   React.useEffect(() => {
-    if (!props.fullname) return;
+    if (!fullName) return;
 
     (async () => {
-      const res = await getRepoContent(props.fullname);
+      const res = await getRepoContent(fullName);
       setReadme(res.content);
     })();
-  }, [props.fullname]);
+  }, [fullName]);
 
   return (
     <div className="main">
