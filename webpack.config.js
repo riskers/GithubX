@@ -1,3 +1,4 @@
+/* eslint-disable */
 const path = require('path');
 const ROOT = path.resolve(__dirname);
 const CopyPlugin = require('copy-webpack-plugin');
@@ -30,7 +31,7 @@ module.exports = {
       },
       {
         test: /\.ts[x]?$/,
-        loader: 'awesome-typescript-loader',
+        loader: 'ts-loader',
       },
       {
         test: /\.css$/,
