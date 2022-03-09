@@ -10,17 +10,17 @@ import * as ReactDOM from 'react-dom';
 import './style.css';
 
 interface IAppContext {
-  fullName: string;
-  group: IGroup;
-  setFullName?: React.Dispatch<React.SetStateAction<string>>;
-  setGroup?: React.Dispatch<React.SetStateAction<IGroup>>;
+  selectFullName: string;
+  selectGroup: IGroup;
+  setSelectFullName?: React.Dispatch<React.SetStateAction<string>>;
+  setSelectGroup?: React.Dispatch<React.SetStateAction<IGroup>>;
 }
 
 export const AppContext = React.createContext<IAppContext>({
-  fullName: '',
-  group: {
+  selectFullName: '',
+  selectGroup: {
     name: '',
-    id: -1,
+    id: '-1',
   },
 });
 
@@ -43,12 +43,19 @@ const theme = createTheme({
 });
 
 const App: React.FC = () => {
-  const [fullName, setFullName] = React.useState<string>();
-  const [group, setGroup] = React.useState<IGroup>();
+  const [selectFullName, setSelectFullName] = React.useState<string>();
+  const [selectGroup, setSelectGroup] = React.useState<IGroup>();
 
   return (
     <ThemeProvider theme={theme}>
-      <AppContext.Provider value={{ fullName, setFullName, group, setGroup }}>
+      <AppContext.Provider
+        value={{
+          selectFullName,
+          setSelectFullName,
+          selectGroup,
+          setSelectGroup,
+        }}
+      >
         <div className="github-plus-app">
           <SideBar />
           <StarList />

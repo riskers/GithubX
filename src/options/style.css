@@ -19,7 +19,28 @@ img {
 .sidebar {
   grid-column: 1/2;
   background: #13283a;
-  color: #000;
+  color: #b8c2cc;
+}
+
+.group {
+  cursor: pointer;
+  color: #cdcdcd;
+  font-size: 16px;
+  padding:15px;
+}
+
+.group.selected:hover {
+  color: #2BA379;
+}
+
+.group.selected {
+  color: #2BA379;
+  background: #0c2133;
+  font-weight: 600;
+}
+
+.group:hover {
+  color: #FFF;
 }
 
 .star-list {
@@ -41,6 +62,7 @@ img {
 
 .star.selected {
   border-left: 3px solid #21a179;
+  background-color: #f8fafc;
 }
 
 .star h2 {

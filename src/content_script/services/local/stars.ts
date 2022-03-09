@@ -1,6 +1,7 @@
-import { getAllStarListFromGithub, IStar } from '@/common/api';
+import { getAllStarListFromGithub, getStarListFromGithub, IGithubStarResponse, IStar } from '@/common/api';
 import ChromeStorage from '@/common/ChromeStorage';
 import { getUsername } from '@/common/tools';
+import { DEFAULT_GROUP } from '@/content_script/services/local/group';
 
 const CHROME_STORAGE_KEY = 'STAR_LIST';
 

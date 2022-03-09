@@ -1,14 +1,14 @@
 import ChromeStorage from '@/common/ChromeStorage';
-import { uniqueId } from 'lodash';
+import uuid from 'lodash-uuid';
 
 export interface IGroup {
-  id: number;
+  id: string;
   name: string;
 }
 
 const CHROME_STORAGE_KEY = 'GROUP_LIST';
 export const DEFAULT_GROUP: IGroup = {
-  id: 0,
+  id: '0',
   name: 'UNGROUP',
 };
 
@@ -24,10 +24,20 @@ export const getGroupList = async (): Promise<IGroup[]> => {
   return (await cs.get(CHROME_STORAGE_KEY)) as IGroup[];
 };
 
-export const addGroup = async (name: string): Promise<void> => {
-  const uuid = uniqueId();
-
+export const addGroup = async (name: string): Promise<IGroup> => {
   const cs = new ChromeStorage();
 
-  await cs.push(CHROME_STORAGE_KEY + '/' + uuid, name);
+  console.log(name);
+
+  const x = await cs.headKey([CHROME_STORAGE_KEY]);
+  console.log(x);
+
+  const group = {
+    id: uuid.uuid(),
+    name,
+  };
+
+  await cs.push(CHROME_STORAGE_KEY, group);
+
+  return group;
 };

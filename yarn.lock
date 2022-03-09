@@ -4883,6 +4883,13 @@ locate-path@^5.0.0:
   dependencies:
     p-locate "^4.1.0"
 
+lodash-uuid@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.npmmirror.com/lodash-uuid/-/lodash-uuid-0.0.3.tgz#beb5584d4ec6a73f2a63e5351766c6a504f089c3"
+  integrity sha512-dSWn+Hdg/T7clQaOQDBIOtEYZwGVUIKAEludtELf/q2yz8jdl4Mir4vD20kU5XErzvXCfwGnRPN9XlKoCa821Q==
+  dependencies:
+    lodash ""
+
 lodash.defaults@^4.2.0:
   version "4.2.0"
   resolved "https://registry.npmmirror.com/lodash.defaults/-/lodash.defaults-4.2.0.tgz#d09178716ffea4dde9e5fb7b37f6f0802274580c"
@@ -4913,7 +4920,7 @@ lodash.union@^4.6.0:
   resolved "https://registry.npmmirror.com/lodash.union/-/lodash.union-4.6.0.tgz#48bb5088409f16f1821666641c44dd1aaae3cd88"
   integrity sha512-c4pB2CdGrGdjMKYLA+XiRDO7Y0PRQbm/Gzg8qMj+QH+pFVAoTp5sBpO0odL3FjoPCGjK96p6qsP+yQoiLoOBcw==
 
-lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.2.0:
+lodash@, lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.20, lodash@^4.17.21, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.2.0:
   version "4.17.21"
   resolved "https://registry.npmmirror.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==

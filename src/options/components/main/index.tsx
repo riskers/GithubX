@@ -6,7 +6,7 @@ import rehypeSanitize from 'rehype-sanitize';
 import remarkGfm from 'remark-gfm';
 
 const Main: React.FC = () => {
-  const { fullName } = React.useContext(AppContext);
+  const { selectFullName: fullName } = React.useContext(AppContext);
 
   const [readme, setReadme] = React.useState<string>('');
 

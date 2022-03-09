@@ -1,68 +1,106 @@
-import { getGroupList, IGroup } from '@/content_script/services/local/group';
+import { addGroup, getGroupList, IGroup } from '@/content_script/services/local/group';
 import { AppContext } from '@/options';
-import {
-  List,
-  ListItem,
-  ListItemButton,
-  listItemButtonClasses,
-  ListItemText,
-  listItemTextClasses,
-} from '@mui/material';
-import { Box, styled } from '@mui/system';
+import AddIcon from '@mui/icons-material/Add';
+import { Button, TextField, Typography } from '@mui/material';
+import classNames from 'classnames';
 import * as React from 'react';
 
-const StyledListItemButton = styled(ListItemButton)(() => {
-  return {
-    [`&:hover`]: {
-      color: '#FFF',
-      background: 'none',
-    },
-    [`&.${listItemButtonClasses.root}`]: {
-      color: '#cdcdcd',
-    },
-    [`&.${listItemButtonClasses.selected}`]: {
-      background: 'none',
-    },
-    [`&.${listItemButtonClasses.selected} .${listItemTextClasses.primary}`]: {
-      color: '#2BA379',
-      fontWeight: 800,
-    },
-  };
-});
-
-const SideBar = (props: {}) => {
+const SideBar = () => {
   const [groupList, setGroupList] = React.useState<IGroup[]>([]);
+  const [newGroup, setNewGroup] = React.useState<string>('');
+  const { selectGroup, setSelectGroup } = React.useContext(AppContext);
+  const ref = React.useRef(null);
 
-  const { group, setGroup } = React.useContext(AppContext);
-  const currentGroupId = group?.id;
-
-  React.useEffect(() => {
+  const fetchGroupList = React.useCallback(() => {
     (async () => {
       const groupList = await getGroupList();
       setGroupList(groupList);
     })();
   }, []);
 
+  React.useEffect(() => {
+    (async () => {
+      if (!newGroup) return;
+
+      await addGroup(newGroup);
+
+      fetchGroupList();
+    })();
+  }, [newGroup]);
+
+  React.useEffect(() => {
+    fetchGroupList();
+  }, []);
+
   return (
     <div className="sidebar">
-      <Box sx={{ width: '100%', color: '#b8c2cc' }}>
-        <List>
-          {groupList?.map((group) => {
-            return (
-              <ListItem key={group.id}>
-                <StyledListItemButton
-                  selected={group.id === currentGroupId}
-                  onClick={() => {
-                    setGroup(group);
-                  }}
-                >
-                  <ListItemText>{group.name}</ListItemText>
-                </StyledListItemButton>
-              </ListItem>
-            );
-          })}
-        </List>
-      </Box>
+      <Typography
+        sx={{
+          fontSize: 14,
+          color: '#606f7b',
+          padding: '15px',
+        }}
+      >
+        GROUPS
+      </Typography>
+
+      {groupList?.map((group) => {
+        return (
+          <div key={group.id}>
+            <div
+              className={classNames({
+                group: true,
+                selected: group.id === selectGroup?.id,
+              })}
+              onClick={() => {
+                setSelectGroup(group);
+              }}
+            >
+              {group.name}
+            </div>
+          </div>
+        );
+      })}
+
+      <div style={{ margin: '20px 15px' }}>
+        <TextField
+          style={{ marginBottom: 10 }}
+          sx={{
+            input: { color: '#dedede' },
+            '& .MuiInputBase-input': {
+              color: '#fff',
+              background: '#051522',
+            },
+            '& .MuiFormLabel-root': {
+              color: '#606f7b',
+            },
+          }}
+          fullWidth
+          inputRef={ref}
+          color="success"
+          id="new-group"
+          label="your new group name?"
+          autoFocus
+          defaultValue=""
+          onKeyPress={async (e) => {
+            if (e.key === 'Enter') {
+              const groupName = ref.current.value;
+
+              const isRepeat = groupList.some((group) => group.name === groupName);
+
+              // input is not null and not repeat in groupList
+              if (groupName.trim() && !isRepeat) {
+                setNewGroup(groupName);
+                ref.current.value = '';
+              }
+            }
+          }}
+        />
+
+        <Button disableRipple variant="outlined" fullWidth startIcon={<AddIcon />}>
+          Create Group
+        </Button>
+      </div>
     </div>
   );
 };
