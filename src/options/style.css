@@ -10,17 +10,56 @@ img {
 
 .github-plus-app {
   display: grid;
-  grid-template-columns: 400px auto;
-  column-gap: 30px;
+  grid-template-columns: 280px 400px 1fr;
+  column-gap: 15px;
   min-height: 100vh;
+  overflow: hidden;
 }
 
 .sidebar {
-  width: 400px;
+  grid-column: 1/2;
   background: #13283a;
   color: #000;
 }
 
+.star-list {
+  grid-column: 2/3;
+  border-left: 1px solid #dae1e7;
+  border-right: 1px solid #dae1e7;
+  max-height: 100vh;
+  overflow-y: scroll;
+}
+
+.star{
+  color: #2BA379;
+  border-bottom: 1px solid #dae1e7;
+  padding: 10px 17px;
+  margin: 0;
+  cursor: pointer;
+  /* min-height: 130px; */
+}
+
+.star.selected {
+  border-left: 3px solid #21a179;
+}
+
+.star h2 {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.star:hover .edit-area {
+  opacity: 100;
+}
+
+.edit-area {
+  transition: opacity 0.2s;
+  opacity: 0;
+  margin: 10px 3px ;
+}
+
 .main {
-  grid-column: 2/5;
+  grid-column: 3/4;
+  max-height: 100vh;
+  overflow-y: scroll;
 }

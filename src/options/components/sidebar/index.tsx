@@ -1,68 +1,30 @@
-import * as React from 'react';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import TreeView from '@mui/lab/TreeView';
-import TreeItem, { treeItemClasses } from '@mui/lab/TreeItem';
 import { getGroupList, IGroup } from '@/content_script/services/local/group';
-import { IStar } from '@/common/api';
-import { getAllStarList } from '@/content_script/services/local/stars';
-import { styled } from '@mui/system';
-import InlineStar from '@/options/components/inline-star';
+import { AppContext } from '@/options';
+import {
+  List,
+  ListItem,
+  ListItemButton,
+  listItemButtonClasses,
+  ListItemText,
+  listItemTextClasses,
+} from '@mui/material';
+import { Box, styled } from '@mui/system';
+import * as React from 'react';
 
-interface StyledTreeItemProps {
-  rootNode?: boolean;
-}
-
-const StyledTreeTitle = styled(TreeItem)<StyledTreeItemProps>(({ rootNode }) => {
+const StyledListItemButton = styled(ListItemButton)(() => {
   return {
-    position: 'relative',
-    color: '#b8c2cc',
     [`&:hover`]: {
       color: '#FFF',
-    },
-    [`& .${treeItemClasses.group}`]: {
-      marginLeft: 3,
-      paddingLeft: 4,
-    },
-    [`& .${treeItemClasses.content}`]: {
-      fontSize: 17,
-      padding: '5px 0',
-    },
-    [`& .${treeItemClasses.selected}`]: {
-      color: '#21a179',
-    },
-    [`& .${treeItemClasses.selected}.${treeItemClasses.content}.${treeItemClasses.focused}`]: {
-      background: 'rgba(0, 0, 0, 0.3)',
-    },
-  };
-});
-
-const StyledTreeItem = styled(TreeItem)<StyledTreeItemProps>(({ rootNode }) => {
-  return {
-    position: 'relative',
-    color: '#b8c2cc',
-    [`&:hover`]: {
-      color: '#FFF',
-    },
-    [`& .${treeItemClasses.group}`]: {
-      // marginLeft: 3,
-      // paddingLeft: 4,
-    },
-    [`& .${treeItemClasses.content}`]: {
-      fontSize: 16,
-      padding: '10px 5px 10px 0',
-    },
-    [`& .${treeItemClasses.iconContainer}`]: {
-      width: 9,
-    },
-    [`& .${treeItemClasses.selected}`]: {
-      color: '#21a179',
-      borderLeft: '3px #FFF solid',
-    },
-    [`& .${treeItemClasses.selected}.${treeItemClasses.content}.${treeItemClasses.focused}`]: {
       background: 'none',
     },
-    [`& .${treeItemClasses.selected} .${treeItemClasses.label}`]: {
+    [`&.${listItemButtonClasses.root}`]: {
+      color: '#cdcdcd',
+    },
+    [`&.${listItemButtonClasses.selected}`]: {
+      background: 'none',
+    },
+    [`&.${listItemButtonClasses.selected} .${listItemTextClasses.primary}`]: {
+      color: '#2BA379',
       fontWeight: 800,
     },
   };
@@ -70,14 +32,9 @@ const StyledTreeItem = styled(TreeItem)<StyledTreeItemProps>(({ rootNode }) => {
 
 const SideBar = (props: {}) => {
   const [groupList, setGroupList] = React.useState<IGroup[]>([]);
-  const [starsList, setStarsList] = React.useState<IStar[]>();
 
-  React.useEffect(() => {
-    (async () => {
-      const starList = await getAllStarList();
-      setStarsList(starList);
-    })();
-  }, []);
+  const { group, setGroup } = React.useContext(AppContext);
+  const currentGroupId = group?.id;
 
   React.useEffect(() => {
     (async () => {
@@ -88,21 +45,24 @@ const SideBar = (props: {}) => {
 
   return (
     <div className="sidebar">
-      <TreeView defaultCollapseIcon={<ExpandMoreIcon />} defaultExpandIcon={<ChevronRightIcon />}>
-        {groupList?.map((group) => {
-          return (
-            <StyledTreeTitle key={group.id} nodeId={group.id.toString()} label={group.name}>
-              {starsList
-                .filter((star) => star.group === group.name)
-                ?.map((star: IStar) => {
-                  return (
-                    <StyledTreeItem key={star.id} nodeId={star.id.toString()} label={<InlineStar star={star} />} />
-                  );
-                })}
-            </StyledTreeTitle>
-          );
-        })}
-      </TreeView>
+      <Box sx={{ width: '100%', color: '#b8c2cc' }}>
+        <List>
+          {groupList?.map((group) => {
+            return (
+              <ListItem key={group.id}>
+                <StyledListItemButton
+                  selected={group.id === currentGroupId}
+                  onClick={() => {
+                    setGroup(group);
+                  }}
+                >
+                  <ListItemText>{group.name}</ListItemText>
+                </StyledListItemButton>
+              </ListItem>
+            );
+          })}
+        </List>
+      </Box>
     </div>
   );
 };

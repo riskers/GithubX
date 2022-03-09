@@ -1,9 +1,9 @@
 import { getRepoContent } from '@/common/api';
+import { AppContext } from '@/options';
 import * as React from 'react';
 import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 import rehypeSanitize from 'rehype-sanitize';
-import { AppContext } from '@/options';
+import remarkGfm from 'remark-gfm';
 
 const Main: React.FC = () => {
   const { fullName } = React.useContext(AppContext);
