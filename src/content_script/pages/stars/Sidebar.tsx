@@ -98,7 +98,7 @@ const Sidebar = () => {
                 // }}
               >
                 {starsList
-                  .filter((star) => star.group === group.name)
+                  .filter((star) => star.groupId === group.id)
                   ?.map((star: IStar) => {
                     return (
                       <TreeItem

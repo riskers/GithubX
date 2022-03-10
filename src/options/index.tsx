@@ -12,8 +12,12 @@ import './style.css';
 interface IAppContext {
   selectFullName: string;
   selectGroup: IGroup;
+  groupList: IGroup[];
+  starsList: IStar[];
   setSelectFullName?: React.Dispatch<React.SetStateAction<string>>;
   setSelectGroup?: React.Dispatch<React.SetStateAction<IGroup>>;
+  setGroupList?: React.Dispatch<React.SetStateAction<IGroup[]>>;
+  setStarsList?: React.Dispatch<React.SetStateAction<IStar[]>>;
 }
 
 export const AppContext = React.createContext<IAppContext>({
@@ -22,6 +26,8 @@ export const AppContext = React.createContext<IAppContext>({
     name: '',
     id: '-1',
   },
+  groupList: [],
+  starsList: [],
 });
 
 const theme = createTheme({
@@ -43,8 +49,10 @@ const theme = createTheme({
 });
 
 const App: React.FC = () => {
+  const [groupList, setGroupList] = React.useState<IGroup[]>();
   const [selectFullName, setSelectFullName] = React.useState<string>();
   const [selectGroup, setSelectGroup] = React.useState<IGroup>();
+  const [starsList, setStarsList] = React.useState<IStar[]>();
 
   return (
     <ThemeProvider theme={theme}>
@@ -54,6 +62,10 @@ const App: React.FC = () => {
           setSelectFullName,
           selectGroup,
           setSelectGroup,
+          groupList,
+          setGroupList,
+          starsList,
+          setStarsList,
         }}
       >
         <div className="github-plus-app">

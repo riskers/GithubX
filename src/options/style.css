@@ -22,6 +22,26 @@ img {
   color: #b8c2cc;
 }
 
+.group-container {
+
+}
+
+.group-container:hover .edit-group {
+  display: block;
+}
+
+.group-container:hover .star-number {
+  display: none;
+}
+
+.edit-group {
+  display: none;
+}
+
+.star-number {
+
+}
+
 .group {
   cursor: pointer;
   color: #cdcdcd;
@@ -35,7 +55,7 @@ img {
 
 .group.selected {
   color: #2BA379;
-  background: #0c2133;
+  /* background: #0c2133; */
   font-weight: 600;
 }
 

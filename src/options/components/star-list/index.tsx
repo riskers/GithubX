@@ -1,31 +1,29 @@
 import { IStar } from '@/common/api';
 import { getAllStarList } from '@/content_script/services/local/stars';
 import { AppContext } from '@/options';
-import { Button, Chip, Dialog, DialogActions, DialogContent, DialogTitle, Input } from '@mui/material';
+import { Chip } from '@mui/material';
 import classNames from 'classnames';
 import * as React from 'react';
 
 const StarList = () => {
   const [currentStarId, setCurrentStarId] = React.useState<number>();
-  const { selectGroup, setSelectFullName } = React.useContext(AppContext);
-  const [starsList, setStarsList] = React.useState<IStar[]>([]);
+  const { selectGroup, setSelectFullName, starsList, setStarsList } = React.useContext(AppContext);
 
   React.useEffect(() => {
     (async () => {
-      const starList = await getAllStarList();
+      if (!selectGroup) return;
 
-      setStarsList(starList);
+      const list = await getAllStarList(selectGroup.id);
+      setStarsList(list);
     })();
   }, [selectGroup]);
-
-  console.log(starsList);
 
   return (
     <>
       <div className="star-list">
         {selectGroup &&
           starsList
-            .filter((star) => star.group === selectGroup.name)
+            ?.filter((star) => star.groupId === selectGroup.id)
             ?.map((star: IStar) => {
               return (
                 <div
@@ -57,7 +55,7 @@ const StarList = () => {
             })}
       </div>
 
-      <Dialog open={false}>
+      {/* <Dialog open={false}>
         <DialogTitle>Edit Repo</DialogTitle>
         <DialogContent>asd</DialogContent>
 
@@ -65,7 +63,7 @@ const StarList = () => {
           <Button>Cancel</Button>
           <Button>OK</Button>
         </DialogActions>
-      </Dialog>
+      </Dialog> */}
     </>
   );
 };
