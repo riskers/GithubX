@@ -7,16 +7,21 @@ import StarList from '@/options/components/star-list';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { ITag } from '../content_script/services/local/tag';
 import './style.css';
 
 interface IAppContext {
   selectFullName: string;
   selectGroup: IGroup;
+  selectTag: ITag;
   groupList: IGroup[];
+  tagsList: ITag[];
   starsList: IStar[];
   setSelectFullName?: React.Dispatch<React.SetStateAction<string>>;
   setSelectGroup?: React.Dispatch<React.SetStateAction<IGroup>>;
+  setSelectTag?: React.Dispatch<React.SetStateAction<ITag>>;
   setGroupList?: React.Dispatch<React.SetStateAction<IGroup[]>>;
+  setTagsList?: React.Dispatch<React.SetStateAction<ITag[]>>;
   setStarsList?: React.Dispatch<React.SetStateAction<IStar[]>>;
 }
 
@@ -26,7 +31,12 @@ export const AppContext = React.createContext<IAppContext>({
     name: '',
     id: '-1',
   },
+  selectTag: {
+    id: '-1',
+    name: '',
+  },
   groupList: [],
+  tagsList: [],
   starsList: [],
 });
 
@@ -50,8 +60,10 @@ const theme = createTheme({
 
 const App: React.FC = () => {
   const [groupList, setGroupList] = React.useState<IGroup[]>();
+  const [tagsList, setTagsList] = React.useState<ITag[]>();
   const [selectFullName, setSelectFullName] = React.useState<string>();
   const [selectGroup, setSelectGroup] = React.useState<IGroup>();
+  const [selectTag, setSelectTag] = React.useState<ITag>();
   const [starsList, setStarsList] = React.useState<IStar[]>();
 
   return (
@@ -62,8 +74,12 @@ const App: React.FC = () => {
           setSelectFullName,
           selectGroup,
           setSelectGroup,
+          selectTag,
+          setSelectTag,
           groupList,
           setGroupList,
+          tagsList,
+          setTagsList,
           starsList,
           setStarsList,
         }}

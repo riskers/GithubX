@@ -16,7 +16,7 @@ export interface IStar {
   fullName: string;
   htmlUrl: string;
   groupId: string;
-  tags: string[];
+  tagsId: string[];
 }
 
 export const getAllStarListFromGithub = async (username: string): Promise<IStar[]> => {
@@ -33,7 +33,7 @@ export const getAllStarListFromGithub = async (username: string): Promise<IStar[
         fullName: data.repo.full_name,
         htmlUrl: data.repo.html_url,
         groupId: DEFAULT_GROUP.id,
-        tags: [],
+        tagsId: [],
       };
     });
 

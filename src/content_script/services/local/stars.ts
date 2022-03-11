@@ -14,11 +14,19 @@ export const resetStars = async (): Promise<void> => {
   await cs.set(CHROME_STORAGE_KEY, res);
 };
 
-export const getAllStarList = async (groupId: string = DEFAULT_GROUP.id): Promise<IStar[]> => {
+interface P {
+  readonly groupId?: string;
+  readonly tagId?: string;
+}
+export const getStarsList = async (params: P): Promise<IStar[]> => {
   const cs = new ChromeStorage();
   const starList = (await cs.get(CHROME_STORAGE_KEY)) as IStar[];
   return starList.filter((star) => {
-    return star.groupId === groupId;
+    if (params.groupId) {
+      return star.groupId === params.groupId;
+    }
+
+    return star.tagsId.includes(params.tagId);
   });
 };
 
@@ -31,7 +39,7 @@ export const addStar = async (param: IStar): Promise<void> => {
     fullName: param.fullName,
     htmlUrl: param.htmlUrl,
     groupId: '',
-    tags: [],
+    tagsId: [],
   };
 
   console.log(star);

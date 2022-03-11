@@ -1,5 +1,5 @@
 import ChromeStorage from '@/common/ChromeStorage';
-import { getAllStarList } from '@/content_script/services/local/stars';
+import { getStarsList } from '@/content_script/services/local/stars';
 import { remove } from 'lodash';
 import uuid from 'lodash-uuid';
 
@@ -28,7 +28,7 @@ export const getGroupList = async (): Promise<IGroup[]> => {
   const groupList = (await cs.get(CHROME_STORAGE_KEY)) as IGroup[];
 
   for (const group of groupList) {
-    const starsList = await getAllStarList(group.id);
+    const starsList = await getStarsList({ groupId: group.id });
     group.totalStars = starsList.length;
   }
 

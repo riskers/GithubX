@@ -1,8 +1,9 @@
 import { IStar } from '@/common/api';
 import { ACTION_SHOW_OPTION_PAGE } from '@/common/constants';
 import { setUsername } from '@/common/tools';
-import { getGroupList, IGroup, resetGroup } from '@/content_script/services/local/group';
-import { getAllStarList, resetStars } from '@/content_script/services/local/stars';
+import { DEFAULT_GROUP, getGroupList, IGroup, resetGroup } from '@/content_script/services/local/group';
+import { getStarsList, resetStars } from '@/content_script/services/local/stars';
+import { resetTag } from '@/content_script/services/local/tag';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TreeItem from '@mui/lab/TreeItem';
@@ -30,7 +31,7 @@ const Sidebar = () => {
 
   useEffect(() => {
     (async () => {
-      const starList = await getAllStarList();
+      const starList = await getStarsList({ groupId: DEFAULT_GROUP.id });
       setStarsList(starList);
     })();
   }, []);
@@ -49,6 +50,7 @@ const Sidebar = () => {
           await setUsername('riskers');
           await resetStars();
           await resetGroup();
+          await resetTag();
         }}
       >
         reset riskers
@@ -79,7 +81,7 @@ const Sidebar = () => {
 
       <button
         onClick={async () => {
-          const x = await getAllStarList();
+          const x = await getStarsList({ groupId: DEFAULT_GROUP.id });
         }}
       >
         all

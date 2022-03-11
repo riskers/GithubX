@@ -1,22 +1,28 @@
 import { addGroup, getGroupList, IGroup } from '@/content_script/services/local/group';
-import { getAllStarList } from '@/content_script/services/local/stars';
+import { getTagsList } from '@/content_script/services/local/tag';
 import { AppContext } from '@/options';
+import Accordion from '@/options/components/accordion';
 import EditGroup from '@/options/components/edit-group';
+import AllInboxIcon from '@mui/icons-material/AllInbox';
 import AddIcon from '@mui/icons-material/Add';
-import { Button, Chip, Divider, Stack, TextField, Typography } from '@mui/material';
+import { Button, Chip, Divider, IconButton, Stack, TextField, Typography } from '@mui/material';
 import classNames from 'classnames';
 import * as React from 'react';
 
 const SideBar = () => {
   const [openNewGroup, setOpenNewGroup] = React.useState<boolean>(false);
   const [newGroup, setNewGroup] = React.useState<string>('');
-  const { groupList, selectGroup, setGroupList, setSelectGroup } = React.useContext(AppContext);
+  const { groupList, tagsList, selectGroup, selectTag, setGroupList, setTagsList, setSelectGroup, setSelectTag } =
+    React.useContext(AppContext);
   const ref = React.useRef(null);
 
-  const fetchGroupList = React.useCallback(() => {
+  const fetchData = React.useCallback(() => {
     (async () => {
-      const list = await getGroupList();
-      setGroupList(list);
+      let glist = await getGroupList();
+      setGroupList(glist);
+
+      let tlist = await getTagsList();
+      setTagsList(tlist);
     })();
   }, []);
 
@@ -26,65 +32,61 @@ const SideBar = () => {
 
       await addGroup(newGroup);
 
-      fetchGroupList();
+      fetchData();
     })();
   }, [newGroup]);
 
   React.useEffect(() => {
-    fetchGroupList();
+    fetchData();
   }, []);
 
   return (
     <div className="sidebar">
-      <Typography
-        sx={{
-          fontSize: 14,
-          color: '#606f7b',
-          padding: '15px',
-        }}
-      >
-        GROUPS
-      </Typography>
-
-      {groupList?.map((group) => {
-        return (
-          <Stack
-            key={group.id}
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-            style={{ padding: '0 10px' }}
-            className="group-container"
-          >
-            <div
-              style={{ flex: 1 }}
-              className={classNames({
-                group: true,
-                selected: group.id === selectGroup?.id,
-              })}
-              onClick={() => {
-                setSelectGroup(group);
-              }}
+      <Accordion title="GROUPS" open>
+        {groupList?.map((group) => {
+          return (
+            <Stack
+              key={group.id}
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+              style={{ padding: '0 13px' }}
+              className="group-container"
             >
-              {group.name}
-            </div>
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="flex-start"
+                style={{ flex: 1 }}
+                className={classNames({
+                  group: true,
+                  selected: group.id === selectGroup?.id,
+                })}
+                onClick={() => {
+                  setSelectGroup(group);
+                }}
+              >
+                <AllInboxIcon fontSize="small" />
+                <div style={{ paddingLeft: 5 }}>{group.name}</div>
+              </Stack>
 
-            <Chip
-              className="star-number"
-              size="small"
-              label={group.totalStars}
-              sx={{
-                [`&`]: {
-                  background: 'rgba(255,255,255, 0.1)',
-                  color: '#FFF',
-                },
-              }}
-            />
+              <Chip
+                className="star-number"
+                size="small"
+                label={group.totalStars}
+                sx={{
+                  [`&`]: {
+                    background: 'rgba(255,255,255, 0.1)',
+                    color: '#FFF',
+                  },
+                }}
+              />
 
-            <EditGroup group={group} />
-          </Stack>
-        );
-      })}
+              <EditGroup group={group} />
+            </Stack>
+          );
+        })}
+      </Accordion>
 
       <div style={{ margin: '20px 15px' }}>
         {openNewGroup && (
@@ -143,15 +145,47 @@ const SideBar = () => {
 
       <Divider />
 
-      <Typography
-        sx={{
-          fontSize: 14,
-          color: '#606f7b',
-          padding: '15px',
-        }}
-      >
-        TAGS
-      </Typography>
+      <Accordion title="TAGS" open={false}>
+        {tagsList?.map((tag) => {
+          return (
+            <Stack
+              key={tag.id}
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+              style={{ padding: '0 13px' }}
+              className="group-container"
+            >
+              <div
+                style={{ flex: 1 }}
+                className={classNames({
+                  group: true,
+                  selected: tag.id === selectTag?.id,
+                })}
+                onClick={() => {
+                  setSelectTag(tag);
+                }}
+              >
+                {tag.name}
+              </div>
+
+              <Chip
+                className="star-number"
+                size="small"
+                label={tag.totalStars}
+                sx={{
+                  [`&`]: {
+                    background: 'rgba(255,255,255, 0.1)',
+                    color: '#FFF',
+                  },
+                }}
+              />
+
+              {/* <EditGroup group={group} /> */}
+            </Stack>
+          );
+        })}
+      </Accordion>
     </div>
   );
 };
