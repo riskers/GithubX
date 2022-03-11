@@ -95,8 +95,8 @@ img {
 }
 
 .edit-area {
-  transition: opacity 0.2s;
-  opacity: 0;
+  /* transition: opacity 0.2s;
+  opacity: 0; */
   margin: 10px 3px ;
 }
 

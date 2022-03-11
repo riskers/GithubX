@@ -33,19 +33,23 @@ export const getStarsList = async (params: P): Promise<IStar[]> => {
 /**
  * 点击 star 按钮时单个触发保存
  */
-export const addStar = async (param: IStar): Promise<void> => {
-  const star: IStar = {
-    id: param.id,
-    fullName: param.fullName,
-    htmlUrl: param.htmlUrl,
-    groupId: '',
-    tagsId: [],
-  };
+export const addStar = async (star: IStar): Promise<void> => {
+  const cs = new ChromeStorage();
+  await cs.set(CHROME_STORAGE_KEY, star);
+};
 
-  console.log(star);
+export const updateStar = async (pstar: IStar): Promise<void> => {
+  const cs = new ChromeStorage();
 
-  // const cs = new ChromeStorage();
-  // await cs.set(CHROME_STORAGE_KEY + '/' + param.id, star);
+  const starList = await getStarsList({ groupId: DEFAULT_GROUP.id });
+  const newStarsList = starList.map((star) => {
+    if (star.id === pstar.id) {
+      return pstar;
+    }
+    return star;
+  });
+
+  await cs.set(CHROME_STORAGE_KEY, newStarsList);
 };
 
 /**

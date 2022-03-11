@@ -22,6 +22,7 @@ const SideBar = () => {
       setGroupList(glist);
 
       let tlist = await getTagsList();
+      console.log(tlist);
       setTagsList(tlist);
     })();
   }, []);

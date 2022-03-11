@@ -31,3 +31,40 @@ export const getTagsList = async (): Promise<ITag[]> => {
 
   return tagsList;
 };
+
+export const buildTag = (name: string): ITag => {
+  return {
+    id: uuid.uuid(),
+    name,
+  };
+};
+
+export const addTag = async (name: string): Promise<ITag> => {
+  const cs = new ChromeStorage();
+
+  const tag: ITag = {
+    id: uuid.uuid(),
+    name,
+  };
+
+  await cs.push(CHROME_STORAGE_KEY, tag);
+
+  return tag;
+};
+
+export const updateTag = async (id: string) => {
+  // const cs = new ChromeStorage();
+  // // update new group
+  // const newGroup: IGroup = {
+  //   id: groupId,
+  //   name: groupName,
+  // };
+  // const groupList = await getGroupList();
+  // const newGroupList = groupList.map((group) => {
+  //   if (group.id === groupId) {
+  //     return newGroup;
+  //   }
+  //   return group;
+  // });
+  // await cs.set(CHROME_STORAGE_KEY, newGroupList);
+};

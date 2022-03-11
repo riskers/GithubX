@@ -59,12 +59,12 @@ const theme = createTheme({
 });
 
 const App: React.FC = () => {
-  const [groupList, setGroupList] = React.useState<IGroup[]>();
-  const [tagsList, setTagsList] = React.useState<ITag[]>();
+  const [groupList, setGroupList] = React.useState<IGroup[]>([]);
+  const [tagsList, setTagsList] = React.useState<ITag[]>([]);
   const [selectFullName, setSelectFullName] = React.useState<string>();
   const [selectGroup, setSelectGroup] = React.useState<IGroup>();
   const [selectTag, setSelectTag] = React.useState<ITag>();
-  const [starsList, setStarsList] = React.useState<IStar[]>();
+  const [starsList, setStarsList] = React.useState<IStar[]>([]);
 
   return (
     <ThemeProvider theme={theme}>
