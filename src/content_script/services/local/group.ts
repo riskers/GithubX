@@ -23,6 +23,16 @@ export const resetGroup = async (): Promise<void> => {
   await cs.set(CHROME_STORAGE_KEY, [DEFAULT_GROUP]);
 };
 
+export const getGroup = async (id: string): Promise<IGroup> => {
+  const cs = new ChromeStorage();
+
+  const groupList = (await cs.get(CHROME_STORAGE_KEY)) as IGroup[];
+
+  return groupList.find((group) => {
+    return group.id === id;
+  });
+};
+
 export const getGroupList = async (): Promise<IGroup[]> => {
   const cs = new ChromeStorage();
   const groupList = (await cs.get(CHROME_STORAGE_KEY)) as IGroup[];

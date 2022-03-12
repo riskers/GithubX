@@ -45,7 +45,7 @@ export const addStar = async (star: IStar): Promise<void> => {
 export const updateStar = async (pstar: IStar): Promise<void> => {
   const cs = new ChromeStorage();
 
-  const starList = await getStarsList({ groupId: DEFAULT_GROUP.id });
+  const starList = await getStarsList();
   const newStarsList = starList.map((star) => {
     if (star.id === pstar.id) {
       return pstar;

@@ -3,6 +3,7 @@ import { getTagsList } from '@/content_script/services/local/tag';
 import { AppContext } from '@/options';
 import Accordion from '@/options/components/accordion';
 import EditGroup from '@/options/components/edit-group';
+import SellIcon from '@mui/icons-material/Sell';
 import AllInboxIcon from '@mui/icons-material/AllInbox';
 import AddIcon from '@mui/icons-material/Add';
 import { Button, Chip, Divider, IconButton, Stack, TextField, Typography } from '@mui/material';
@@ -146,7 +147,7 @@ const SideBar = () => {
 
       <Divider />
 
-      <Accordion title="TAGS" open={false}>
+      <Accordion title="TAGS" open>
         {tagsList?.map((tag) => {
           return (
             <Stack
@@ -157,7 +158,10 @@ const SideBar = () => {
               style={{ padding: '0 13px' }}
               className="group-container"
             >
-              <div
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="flex-start"
                 style={{ flex: 1 }}
                 className={classNames({
                   group: true,
@@ -167,8 +171,9 @@ const SideBar = () => {
                   setSelectTag(tag);
                 }}
               >
-                {tag.name}
-              </div>
+                <SellIcon fontSize="small" />
+                <div style={{ paddingLeft: 5 }}>{tag.name}</div>
+              </Stack>
 
               <Chip
                 className="star-number"

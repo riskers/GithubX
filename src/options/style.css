@@ -80,6 +80,10 @@ img {
   /* min-height: 130px; */
 }
 
+.edit-area {
+  padding: 25px 0 10px 0;
+}
+
 .star.selected {
   border-left: 3px solid #21a179;
   background-color: #f8fafc;

@@ -7,11 +7,6 @@ import { Autocomplete, Button, Chip, Dialog, DialogContent, DialogTitle, Stack, 
 import classNames from 'classnames';
 import * as React from 'react';
 
-interface IShowEditRepo {
-  show: boolean;
-  id: number;
-}
-
 const StarList = () => {
   const [currentStarId, setCurrentStarId] = React.useState<number>();
   const { selectGroup, setSelectFullName, starsList, setStarsList, selectTag } = React.useContext(AppContext);
@@ -31,7 +26,6 @@ const StarList = () => {
       if (!selectTag) return;
 
       const list = await getStarsList({ tagId: selectTag.id });
-      const ll = list.filter((star) => star.tagsId.includes(selectTag.id));
       setStarsList(list);
     })();
   }, [selectTag]);
