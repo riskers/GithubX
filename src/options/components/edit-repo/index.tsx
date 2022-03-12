@@ -1,50 +1,93 @@
 import { IStar } from '@/common/api';
 import { updateStar } from '@/content_script/services/local/stars';
-import { addTag, ITag } from '@/content_script/services/local/tag';
+import { addTag, getTag, getTagsList, ITag } from '@/content_script/services/local/tag';
 import { AppContext } from '@/options';
-import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import {
   Autocomplete,
   AutocompleteChangeDetails,
   AutocompleteChangeReason,
   Chip,
-  IconButton,
+  Container,
   TextField,
 } from '@mui/material';
+import { without } from 'lodash';
 import * as React from 'react';
 
 interface IProps {
   star: IStar;
   /**
-   * tag list in star
+   * stars' tags id list
    */
-  defaultTagsList: string[];
+  starTagsId: string[];
 }
 
 const EditRepo = (props: IProps) => {
-  const { tagsList } = React.useContext(AppContext);
-  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+  const { tagsList, setTagsList } = React.useContext(AppContext);
+  const [open, setOpen] = React.useState<boolean>(false);
 
-  const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-    event.stopPropagation();
+  const [repoTagsList, setRepoTagsList] = React.useState<ITag[]>([]);
+
+  const updateRepoTags = async (tagsId: string[]) => {
+    const tags = await getTag(tagsId);
+    console.log('tags', tags);
+    setRepoTagsList(tags);
   };
 
-  const open = Boolean(anchorEl);
+  const updateAllTaglist = async () => {
+    const tags = await getTagsList();
+    // console.log('alltagslist', tags);
+    setTagsList(tags);
+  };
+
+  const handleClick = () => {
+    setOpen(false);
+  };
+
+  const clickRef = React.useRef(handleClick);
+
+  React.useEffect(() => {
+    clickRef.current = handleClick;
+  }, [handleClick]);
+
+  React.useEffect(() => {
+    updateRepoTags(props.starTagsId);
+  }, []);
+
+  React.useEffect(() => {
+    document.addEventListener('click', clickRef.current, false);
+    return () => document.removeEventListener('click', clickRef.current, false);
+  });
 
   return (
     <div className="edit-repo">
-      <IconButton
-        aria-describedby={props.star.id.toString()}
-        onClick={handleOpen}
-        aria-label="edit"
-        size="small"
-        sx={{
-          color: 'red',
-        }}
-      >
-        <MoreHorizRoundedIcon />
-      </IconButton>
+      {!open && (
+        <Container
+          // aria-describedby={props.star.id.toString()}
+          onClick={() => setOpen(true)}
+          style={{ padding: 0 }}
+          // aria-label="edit"
+          // size="small"
+        >
+          {repoTagsList.map((tag) => {
+            return (
+              <Chip
+                size="small"
+                key={tag.id}
+                label={tag.name}
+                color="primary"
+                style={{ cursor: 'pointer', marginRight: 5 }}
+              />
+            );
+          })}
+
+          <Chip
+            size="small"
+            label="Edit Tag"
+            style={{ cursor: 'pointer', background: '#f1f5f8', color: '#606f7b' }}
+            className="edit-label"
+          />
+        </Container>
+      )}
 
       {open && (
         <Autocomplete
@@ -54,7 +97,7 @@ const EditRepo = (props: IProps) => {
           size="small"
           options={tagsList}
           noOptionsText="Add a tag..."
-          defaultValue={props.defaultTagsList}
+          value={repoTagsList}
           freeSolo
           filterSelectedOptions
           onChange={async (
@@ -64,25 +107,58 @@ const EditRepo = (props: IProps) => {
             d: AutocompleteChangeDetails<ITag> | AutocompleteChangeDetails<string>,
             // eslint-disable-next-line max-params
           ) => {
-            console.log(v, r, d);
+            // console.log(v, r, d);
+            const vlist = repoTagsList.map((tag) => tag.id);
 
             if (r === 'createOption') {
-              // d.option.
               const tag = await addTag(d.option as string);
               const newStar: IStar = {
                 ...props.star,
-                tagsId: props.star.tagsId.concat(tag.id),
+                tagsId: vlist.concat(tag.id),
               };
+
+              await updateRepoTags(repoTagsList.map((tag) => tag.id).concat(tag.id));
               await updateStar(newStar);
+              await updateAllTaglist();
             }
 
             if (r === 'selectOption') {
-              // TODO
-              // await updatTag();
+              const tag = d.option as ITag;
+              console.log(repoTagsList);
+              await updateRepoTags(repoTagsList.map((tag) => tag.id).concat(tag.id));
+
+              const newStar: IStar = {
+                ...props.star,
+                tagsId: vlist.concat(tag.id),
+              };
+              await updateStar(newStar);
+              await updateAllTaglist();
+            }
+
+            if (r === 'removeOption') {
+              const tag = d.option as ITag;
+
+              const excludeTagIds = without(vlist, tag.id);
+
+              await updateRepoTags(excludeTagIds);
+
+              const newStar: IStar = {
+                ...props.star,
+                tagsId: excludeTagIds,
+              };
+              await updateStar(newStar);
+              await updateAllTaglist();
+            }
+
+            if (r === 'clear') {
+              // console.log('clear');
+            }
+
+            if (r === 'blur') {
+              // console.log('blur');
             }
           }}
           getOptionLabel={(option) => {
-            console.log(option);
             if (typeof option === 'string') {
               return option;
             }
@@ -90,7 +166,6 @@ const EditRepo = (props: IProps) => {
             return option.name;
           }}
           renderTags={(value: ITag[], getTagProps) => {
-            console.log(value);
             return value.map((option, index) => {
               return <Chip color="success" label={option.name} key={index} size="small" {...getTagProps({ index })} />;
             });

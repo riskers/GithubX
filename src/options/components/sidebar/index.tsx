@@ -8,6 +8,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { Button, Chip, Divider, IconButton, Stack, TextField, Typography } from '@mui/material';
 import classNames from 'classnames';
 import * as React from 'react';
+import EditTag from '@/options/components/edit-tag';
 
 const SideBar = () => {
   const [openNewGroup, setOpenNewGroup] = React.useState<boolean>(false);
@@ -182,7 +183,7 @@ const SideBar = () => {
                 }}
               />
 
-              {/* <EditGroup group={group} /> */}
+              <EditTag tag={tag} />
             </Stack>
           );
         })}

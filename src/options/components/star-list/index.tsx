@@ -53,9 +53,7 @@ const StarList = () => {
                       e.stopPropagation();
                     }}
                   >
-                    <EditRepo star={star} defaultTagsList={star.tagsId} />
-
-                    <Chip size="small" label="edit" color="primary" />
+                    <EditRepo star={star} starTagsId={star.tagsId} />
                   </div>
                 </div>
               );

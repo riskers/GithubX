@@ -90,14 +90,14 @@ img {
   font-weight: 400;
 }
 
-.star:hover .edit-area {
+.star:hover .edit-label {
   opacity: 100;
 }
 
-.edit-area {
-  /* transition: opacity 0.2s;
-  opacity: 0; */
-  margin: 10px 3px ;
+.edit-label {
+  transition: opacity 0.2s;
+  opacity: 0;
+  /* margin: 10px 3px ; */
 }
 
 .main {

@@ -2,6 +2,7 @@ import { getAllStarListFromGithub, getStarListFromGithub, IGithubStarResponse, I
 import ChromeStorage from '@/common/ChromeStorage';
 import { getUsername } from '@/common/tools';
 import { DEFAULT_GROUP } from '@/content_script/services/local/group';
+import { remove } from 'lodash';
 
 const CHROME_STORAGE_KEY = 'STAR_LIST';
 
@@ -18,9 +19,12 @@ interface P {
   readonly groupId?: string;
   readonly tagId?: string;
 }
-export const getStarsList = async (params: P): Promise<IStar[]> => {
+export const getStarsList = async (params?: P): Promise<IStar[]> => {
   const cs = new ChromeStorage();
   const starList = (await cs.get(CHROME_STORAGE_KEY)) as IStar[];
+
+  if (!params) return starList;
+
   return starList.filter((star) => {
     if (params.groupId) {
       return star.groupId === params.groupId;
@@ -61,4 +65,27 @@ export const delStar = async (fullName: string): Promise<void> => {
   // query.equalTo('fullName', fullName);
   // const star = await query.find();
   // await leancloud.Object.createWithoutData(LEANCLOUD_CLASS_NAME, star[0].id).destroy();
+};
+
+/**
+ * clear star's tag by specific tagId
+ */
+export const clearStarByTagId = async (tagId: string): Promise<void> => {
+  const cs = new ChromeStorage();
+
+  let starList = await getStarsList();
+  starList = starList.map((star) => {
+    if (star.tagsId.includes(tagId)) {
+      const l = star.tagsId;
+
+      remove(l, (tag) => {
+        return tag === tagId;
+      });
+
+      star.tagsId = l;
+    }
+    return star;
+  });
+
+  await cs.set(CHROME_STORAGE_KEY, starList);
 };

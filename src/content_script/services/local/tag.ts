@@ -1,5 +1,6 @@
 import ChromeStorage from '@/common/ChromeStorage';
-import { getStarsList } from '@/content_script/services/local/stars';
+import { clearStarByTagId, getStarsList } from '@/content_script/services/local/stars';
+import { remove } from 'lodash';
 import uuid from 'lodash-uuid';
 
 export interface ITag {
@@ -17,6 +18,19 @@ export const resetTag = async (): Promise<void> => {
   await cs.set(CHROME_STORAGE_KEY, []);
 };
 
+/**
+ * get tag info by tag id
+ */
+export const getTag = async (ids: string[]): Promise<ITag[]> => {
+  const cs = new ChromeStorage();
+
+  const tagsList = (await cs.get(CHROME_STORAGE_KEY)) as ITag[];
+
+  return tagsList.filter((tag) => {
+    return ids.includes(tag.id);
+  });
+};
+
 export const getTagsList = async (): Promise<ITag[]> => {
   const cs = new ChromeStorage();
 
@@ -32,15 +46,26 @@ export const getTagsList = async (): Promise<ITag[]> => {
   return tagsList;
 };
 
-export const buildTag = (name: string): ITag => {
-  return {
-    id: uuid.uuid(),
-    name,
-  };
+export const deleteTag = async (tagId: string): Promise<void> => {
+  const cs = new ChromeStorage();
+
+  const tagList = await getTagsList();
+  remove(tagList, (tag) => {
+    return tag.id === tagId;
+  });
+  await cs.set(CHROME_STORAGE_KEY, tagList);
+
+  await clearStarByTagId(tagId);
 };
 
 export const addTag = async (name: string): Promise<ITag> => {
   const cs = new ChromeStorage();
+
+  const tagsList = (await cs.get(CHROME_STORAGE_KEY)) as ITag[];
+
+  if (tagsList.some((tag) => tag.name === name)) {
+    return;
+  }
 
   const tag: ITag = {
     id: uuid.uuid(),
@@ -52,19 +77,21 @@ export const addTag = async (name: string): Promise<ITag> => {
   return tag;
 };
 
-export const updateTag = async (id: string) => {
-  // const cs = new ChromeStorage();
-  // // update new group
-  // const newGroup: IGroup = {
-  //   id: groupId,
-  //   name: groupName,
-  // };
-  // const groupList = await getGroupList();
-  // const newGroupList = groupList.map((group) => {
-  //   if (group.id === groupId) {
-  //     return newGroup;
-  //   }
-  //   return group;
-  // });
-  // await cs.set(CHROME_STORAGE_KEY, newGroupList);
+export const updateTag = async (id: string, tag: Pick<ITag, 'name'>) => {
+  const cs = new ChromeStorage();
+
+  const newTag: ITag = {
+    ...tag,
+    id,
+  };
+
+  const tagsList = await getTagsList();
+  const newTagsList = tagsList.map((tag) => {
+    if (tag.id === id) {
+      return newTag;
+    }
+    return tag;
+  });
+
+  await cs.set(CHROME_STORAGE_KEY, newTagsList);
 };
