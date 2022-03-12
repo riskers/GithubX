@@ -4,8 +4,7 @@
   "name": "github-plus",
   "description": "github-plus",
   "action": {
-    "default_title": "github-plus",
-    "default_popup": "popup/index.html"
+    "default_title": "github-plus"
   },
   "icons": {
     "16": "assets/logo.png"
