@@ -29,7 +29,7 @@ const EditRepo = (props: IProps) => {
 
   const updateRepoTags = async (tagsId: string[]) => {
     const tags = await getTag(tagsId);
-    console.log('tags', tags);
+    // console.log('tags', tags);
     setRepoTagsList(tags);
   };
 
@@ -39,36 +39,27 @@ const EditRepo = (props: IProps) => {
     setTagsList(tags);
   };
 
-  const handleClick = () => {
+  React.useEffect(() => {
+    (async () => {
+      await updateRepoTags(props.starTagsId);
+    })();
+  }, []);
+
+  const handleClick = React.useCallback(() => {
     setOpen(false);
-  };
-
-  const clickRef = React.useRef(handleClick);
-
-  React.useEffect(() => {
-    clickRef.current = handleClick;
-  }, [handleClick]);
-
-  React.useEffect(() => {
-    updateRepoTags(props.starTagsId);
   }, []);
 
   React.useEffect(() => {
-    document.addEventListener('click', clickRef.current, false);
-    return () => document.removeEventListener('click', clickRef.current, false);
+    document.addEventListener('click', handleClick, false);
+    return () => document.removeEventListener('click', handleClick, false);
   });
 
   return (
     <div className="edit-repo">
       {!open && (
-        <Container
-          // aria-describedby={props.star.id.toString()}
-          onClick={() => setOpen(true)}
-          style={{ padding: 0 }}
-          // aria-label="edit"
-          // size="small"
-        >
+        <Container onClick={() => setOpen(true)} style={{ padding: 0 }}>
           {repoTagsList.map((tag) => {
+            console.log(tag);
             return (
               <Chip
                 size="small"
