@@ -3,7 +3,7 @@ import { getStarsList } from '@/content_script/services/local/stars';
 import { addTag, ITag } from '@/content_script/services/local/tag';
 import { AppContext } from '@/options';
 import EditRepo from '@/options/components/edit-repo';
-import { Autocomplete, Button, Chip, Dialog, DialogContent, DialogTitle, TextField } from '@mui/material';
+import { Autocomplete, Button, Chip, Dialog, DialogContent, DialogTitle, Stack, TextField } from '@mui/material';
 import classNames from 'classnames';
 import * as React from 'react';
 
@@ -14,50 +14,64 @@ interface IShowEditRepo {
 
 const StarList = () => {
   const [currentStarId, setCurrentStarId] = React.useState<number>();
-  const { selectGroup, setSelectFullName, starsList, setStarsList } = React.useContext(AppContext);
+  const { selectGroup, setSelectFullName, starsList, setStarsList, selectTag } = React.useContext(AppContext);
 
   React.useEffect(() => {
     (async () => {
       if (!selectGroup) return;
 
       const list = await getStarsList({ groupId: selectGroup.id });
-      setStarsList(list);
+      const ll = list.filter((star) => star.groupId === selectGroup.id);
+      setStarsList(ll);
     })();
   }, [selectGroup]);
+
+  React.useEffect(() => {
+    (async () => {
+      if (!selectTag) return;
+
+      const list = await getStarsList({ tagId: selectTag.id });
+      const ll = list.filter((star) => star.tagsId.includes(selectTag.id));
+      setStarsList(list);
+    })();
+  }, [selectTag]);
 
   return (
     <>
       <div className="star-list">
-        {selectGroup &&
-          starsList
-            ?.filter((star) => star.groupId === selectGroup.id)
-            ?.map((star: IStar) => {
-              return (
+        {starsList.length !== 0 ? (
+          starsList.map((star: IStar) => {
+            return (
+              <div
+                key={star.id}
+                className={classNames('star', {
+                  selected: currentStarId === star.id,
+                })}
+                onClick={() => {
+                  setCurrentStarId(star.id);
+                  setSelectFullName(star.fullName);
+                }}
+              >
+                <div>
+                  <h2>{star.fullName}</h2>
+                </div>
+
                 <div
-                  key={star.id}
-                  className={classNames('star', {
-                    selected: currentStarId === star.id,
-                  })}
-                  onClick={() => {
-                    setCurrentStarId(star.id);
-                    setSelectFullName(star.fullName);
+                  className="edit-area"
+                  onClick={(e) => {
+                    e.stopPropagation();
                   }}
                 >
-                  <div>
-                    <h2>{star.fullName}</h2>
-                  </div>
-
-                  <div
-                    className="edit-area"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                    }}
-                  >
-                    <EditRepo star={star} starTagsId={star.tagsId} />
-                  </div>
+                  <EditRepo star={star} starTagsId={star.tagsId} />
                 </div>
-              );
-            })}
+              </div>
+            );
+          })
+        ) : (
+          <Stack justifyContent="center" alignItems="center" style={{ fontSize: 20, padding: 30, color: '#c5d2dd' }}>
+            Empty...
+          </Stack>
+        )}
       </div>
 
       <Dialog open={false}>

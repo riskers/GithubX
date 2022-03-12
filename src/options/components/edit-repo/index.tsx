@@ -59,7 +59,6 @@ const EditRepo = (props: IProps) => {
       {!open && (
         <Container onClick={() => setOpen(true)} style={{ padding: 0 }}>
           {repoTagsList.map((tag) => {
-            console.log(tag);
             return (
               <Chip
                 size="small"
@@ -115,7 +114,6 @@ const EditRepo = (props: IProps) => {
 
             if (r === 'selectOption') {
               const tag = d.option as ITag;
-              console.log(repoTagsList);
               await updateRepoTags(repoTagsList.map((tag) => tag.id).concat(tag.id));
 
               const newStar: IStar = {
