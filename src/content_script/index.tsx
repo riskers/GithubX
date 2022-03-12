@@ -40,19 +40,19 @@ window.addEventListener('load', () => {
   // }
 
   // GIST page
-  if (href.match(/^https:\/\/gist.github.com\/\w*/gi)) {
-    const oDiv = document.createElement('div');
-    render(<Gist />, oDiv);
+  // if (href.match(/^https:\/\/gist.github.com\/\w*/gi)) {
+  //   const oDiv = document.createElement('div');
+  //   render(<Gist />, oDiv);
 
-    document.body.appendChild(oDiv);
-  }
+  //   document.body.appendChild(oDiv);
+  // }
 
   // STAR list
-  if (href.match(/^https:\/\/github.com\/\w*\?tab=stars/gi) || href.match(/^https:\/\/github.com\/stars\/\w*/gi)) {
-    document.querySelector('body').classList.add('github-plus-sidebar');
+  // if (href.match(/^https:\/\/github.com\/\w*\?tab=stars/gi) || href.match(/^https:\/\/github.com\/stars\/\w*/gi)) {
+  //   document.querySelector('body').classList.add('github-plus-sidebar');
 
-    const oDiv = document.createElement('div');
-    render(<Stars />, oDiv);
-    document.body.appendChild(oDiv);
-  }
+  //   const oDiv = document.createElement('div');
+  //   render(<Stars />, oDiv);
+  //   document.body.appendChild(oDiv);
+  // }
 });
