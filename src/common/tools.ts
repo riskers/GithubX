@@ -1,17 +1,5 @@
 import ChromeStorage from '@/common/ChromeStorage';
 
-const CHROME_STORAGE_KEY = 'USERNAME';
-
-export const setUsername = async (username: string): Promise<void> => {
-  const cs = new ChromeStorage();
-  await cs.set(CHROME_STORAGE_KEY, username);
-};
-
-export const getUsername = async (): Promise<string> => {
-  const cs = new ChromeStorage();
-  return (await cs.get(CHROME_STORAGE_KEY)) as string;
-};
-
 export const getGistTitle = (): string => {
   let gistTitle = '';
   try {

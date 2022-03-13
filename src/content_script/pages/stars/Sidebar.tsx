@@ -1,7 +1,7 @@
 import { IStar } from '@/common/api';
 import { ACTION_SHOW_OPTION_PAGE } from '@/common/constants';
-import { setUsername } from '@/common/tools';
 import { DEFAULT_GROUP, getGroupList, IGroup, resetGroup } from '@/content_script/services/local/group';
+import { resetSettings, setSettings } from '@/content_script/services/local/settings';
 import { getStarsList, resetStars } from '@/content_script/services/local/stars';
 import { resetTag } from '@/content_script/services/local/tag';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
@@ -47,7 +47,7 @@ const Sidebar = () => {
     <div className="github-plus-stars-list">
       <button
         onClick={async () => {
-          await setUsername('riskers');
+          await setSettings({ username: 'riskers' });
           await resetStars();
           await resetGroup();
           await resetTag();

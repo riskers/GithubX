@@ -1,9 +1,11 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 import { IStar } from '@/common/api';
 import { DEFAULT_GROUP, IGroup } from '@/content_script/services/local/group';
+import { getSettings, ISettings } from '@/content_script/services/local/settings';
 import Main from '@/options/components/main';
 import SideBar from '@/options/components/sidebar';
 import StarList from '@/options/components/star-list';
+import Settings from '@/options/components/user';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
@@ -88,6 +90,7 @@ const App: React.FC = () => {
           <SideBar />
           <StarList />
           <Main />
+          <Settings />
         </div>
       </AppContext.Provider>
     </ThemeProvider>
