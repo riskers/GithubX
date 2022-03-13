@@ -4,7 +4,7 @@ const ROOT = path.resolve(__dirname);
 const CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const env = process.env.NODE_ENV;
+const mode = process.env.MODE;
 
 const entry = {
   background: [ROOT + '/src/background'],
@@ -15,7 +15,7 @@ const entry = {
 
 module.exports = {
   entry: entry,
-  mode: env,
+  mode: mode,
   output: {
     path: ROOT + '/chrome',
     filename: '[name].bundle.js',
