@@ -1,13 +1,11 @@
 import { getAllStarListFromGithub, IStar } from '@/common/api';
 import ChromeStorage from '@/common/ChromeStorage';
-import { getSettings } from '@/content_script/services/local/settings';
 import { remove } from 'lodash';
 
 const CHROME_STORAGE_KEY = 'STAR_LIST';
 
-export const resetStars = async (): Promise<void> => {
-  const settings = await getSettings();
-  const res = await getAllStarListFromGithub(settings.username);
+export const resetStars = async (username: string): Promise<void> => {
+  const res = await getAllStarListFromGithub(username);
 
   const cs = new ChromeStorage();
   await cs.remove(CHROME_STORAGE_KEY);

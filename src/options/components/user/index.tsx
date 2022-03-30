@@ -2,6 +2,7 @@ import { resetGroup } from '@/content_script/services/local/group';
 import { getSettings, setSettings } from '@/content_script/services/local/settings';
 import { resetStars } from '@/content_script/services/local/stars';
 import { resetTag } from '@/content_script/services/local/tag';
+import delay from '@/utils/delay';
 import {
   Button,
   Dialog,
@@ -60,15 +61,18 @@ const Settings = () => {
         <Tooltip title="All data will storage in local.">
           <Button
             color="primary"
+            variant="contained"
             disabled={syncPending}
             onClick={async () => {
               setSyncPending(true);
-              await setSettings({ username });
-              await resetStars();
+              await resetStars(username);
               await resetGroup();
               await resetTag();
+              await setSettings({ username });
               setSyncPending(false);
               setOpen(false);
+              await delay(1000);
+              window.location.reload();
             }}
           >
             OK

@@ -37,6 +37,8 @@ export const getGroupList = async (): Promise<IGroup[]> => {
   const cs = new ChromeStorage();
   const groupList = (await cs.get(CHROME_STORAGE_KEY)) as IGroup[];
 
+  if (!groupList) return groupList;
+
   for (const group of groupList) {
     const starsList = await getStarsList({ groupId: group.id });
     group.totalStars = starsList.length;

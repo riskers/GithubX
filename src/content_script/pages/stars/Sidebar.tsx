@@ -48,7 +48,7 @@ const Sidebar = () => {
       <button
         onClick={async () => {
           await setSettings({ username: 'riskers' });
-          await resetStars();
+          await resetStars('riskers');
           await resetGroup();
           await resetTag();
         }}
