@@ -6,9 +6,12 @@ import Main from '@/options/components/main';
 import SideBar from '@/options/components/sidebar';
 import StarList from '@/options/components/star-list';
 import Settings from '@/options/components/user';
+import Home from '@/options/pages/Home';
+import store from '@/options/store';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import { ITag } from '../content_script/services/local/tag';
 import './style.css';
 
@@ -70,7 +73,7 @@ const App: React.FC = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <AppContext.Provider
+      {/* <AppContext.Provider
         value={{
           selectFullName,
           setSelectFullName,
@@ -85,14 +88,13 @@ const App: React.FC = () => {
           starsList,
           setStarsList,
         }}
-      >
+      > */}
+      <Provider store={store}>
         <div className="github-plus-app">
-          <SideBar />
-          <StarList />
-          <Main />
-          <Settings />
+          <Home />
         </div>
-      </AppContext.Provider>
+      </Provider>
+      {/* </AppContext.Provider> */}
     </ThemeProvider>
   );
 };

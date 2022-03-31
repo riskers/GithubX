@@ -39,7 +39,7 @@ const Sidebar = () => {
   useEffect(() => {
     (async () => {
       const groupList = await getGroupList();
-      setGroupList(groupList);
+      // setGroupList(groupList);
     })();
   }, []);
 

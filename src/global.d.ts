@@ -1,3 +1,5 @@
+import { compose } from 'redux';
+
 export declare class ChromeStorage {
   private STORAGE_TYPE: string;
   public constructor(storageType: string);

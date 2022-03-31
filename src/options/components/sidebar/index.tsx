@@ -1,30 +1,39 @@
-import { addGroup, getGroupList, IGroup } from '@/content_script/services/local/group';
+import { addGroup } from '@/content_script/services/local/group';
 import { getTagsList } from '@/content_script/services/local/tag';
 import { AppContext } from '@/options';
 import Accordion from '@/options/components/accordion';
 import EditGroup from '@/options/components/edit-group';
-import SellIcon from '@mui/icons-material/Sell';
-import AllInboxIcon from '@mui/icons-material/AllInbox';
+import EditTag from '@/options/components/edit-tag';
+import { fetchGroups } from '@/options/pages/Home/slices/groupSlice';
+import { selectedSlice, selectorGroup } from '@/options/pages/Home/slices/selectedSlice';
+import { RootState } from '@/options/store';
 import AddIcon from '@mui/icons-material/Add';
-import { Button, Chip, Divider, IconButton, Stack, TextField, Typography } from '@mui/material';
+import AllInboxIcon from '@mui/icons-material/AllInbox';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import SellIcon from '@mui/icons-material/Sell';
+import { Button, Chip, Divider, Stack, TextField } from '@mui/material';
 import classNames from 'classnames';
 import * as React from 'react';
-import EditTag from '@/options/components/edit-tag';
+import { useDispatch, useSelector } from 'react-redux';
 
 const SideBar = () => {
   const [openNewGroup, setOpenNewGroup] = React.useState<boolean>(false);
   const [newGroup, setNewGroup] = React.useState<string>('');
-  const { groupList, tagsList, selectGroup, selectTag, setGroupList, setTagsList, setSelectGroup, setSelectTag } =
+  const { groupList, tagsList, selectTag, setGroupList, setTagsList, setSelectGroup, setSelectTag } =
     React.useContext(AppContext);
   const ref = React.useRef(null);
 
+  const dispatch = useDispatch();
+  const selectedGroup = useSelector(selectorGroup);
+
+  const groups = useSelector((state: RootState) => state.groups);
+
   const fetchData = React.useCallback(() => {
     (async () => {
-      let glist = await getGroupList();
-      setGroupList(glist);
+      dispatch(fetchGroups());
 
       let tlist = await getTagsList();
-      setTagsList(tlist);
+      // setTagsList(tlist);
     })();
   }, []);
 
@@ -44,8 +53,14 @@ const SideBar = () => {
 
   return (
     <div className="sidebar">
+      <Stack direction="row" justifyContent="space-between" alignItems="center" style={{ padding: '13px' }}>
+        <Stack>STARS</Stack>
+        <Button>
+          <RefreshIcon />
+        </Button>
+      </Stack>
       <Accordion title="GROUPS" open>
-        {groupList?.map((group) => {
+        {groups.data?.map((group) => {
           return (
             <Stack
               key={group.id}
@@ -62,10 +77,10 @@ const SideBar = () => {
                 style={{ flex: 1 }}
                 className={classNames({
                   group: true,
-                  selected: group.id === selectGroup?.id,
+                  selected: group.id === selectedGroup?.id,
                 })}
                 onClick={() => {
-                  setSelectGroup(group);
+                  dispatch(selectedSlice.actions.selectGroup(group));
                 }}
               >
                 <AllInboxIcon fontSize="small" />

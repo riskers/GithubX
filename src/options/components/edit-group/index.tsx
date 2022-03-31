@@ -25,7 +25,7 @@ const EditGroup = (props: IProps) => {
   const fetchGroupList = React.useCallback(() => {
     (async () => {
       const list = await getGroupList();
-      setGroupList(list);
+      // setGroupList(list);
     })();
   }, []);
 
