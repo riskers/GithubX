@@ -1,8 +1,8 @@
 import { IStar } from '@/common/api';
 import { addTag } from '@/content_script/services/local/tag';
-import { AppContext } from '@/options';
 import EditRepo from '@/options/components/edit-repo';
-import { selectorItem } from '@/options/pages/Home/slices/selectedSlice';
+import { DEFAULT_SELECTED_ITEM, selectorItem } from '@/options/pages/Home/slices/selectedItemSlice';
+import { selectedStarSlice, selectorStar } from '@/options/pages/Home/slices/selectedStar';
 import { fetchStarsByGroup, fetchStarsByTag } from '@/options/pages/Home/slices/starsSlice';
 import { AppDispatch, RootState } from '@/options/store';
 import { Button, Dialog, DialogContent, DialogTitle, Stack } from '@mui/material';
@@ -11,21 +11,31 @@ import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 const StarList: React.FC = () => {
-  const [currentStarId, setCurrentStarId] = React.useState<number>();
-  const { setSelectFullName } = React.useContext(AppContext);
-
   const dispatch: AppDispatch = useDispatch();
   const stars = useSelector((state: RootState) => state.stars);
   const selectedItem = useSelector(selectorItem);
+  const selectedStar = useSelector(selectorStar);
+
+  const isDefaultGroup = React.useMemo(() => {
+    if (selectedItem.group.id === DEFAULT_SELECTED_ITEM.group.id) return true;
+    return false;
+  }, [selectedItem.group.id]);
+
+  const isDefaultTag = React.useMemo(() => {
+    if (selectedItem.tag.id === DEFAULT_SELECTED_ITEM.tag.id) return true;
+    return false;
+  }, [selectedItem.tag.id]);
 
   React.useEffect(() => {
     (async () => {
+      if (isDefaultGroup) return;
       dispatch(fetchStarsByGroup(selectedItem.group.id));
     })();
   }, [selectedItem.group.id, dispatch]);
 
   React.useEffect(() => {
     (async () => {
+      if (isDefaultTag) return;
       dispatch(fetchStarsByTag(selectedItem.tag.id));
     })();
   }, [selectedItem.tag.id, dispatch]);
@@ -39,11 +49,10 @@ const StarList: React.FC = () => {
               <div
                 key={star.id}
                 className={classNames('star', {
-                  selected: currentStarId === star.id,
+                  selected: selectedStar.id === star.id,
                 })}
                 onClick={() => {
-                  setCurrentStarId(star.id);
-                  setSelectFullName(star.fullName);
+                  dispatch(selectedStarSlice.actions.selectStar(star));
                 }}
               >
                 <div>
@@ -84,4 +93,4 @@ const StarList: React.FC = () => {
   );
 };
 
-export default StarList;
+export default React.memo(StarList);

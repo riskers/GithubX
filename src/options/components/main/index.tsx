@@ -1,23 +1,23 @@
 import { getRepoContent } from '@/common/api';
-import { AppContext } from '@/options';
+import { selectorStar } from '@/options/pages/Home/slices/selectedStar';
 import * as React from 'react';
 import ReactMarkdown from 'react-markdown';
+import { useSelector } from 'react-redux';
 import rehypeSanitize from 'rehype-sanitize';
 import remarkGfm from 'remark-gfm';
 
 const Main: React.FC = () => {
-  const { selectFullName: fullName } = React.useContext(AppContext);
-
+  const selectedStar = useSelector(selectorStar);
   const [readme, setReadme] = React.useState<string>('');
 
   React.useEffect(() => {
-    if (!fullName) return;
+    if (!selectedStar.fullName) return;
 
     (async () => {
-      const res = await getRepoContent(fullName);
+      const res = await getRepoContent(selectedStar.fullName);
       setReadme(res.content);
     })();
-  }, [fullName]);
+  }, [selectedStar.fullName]);
 
   return (
     <div className="main">

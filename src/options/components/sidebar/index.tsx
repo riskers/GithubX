@@ -5,7 +5,7 @@ import Accordion from '@/options/components/accordion';
 import EditGroup from '@/options/components/edit-group';
 import EditTag from '@/options/components/edit-tag';
 import { fetchGroups } from '@/options/pages/Home/slices/groupSlice';
-import { selectedSlice, selectorItem } from '@/options/pages/Home/slices/selectedSlice';
+import { selectedItemSlice, selectorItem } from '@/options/pages/Home/slices/selectedItemSlice';
 import { fetchTags } from '@/options/pages/Home/slices/tagSlice';
 import { RootState } from '@/options/store';
 import AddIcon from '@mui/icons-material/Add';
@@ -79,7 +79,7 @@ const SideBar = () => {
                   selected: group.id === selectedItem.group.id,
                 })}
                 onClick={() => {
-                  dispatch(selectedSlice.actions.selectGroup({ group }));
+                  dispatch(selectedItemSlice.actions.selectGroup({ group }));
                 }}
               >
                 <AllInboxIcon fontSize="small" />
@@ -182,7 +182,7 @@ const SideBar = () => {
                   selected: tag.id === selectedItem.tag?.id,
                 })}
                 onClick={() => {
-                  dispatch(selectedSlice.actions.selectTag({ tag }));
+                  dispatch(selectedItemSlice.actions.selectTag({ tag }));
                 }}
               >
                 <SellIcon fontSize="small" />

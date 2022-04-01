@@ -1,6 +1,6 @@
-import { starsReducer } from '@/options/pages/Home/reducers';
 import groupSlice from '@/options/pages/Home/slices/groupSlice';
-import selectedSlice from '@/options/pages/Home/slices/selectedSlice';
+import selectedItemSlice from '@/options/pages/Home/slices/selectedItemSlice';
+import selectedStarSlice from '@/options/pages/Home/slices/selectedStar';
 import starsSlice from '@/options/pages/Home/slices/starsSlice';
 import tagSlice from '@/options/pages/Home/slices/tagSlice';
 import { configureStore, ThunkDispatch } from '@reduxjs/toolkit';
@@ -11,7 +11,8 @@ const store = configureStore({
     stars: starsSlice,
     groups: groupSlice,
     tags: tagSlice,
-    selectedGroup: selectedSlice,
+    selectedItem: selectedItemSlice,
+    selectedStar: selectedStarSlice,
   },
 });
 
