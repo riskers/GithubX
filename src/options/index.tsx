@@ -64,37 +64,13 @@ const theme = createTheme({
 });
 
 const App: React.FC = () => {
-  const [groupList, setGroupList] = React.useState<IGroup[]>([]);
-  const [tagsList, setTagsList] = React.useState<ITag[]>([]);
-  const [selectFullName, setSelectFullName] = React.useState<string>();
-  const [selectGroup, setSelectGroup] = React.useState<IGroup>();
-  const [selectTag, setSelectTag] = React.useState<ITag>();
-  const [starsList, setStarsList] = React.useState<IStar[]>([]);
-
   return (
     <ThemeProvider theme={theme}>
-      {/* <AppContext.Provider
-        value={{
-          selectFullName,
-          setSelectFullName,
-          selectGroup,
-          setSelectGroup,
-          selectTag,
-          setSelectTag,
-          groupList,
-          setGroupList,
-          tagsList,
-          setTagsList,
-          starsList,
-          setStarsList,
-        }}
-      > */}
       <Provider store={store}>
         <div className="github-plus-app">
           <Home />
         </div>
       </Provider>
-      {/* </AppContext.Provider> */}
     </ThemeProvider>
   );
 };

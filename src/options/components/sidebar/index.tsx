@@ -5,7 +5,8 @@ import Accordion from '@/options/components/accordion';
 import EditGroup from '@/options/components/edit-group';
 import EditTag from '@/options/components/edit-tag';
 import { fetchGroups } from '@/options/pages/Home/slices/groupSlice';
-import { selectedSlice, selectorGroup } from '@/options/pages/Home/slices/selectedSlice';
+import { selectedSlice, selectorItem } from '@/options/pages/Home/slices/selectedSlice';
+import { fetchTags } from '@/options/pages/Home/slices/tagSlice';
 import { RootState } from '@/options/store';
 import AddIcon from '@mui/icons-material/Add';
 import AllInboxIcon from '@mui/icons-material/AllInbox';
@@ -24,16 +25,14 @@ const SideBar = () => {
   const ref = React.useRef(null);
 
   const dispatch = useDispatch();
-  const selectedGroup = useSelector(selectorGroup);
-
+  const selectedItem = useSelector(selectorItem);
   const groups = useSelector((state: RootState) => state.groups);
+  const tags = useSelector((state: RootState) => state.tags);
 
   const fetchData = React.useCallback(() => {
     (async () => {
       dispatch(fetchGroups());
-
-      let tlist = await getTagsList();
-      // setTagsList(tlist);
+      dispatch(fetchTags());
     })();
   }, []);
 
@@ -77,10 +76,10 @@ const SideBar = () => {
                 style={{ flex: 1 }}
                 className={classNames({
                   group: true,
-                  selected: group.id === selectedGroup?.id,
+                  selected: group.id === selectedItem.group.id,
                 })}
                 onClick={() => {
-                  dispatch(selectedSlice.actions.selectGroup(group));
+                  dispatch(selectedSlice.actions.selectGroup({ group }));
                 }}
               >
                 <AllInboxIcon fontSize="small" />
@@ -163,7 +162,7 @@ const SideBar = () => {
       <Divider />
 
       <Accordion title="TAGS" open>
-        {tagsList?.map((tag) => {
+        {tags.data?.map((tag) => {
           return (
             <Stack
               key={tag.id}
@@ -180,10 +179,10 @@ const SideBar = () => {
                 style={{ flex: 1 }}
                 className={classNames({
                   group: true,
-                  selected: tag.id === selectTag?.id,
+                  selected: tag.id === selectedItem.tag?.id,
                 })}
                 onClick={() => {
-                  setSelectTag(tag);
+                  dispatch(selectedSlice.actions.selectTag({ tag }));
                 }}
               >
                 <SellIcon fontSize="small" />

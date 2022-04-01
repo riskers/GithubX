@@ -1,5 +1,5 @@
 import ChromeStorage from '@/common/ChromeStorage';
-import { clearStarByTagId, getStarsList } from '@/content_script/services/local/stars';
+import { clearStarByTagId, getStarsListByGroup, getStarsListByTag } from '@/content_script/services/local/stars';
 import { remove } from 'lodash';
 import uuid from 'lodash-uuid';
 
@@ -39,7 +39,7 @@ export const getTagsList = async (): Promise<ITag[]> => {
   if (!tagsList) return tagsList;
 
   for (const tag of tagsList) {
-    const stars = await getStarsList({ tagId: tag.id });
+    const stars = await getStarsListByTag(tag.id);
     tag.totalStars = stars.length;
   }
 

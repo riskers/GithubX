@@ -12,22 +12,23 @@ export const resetStars = async (username: string): Promise<void> => {
   await cs.set(CHROME_STORAGE_KEY, res);
 };
 
-interface P {
-  readonly groupId?: string;
-  readonly tagId?: string;
-}
-export const getStarsList = async (params?: P): Promise<IStar[]> => {
+const getAllStars = async (): Promise<IStar[]> => {
   const cs = new ChromeStorage();
   const starList = (await cs.get(CHROME_STORAGE_KEY)) as IStar[];
+  return starList;
+};
 
-  if (!params) return starList;
+export const getStarsListByGroup = async (groupId: string): Promise<IStar[]> => {
+  const starList = await getAllStars();
 
   return starList.filter((star) => {
-    if (params.groupId) {
-      return star.groupId === params.groupId;
-    }
-
-    return star.tagsId.includes(params.tagId);
+    return star.groupId === groupId;
+  });
+};
+export const getStarsListByTag = async (tagId: string): Promise<IStar[]> => {
+  const starList = await getAllStars();
+  return starList.filter((star) => {
+    return star.tagsId.includes(tagId);
   });
 };
 
@@ -42,7 +43,7 @@ export const addStar = async (star: IStar): Promise<void> => {
 export const updateStar = async (pstar: IStar): Promise<void> => {
   const cs = new ChromeStorage();
 
-  const starList = await getStarsList();
+  const starList = await getStarsListByGroup(pstar.groupId);
   const newStarsList = starList.map((star) => {
     if (star.id === pstar.id) {
       return pstar;
@@ -70,7 +71,7 @@ export const delStar = async (fullName: string): Promise<void> => {
 export const clearStarByTagId = async (tagId: string): Promise<void> => {
   const cs = new ChromeStorage();
 
-  let starList = await getStarsList();
+  let starList = await getStarsListByTag(tagId);
   starList = starList.map((star) => {
     if (star.tagsId.includes(tagId)) {
       const l = star.tagsId;

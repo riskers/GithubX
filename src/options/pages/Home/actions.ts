@@ -26,7 +26,7 @@ export const fetchStarsListByGroup = (groupId: string) => {
     });
 
     try {
-      const list = await STAR_API.getStarsList({ groupId });
+      const list = await STAR_API.getStarsListByGroup(groupId);
 
       const ll = list.filter((star) => star.groupId === groupId);
 

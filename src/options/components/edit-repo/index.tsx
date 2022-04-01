@@ -1,6 +1,6 @@
 import { IStar } from '@/common/api';
 import { getGroup, getGroupList, IGroup } from '@/content_script/services/local/group';
-import { getStarsList, updateStar } from '@/content_script/services/local/stars';
+import { getStarsListByGroup, updateStar } from '@/content_script/services/local/stars';
 import { addTag, getTag, getTagsList, ITag } from '@/content_script/services/local/tag';
 import { AppContext } from '@/options';
 import EditIcon from '@mui/icons-material/Edit';
@@ -40,7 +40,7 @@ const EditRepo = (props: IProps) => {
   };
 
   const updateStarList = async () => {
-    const list = await getStarsList({ groupId: selectGroup.id });
+    const list = await getStarsListByGroup(selectGroup.id);
     const ll = list.filter((star) => star.groupId === selectGroup.id);
     setStarsList(ll);
   };
