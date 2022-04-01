@@ -1,6 +1,4 @@
 import { addGroup } from '@/content_script/services/local/group';
-import { getTagsList } from '@/content_script/services/local/tag';
-import { AppContext } from '@/options';
 import Accordion from '@/options/components/accordion';
 import EditGroup from '@/options/components/edit-group';
 import EditTag from '@/options/components/edit-tag';
@@ -20,8 +18,6 @@ import { useDispatch, useSelector } from 'react-redux';
 const SideBar = () => {
   const [openNewGroup, setOpenNewGroup] = React.useState<boolean>(false);
   const [newGroup, setNewGroup] = React.useState<string>('');
-  const { groupList, tagsList, selectTag, setGroupList, setTagsList, setSelectGroup, setSelectTag } =
-    React.useContext(AppContext);
   const ref = React.useRef(null);
 
   const dispatch = useDispatch();
@@ -132,7 +128,7 @@ const SideBar = () => {
               if (e.key === 'Enter') {
                 const groupName = ref.current.value;
 
-                const isRepeat = groupList.some((group) => group.name === groupName);
+                const isRepeat = groups.data.some((group) => group.name === groupName);
 
                 // input is not null and not repeat in groupList
                 if (groupName.trim() && !isRepeat) {

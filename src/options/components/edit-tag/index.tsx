@@ -1,10 +1,11 @@
-import { updateGroup } from '@/content_script/services/local/group';
 import { deleteTag, getTagsList, ITag, updateTag } from '@/content_script/services/local/tag';
 import { AppContext } from '@/options';
+import { selectorStar } from '@/options/pages/Home/slices/selectedStar';
 import styled from '@emotion/styled';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import { Button, IconButton, Popover, Stack, TextField } from '@mui/material';
 import * as React from 'react';
+import { useSelector } from 'react-redux';
 
 interface IProps {
   tag: ITag;
@@ -19,12 +20,15 @@ const SmallButton = styled(Button)(() => {
   };
 });
 
-const EditTag = (props: IProps) => {
+const EditTag: React.FC<IProps> = (props: IProps) => {
   const { setTagsList } = React.useContext(AppContext);
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 
+  const starInfo = useSelector(selectorStar);
+
   const fetchTagList = React.useCallback(() => {
     (async () => {
+      // TODO get tags info from api, don't do this
       const list = await getTagsList();
       setTagsList(list);
     })();
