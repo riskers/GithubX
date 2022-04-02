@@ -1,4 +1,5 @@
-import { DEFAULT_GROUP } from '@/content_script/services/local/group';
+import { DEFAULT_GROUP, IGroup } from '@/content_script/services/local/group';
+import { ITag } from '@/content_script/services/local/tag';
 
 export interface IGithubStarResponse {
   starred_at: string;
@@ -15,8 +16,8 @@ export interface IStar {
   id: number;
   fullName: string;
   htmlUrl: string;
-  groupId: string;
-  tagsId: string[];
+  group: IGroup;
+  tags: ITag[];
 }
 
 export const getAllStarListFromGithub = async (username: string): Promise<IStar[]> => {
@@ -34,6 +35,8 @@ export const getAllStarListFromGithub = async (username: string): Promise<IStar[
         htmlUrl: data.repo.html_url,
         groupId: DEFAULT_GROUP.id,
         tagsId: [],
+        group: DEFAULT_GROUP,
+        tags: [],
       };
     });
 

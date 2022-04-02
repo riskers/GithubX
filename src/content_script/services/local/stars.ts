@@ -1,5 +1,6 @@
 import { getAllStarListFromGithub, IStar } from '@/common/api';
 import ChromeStorage from '@/common/ChromeStorage';
+import { getGroup, IGroup } from '@/content_script/services/local/group';
 import { remove } from 'lodash';
 
 const CHROME_STORAGE_KEY = 'STAR_LIST';
@@ -12,7 +13,7 @@ export const resetStars = async (username: string): Promise<void> => {
   await cs.set(CHROME_STORAGE_KEY, res);
 };
 
-const getAllStars = async (): Promise<IStar[]> => {
+export const getAllStars = async (): Promise<IStar[]> => {
   const cs = new ChromeStorage();
   const starList = (await cs.get(CHROME_STORAGE_KEY)) as IStar[];
   return starList;
@@ -22,13 +23,14 @@ export const getStarsListByGroup = async (groupId: string): Promise<IStar[]> => 
   const starList = await getAllStars();
 
   return starList.filter((star) => {
-    return star.groupId === groupId;
+    return star.group.id === groupId;
   });
 };
+
 export const getStarsListByTag = async (tagId: string): Promise<IStar[]> => {
   const starList = await getAllStars();
   return starList.filter((star) => {
-    return star.tagsId.includes(tagId);
+    return star.tags.map((tag) => tag.id).includes(tagId);
   });
 };
 
@@ -40,13 +42,16 @@ export const addStar = async (star: IStar): Promise<void> => {
   await cs.set(CHROME_STORAGE_KEY, star);
 };
 
-export const updateStar = async (pstar: IStar): Promise<void> => {
+export const updateStarGroup = async (starId: number, group: IGroup): Promise<void> => {
   const cs = new ChromeStorage();
 
-  const starList = await getStarsListByGroup(pstar.groupId);
+  const starList = await getAllStars();
   const newStarsList = starList.map((star) => {
-    if (star.id === pstar.id) {
-      return pstar;
+    if (star.id === starId) {
+      return {
+        ...star,
+        group,
+      };
     }
     return star;
   });
@@ -73,14 +78,11 @@ export const clearStarByTagId = async (tagId: string): Promise<void> => {
 
   let starList = await getStarsListByTag(tagId);
   starList = starList.map((star) => {
-    if (star.tagsId.includes(tagId)) {
-      const l = star.tagsId;
-
-      remove(l, (tag) => {
+    const tagsId = star.tags.map((tag) => tag.id);
+    if (tagsId.includes(tagId)) {
+      remove(tagsId, (tag) => {
         return tag === tagId;
       });
-
-      star.tagsId = l;
     }
     return star;
   });

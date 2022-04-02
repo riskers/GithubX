@@ -65,7 +65,7 @@ const StarList: React.FC = () => {
                     e.stopPropagation();
                   }}
                 >
-                  <EditRepo star={star} starTagsId={star.tagsId} />
+                  <EditRepo star={star} />
                 </div>
               </div>
             );

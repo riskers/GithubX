@@ -1,13 +1,14 @@
 import { IStar } from '@/common/api';
+import { DEFAULT_SELECTED_ITEM } from '@/options/pages/Home/slices/selectedItemSlice';
 import { RootState } from '@/options/store';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: IStar = {
-  tagsId: [],
   fullName: '',
-  groupId: '',
   id: -1,
   htmlUrl: '',
+  group: DEFAULT_SELECTED_ITEM.group,
+  tags: [DEFAULT_SELECTED_ITEM.tag],
 };
 
 export const selectedStarSlice = createSlice({

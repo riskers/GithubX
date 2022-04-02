@@ -8,6 +8,7 @@ export const fetchStarsByGroup = createAsyncThunk('stars/fetchStarsByGroup', asy
 
 export const fetchStarsByTag = createAsyncThunk('stars/fetchStarsByTag', async (tagId: string) => {
   const stars = await getStarsListByTag(tagId);
+  console.log(stars);
   return stars;
 });
 
@@ -19,7 +20,7 @@ export const starsSlice = createSlice({
   },
   reducers: {},
   extraReducers: (builder) => {
-    // TODO ugly
+    // TODO: ugly
     builder
       .addCase(fetchStarsByGroup.pending, (state) => {
         state.loading = true;

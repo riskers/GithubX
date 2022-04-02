@@ -91,16 +91,9 @@ const Sidebar = () => {
         <TreeView defaultCollapseIcon={<ExpandMoreIcon />} defaultExpandIcon={<ChevronRightIcon />}>
           {groupList.map((group: IGroup) => {
             return (
-              <TreeItem
-                key={group.id}
-                nodeId={group.id.toString()}
-                label={group.name}
-                // onLabelClick={() => {
-                //   // toggleGroup(group.groupName);
-                // }}
-              >
+              <TreeItem key={group.id} nodeId={group.id.toString()} label={group.name}>
                 {starsList
-                  .filter((star) => star.groupId === group.id)
+                  .filter((star) => star.group.id === group.id)
                   ?.map((star: IStar) => {
                     return (
                       <TreeItem

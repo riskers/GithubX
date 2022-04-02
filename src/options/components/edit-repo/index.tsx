@@ -1,8 +1,10 @@
 import { IStar } from '@/common/api';
 import { getGroup, getGroupList, IGroup } from '@/content_script/services/local/group';
-import { getStarsListByGroup, updateStar } from '@/content_script/services/local/stars';
-import { addTag, getTag, getTagsList, ITag } from '@/content_script/services/local/tag';
+import { updateStarGroup } from '@/content_script/services/local/stars';
+import { addTag as createTag, getTag, getTagsList, ITag } from '@/content_script/services/local/tag';
 import { AppContext } from '@/options';
+import { selectorItem } from '@/options/pages/Home/slices/selectedItemSlice';
+import { RootState } from '@/options/store';
 import EditIcon from '@mui/icons-material/Edit';
 import {
   Autocomplete,
@@ -17,52 +19,55 @@ import {
 } from '@mui/material';
 import { without } from 'lodash';
 import * as React from 'react';
+import { useSelector } from 'react-redux';
 
 interface IProps {
   star: IStar;
-
-  /**
-   * stars' tags id list
-   */
-  starTagsId: string[];
 }
 
 const EditRepo = (props: IProps) => {
-  const { selectGroup, groupList, setGroupList, tagsList, setTagsList, setStarsList } = React.useContext(AppContext);
+  const { groupList, setGroupList, tagsList, setTagsList, setStarsList } = React.useContext(AppContext);
   const [openEditTag, setOpenEditTag] = React.useState<boolean>(false);
   const [openEditGroup, setOpenEditGroup] = React.useState<boolean>(false);
-  const [repoGroup, setRepoGroup] = React.useState<IGroup>(selectGroup);
-  const [repoTagsList, setRepoTagsList] = React.useState<ITag[]>([]);
+
+  const selectedItem = useSelector(selectorItem);
+  const groups = useSelector((state: RootState) => state.groups);
+
+  const { group: selectGroup, tag: selectTag } = selectedItem;
+  const { tags, group } = props.star;
+
+  // const [repoGroup, setRepoGroup] = React.useState<IGroup>(selectGroup);
+  // const [repoTagsList, setRepoTagsList] = React.useState<ITag[]>([]);
 
   const updateRepoGroup = async (groupId: string) => {
     const groupInfo = await getGroup(groupId);
-    setRepoGroup(groupInfo);
+    // setRepoGroup(groupInfo);
   };
 
-  const updateStarList = async () => {
-    const list = await getStarsListByGroup(selectGroup.id);
-    const ll = list.filter((star) => star.groupId === selectGroup.id);
-    setStarsList(ll);
-  };
+  // const updateStarList = async () => {
+  //   const list = await getStarsListByGroup(selectGroup.id);
+  //   const ll = list.filter((star) => star.group.id === selectGroup.id);
+  //   setStarsList(ll);
+  // };
 
   const updateRepoTags = async (tagsId: string[]) => {
     const tags = await getTag(tagsId);
-    setRepoTagsList(tags);
+    // setRepoTagsList(tags);
   };
 
   const updateAllGroupList = async () => {
     const groupList = await getGroupList();
-    setGroupList(groupList);
+    // setGroupList(groupList);
   };
 
   const updateAllTaglist = async () => {
     const tags = await getTagsList();
-    setTagsList(tags);
+    // setTagsList(tags);
   };
 
   React.useEffect(() => {
     (async () => {
-      await updateRepoTags(props.starTagsId);
+      // await updateRepoTags(props.starTagsId);
       await updateRepoGroup(selectGroup.id);
     })();
   }, []);
@@ -80,7 +85,7 @@ const EditRepo = (props: IProps) => {
     <div className="edit-repo">
       {!openEditTag && (
         <Container onClick={() => setOpenEditTag(true)} style={{ padding: 0 }}>
-          {repoTagsList.map((tag) => {
+          {props.star.tags.map((tag) => {
             return (
               <Chip size="small" key={tag.id} label={tag.name} color="primary" clickable style={{ marginRight: 5 }} />
             );
@@ -104,7 +109,7 @@ const EditRepo = (props: IProps) => {
           size="small"
           options={tagsList}
           noOptionsText="Add a tag..."
-          value={repoTagsList}
+          value={tags.map((tag) => tag.id)}
           freeSolo
           filterSelectedOptions
           onChange={async (
@@ -114,30 +119,30 @@ const EditRepo = (props: IProps) => {
             d: AutocompleteChangeDetails<ITag> | AutocompleteChangeDetails<string>,
             // eslint-disable-next-line max-params
           ) => {
-            // console.log(v, r, d);
-            const vlist = repoTagsList.map((tag) => tag.id);
+            console.log(v, r, d);
+            const vlist = tags.map((tag) => tag.id);
 
             if (r === 'createOption') {
-              const tag = await addTag(d.option as string);
+              const tag: ITag = await createTag(d.option as string);
               const newStar: IStar = {
                 ...props.star,
-                tagsId: vlist.concat(tag.id),
+                tags: props.star.tags.concat(tag),
               };
 
-              await updateRepoTags(repoTagsList.map((tag) => tag.id).concat(tag.id));
-              await updateStar(newStar);
+              await updateRepoTags(tags.map((tag) => tag.id).concat(tag.id));
+              // await updateStar(newStar);
               await updateAllTaglist();
             }
 
             if (r === 'selectOption') {
               const tag = d.option as ITag;
-              await updateRepoTags(repoTagsList.map((tag) => tag.id).concat(tag.id));
+              await updateRepoTags(tags.map((tag) => tag.id).concat(tag.id));
 
               const newStar: IStar = {
                 ...props.star,
-                tagsId: vlist.concat(tag.id),
+                // tags: vlist.concat(tag.id),
               };
-              await updateStar(newStar);
+              // await updateStar(newStar);
               await updateAllTaglist();
             }
 
@@ -145,14 +150,15 @@ const EditRepo = (props: IProps) => {
               const tag = d.option as ITag;
 
               const excludeTagIds = without(vlist, tag.id);
+              console.log(excludeTagIds);
 
               await updateRepoTags(excludeTagIds);
 
               const newStar: IStar = {
                 ...props.star,
-                tagsId: excludeTagIds,
+                // tagsId: excludeTagIds,
               };
-              await updateStar(newStar);
+              // await updateStar(newStar);
               await updateAllTaglist();
             }
 
@@ -172,8 +178,12 @@ const EditRepo = (props: IProps) => {
             return option.name;
           }}
           renderTags={(value: ITag[], getTagProps) => {
+            console.log('renderTags', value);
             return value.map((option, index) => {
-              return <Chip color="success" label={option.name} key={index} size="small" {...getTagProps({ index })} />;
+              console.log(option);
+              return (
+                <Chip color="success" label={tags[index].name} key={index} size="small" {...getTagProps({ index })} />
+              );
             });
           }}
           renderInput={(params) => {
@@ -191,7 +201,7 @@ const EditRepo = (props: IProps) => {
         >
           <Chip
             size="small"
-            label={selectGroup.name}
+            label={props.star.group.name}
             color="secondary"
             icon={<EditIcon />}
             clickable
@@ -202,26 +212,29 @@ const EditRepo = (props: IProps) => {
 
       {openEditGroup && (
         <Select
-          id={`select-group-${selectGroup.id}`}
+          id={`${props.star.group.id}`}
           size="small"
           autoWidth
-          value={repoGroup.id}
+          value={group.id}
           style={{ marginTop: 10 }}
           onChange={async (event: SelectChangeEvent) => {
-            const newGroupdId = event.target.value;
-            const newStar: IStar = {
-              ...props.star,
-              groupId: newGroupdId,
+            const newGroupId = event.target.value;
+            const newGroupName = groups.data.filter((group) => group.id === newGroupId)[0].name;
+
+            const newGroup: IGroup = {
+              id: newGroupId,
+              name: newGroupName,
             };
 
             setOpenEditGroup(false);
-            await updateRepoGroup(newGroupdId);
-            await updateStar(newStar);
+
+            await updateRepoGroup(newGroupId);
+            await updateStarGroup(props.star.id, newGroup);
             await updateAllGroupList();
-            await updateStarList();
+            // await updateStarList();
           }}
         >
-          {groupList.map((group) => {
+          {groups.data.map((group) => {
             return (
               <MenuItem key={group.id} value={group.id}>
                 {group.name}
