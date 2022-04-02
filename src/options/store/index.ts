@@ -4,7 +4,17 @@ import selectedStarSlice from '@/options/pages/Home/slices/selectedStar';
 import starsSlice from '@/options/pages/Home/slices/starsSlice';
 import tagSlice from '@/options/pages/Home/slices/tagSlice';
 import { configureStore, ThunkDispatch } from '@reduxjs/toolkit';
-import { AnyAction } from 'redux';
+import { devToolsEnhancer } from '@reduxjs/toolkit/dist/devtoolsExtension';
+import { AnyAction, applyMiddleware } from 'redux';
+
+const logger = (store) => (next) => (action) => {
+  console.group(action.type);
+  console.info('dispatching', action);
+  let result = next(action);
+  console.log('next state', store.getState());
+  console.groupEnd();
+  return result;
+};
 
 const store = configureStore({
   reducer: {
@@ -14,6 +24,8 @@ const store = configureStore({
     selectedItem: selectedItemSlice,
     selectedStar: selectedStarSlice,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+  devTools: process.env.NODE_ENV !== 'production',
 });
 
 export type RootState = ReturnType<typeof store.getState>;
