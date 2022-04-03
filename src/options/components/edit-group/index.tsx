@@ -1,13 +1,10 @@
-import { deleteGroup, getGroupList, IGroup, updateGroup } from '@/content_script/services/local/group';
-import { AppContext } from '@/options';
+import { deleteGroup, IGroup, updateGroup } from '@/content_script/services/local/group';
+import { fetchGroups } from '@/options/pages/Home/slices/groupSlice';
 import styled from '@emotion/styled';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import { Button, IconButton, Popover, Stack, TextField } from '@mui/material';
 import * as React from 'react';
-
-interface IProps {
-  group: IGroup;
-}
+import { useDispatch } from 'react-redux';
 
 const SmallButton = styled(Button)(() => {
   return {
@@ -18,16 +15,11 @@ const SmallButton = styled(Button)(() => {
   };
 });
 
-const EditGroup = (props: IProps) => {
-  const { setGroupList } = React.useContext(AppContext);
+const EditGroup = (props: Pick<IGroup, 'id' | 'name'>) => {
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
-
-  const fetchGroupList = React.useCallback(() => {
-    (async () => {
-      const list = await getGroupList();
-      // setGroupList(list);
-    })();
-  }, []);
+  const open = Boolean(anchorEl);
+  const ref = React.useRef(null);
 
   const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -37,18 +29,19 @@ const EditGroup = (props: IProps) => {
     setAnchorEl(null);
   };
 
-  const handleUpdate = async (groupName: string) => {
-    await updateGroup(props.group.id, groupName);
-    fetchGroupList();
+  const handleUpdate = async () => {
+    await updateGroup(props.id, ref.current.value);
+    dispatch(fetchGroups());
   };
 
-  const open = Boolean(anchorEl);
-  const ref = React.useRef(null);
+  const handleDelete = async () => {
+    await deleteGroup(props.id);
+    dispatch(fetchGroups());
+  };
 
   return (
     <div className="edit-group">
       <IconButton
-        aria-describedby={props.group.id}
         onClick={handleOpen}
         aria-label="edit"
         size="small"
@@ -60,7 +53,7 @@ const EditGroup = (props: IProps) => {
       </IconButton>
 
       <Popover
-        id={props.group.id}
+        id={props.id.toString()}
         open={open}
         anchorEl={anchorEl}
         anchorOrigin={{
@@ -77,11 +70,11 @@ const EditGroup = (props: IProps) => {
           <TextField
             fullWidth
             size="small"
-            defaultValue={props.group.name}
+            defaultValue={props.name}
             inputRef={ref}
             onKeyPress={async (e) => {
               if (e.key === 'Enter') {
-                handleUpdate(ref.current.value);
+                await handleUpdate();
                 handleClose();
               }
             }}
@@ -91,7 +84,7 @@ const EditGroup = (props: IProps) => {
             size="small"
             fullWidth
             onClick={async () => {
-              handleUpdate(ref.current.value);
+              await handleUpdate();
               handleClose();
             }}
           >
@@ -103,8 +96,7 @@ const EditGroup = (props: IProps) => {
             color="error"
             fullWidth
             onClick={async () => {
-              await deleteGroup(props.group.id);
-              fetchGroupList();
+              await handleDelete();
               handleClose();
             }}
           >
@@ -116,4 +108,4 @@ const EditGroup = (props: IProps) => {
   );
 };
 
-export default EditGroup;
+export default React.memo(EditGroup);

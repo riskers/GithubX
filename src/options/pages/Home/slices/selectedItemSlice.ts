@@ -1,8 +1,8 @@
 import { RootState } from '@/options/store';
 import { createSlice } from '@reduxjs/toolkit';
 
-const DEFAULT_GROUP = { id: '-1', name: '' };
-const DEFAULT_TAG = { id: '-1', name: '' };
+const DEFAULT_GROUP = { id: -1, name: '' };
+const DEFAULT_TAG = { id: -1, name: '' };
 
 export const DEFAULT_SELECTED_ITEM = {
   group: DEFAULT_GROUP,
@@ -25,6 +25,6 @@ export const selectedItemSlice = createSlice({
   },
 });
 
-export const { selectGroup, selectTag } = selectedItemSlice.actions;
+// export const { selectGroup, selectTag } = selectedItemSlice.actions;
 export const selectorItem = (state: RootState) => state.selectedItem;
 export default selectedItemSlice.reducer;

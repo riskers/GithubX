@@ -1,4 +1,4 @@
-import { DEFAULT_GROUP } from '@/content_script/services/local/group';
+import { DEFAULT_GROUP, IGroup } from '@/content_script/services/local/group';
 
 export interface IGithubStarResponse {
   starred_at: string;
@@ -15,8 +15,9 @@ export interface IStar {
   id: number;
   fullName: string;
   htmlUrl: string;
-  groupId: string;
-  tagsId: string[];
+  groupId: number;
+  tagsId: number[];
+  group?: IGroup;
 }
 
 export const getAllStarListFromGithub = async (username: string): Promise<IStar[]> => {

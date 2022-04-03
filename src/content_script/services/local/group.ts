@@ -1,29 +1,28 @@
 import ChromeStorage from '@/common/ChromeStorage';
+import { db } from '@/content_script/services/local/db';
 import { getStarsListByGroup } from '@/content_script/services/local/stars';
 import { remove } from 'lodash';
 import uuid from 'lodash-uuid';
 
 export interface IGroup {
-  id: string;
+  id?: number;
   name: string;
   totalStars?: number;
 }
 
 const CHROME_STORAGE_KEY = 'GROUP_LIST';
 export const DEFAULT_GROUP: IGroup = {
-  id: '0',
+  id: 0,
   name: 'UNGROUP',
   totalStars: 0,
 };
 
 export const resetGroup = async (): Promise<void> => {
-  const cs = new ChromeStorage();
-
-  await cs.remove(CHROME_STORAGE_KEY);
-  await cs.set(CHROME_STORAGE_KEY, [DEFAULT_GROUP]);
+  await db.groups.clear();
+  await db.groups.put(DEFAULT_GROUP);
 };
 
-export const getGroup = async (id: string): Promise<IGroup> => {
+export const getGroup = async (id: number): Promise<IGroup> => {
   const cs = new ChromeStorage();
 
   const groupList = (await cs.get(CHROME_STORAGE_KEY)) as IGroup[];
@@ -33,60 +32,32 @@ export const getGroup = async (id: string): Promise<IGroup> => {
   });
 };
 
+/**
+ * SELECT g.id, s.groupId FROM STARS s LEFT JOIN GROUPS g ON g.id = s.groupId
+ */
 export const getGroupList = async (): Promise<IGroup[]> => {
-  const cs = new ChromeStorage();
-  const groupList = (await cs.get(CHROME_STORAGE_KEY)) as IGroup[];
-
-  if (!groupList) return groupList;
+  const groupList = await db.groups.toArray();
 
   for (const group of groupList) {
-    const starsList = await getStarsListByGroup(group.id);
-    group.totalStars = starsList.length;
+    const starsCount = await db.stars
+      .where({
+        groupId: group.id,
+      })
+      .count();
+    group.totalStars = starsCount;
   }
 
   return groupList;
 };
 
-export const addGroup = async (name: string): Promise<IGroup> => {
-  const cs = new ChromeStorage();
-
-  const group = {
-    id: uuid.uuid(),
-    name,
-  };
-
-  await cs.push(CHROME_STORAGE_KEY, group);
-
-  return group;
+export const addGroup = async (name: string): Promise<number> => {
+  return await db.groups.add({ name });
 };
 
-export const updateGroup = async (groupId: string, groupName: string) => {
-  const cs = new ChromeStorage();
-
-  // update new group
-  const newGroup: IGroup = {
-    id: groupId,
-    name: groupName,
-  };
-
-  const groupList = await getGroupList();
-  const newGroupList = groupList.map((group) => {
-    if (group.id === groupId) {
-      return newGroup;
-    }
-    return group;
-  });
-
-  await cs.set(CHROME_STORAGE_KEY, newGroupList);
+export const updateGroup = async (groupId: number, groupName: string) => {
+  await db.groups.update(groupId, { name: groupName });
 };
 
-export const deleteGroup = async (groupId: string) => {
-  const cs = new ChromeStorage();
-
-  const groupList = await getGroupList();
-  remove(groupList, (group) => {
-    return group.id === groupId;
-  });
-
-  await cs.set(CHROME_STORAGE_KEY, groupList);
+export const deleteGroup = async (groupId: number) => {
+  await db.groups.where({ id: groupId }).delete();
 };

@@ -53,7 +53,6 @@ const EditTag: React.FC<IProps> = (props: IProps) => {
   return (
     <div className="edit-group">
       <IconButton
-        aria-describedby={props.tag.id}
         onClick={handleOpen}
         aria-label="edit"
         size="small"
@@ -65,7 +64,7 @@ const EditTag: React.FC<IProps> = (props: IProps) => {
       </IconButton>
 
       <Popover
-        id={props.tag.id}
+        id={props.tag.id.toString()}
         open={open}
         anchorEl={anchorEl}
         anchorOrigin={{

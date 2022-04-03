@@ -1,10 +1,11 @@
 import ChromeStorage from '@/common/ChromeStorage';
+import { db } from '@/content_script/services/local/db';
 import { clearStarByTagId, getStarsListByGroup, getStarsListByTag } from '@/content_script/services/local/stars';
 import { remove } from 'lodash';
 import uuid from 'lodash-uuid';
 
 export interface ITag {
-  id: string;
+  id?: number;
   name: string;
   totalStars?: number;
 }
@@ -12,16 +13,13 @@ export interface ITag {
 const CHROME_STORAGE_KEY = 'TAG_LIST';
 
 export const resetTag = async (): Promise<void> => {
-  const cs = new ChromeStorage();
-
-  await cs.remove(CHROME_STORAGE_KEY);
-  await cs.set(CHROME_STORAGE_KEY, []);
+  await db.tags.clear();
 };
 
 /**
  * get tag info by tag id
  */
-export const getTag = async (ids: string[]): Promise<ITag[]> => {
+export const getTag = async (ids: number[]): Promise<ITag[]> => {
   const cs = new ChromeStorage();
 
   const tagsList = (await cs.get(CHROME_STORAGE_KEY)) as ITag[];
@@ -32,21 +30,12 @@ export const getTag = async (ids: string[]): Promise<ITag[]> => {
 };
 
 export const getTagsList = async (): Promise<ITag[]> => {
-  const cs = new ChromeStorage();
+  const tagList = await db.tags.toArray();
 
-  const tagsList = (await cs.get(CHROME_STORAGE_KEY)) as ITag[];
-
-  if (!tagsList) return tagsList;
-
-  for (const tag of tagsList) {
-    const stars = await getStarsListByTag(tag.id);
-    tag.totalStars = stars.length;
-  }
-
-  return tagsList;
+  return tagList;
 };
 
-export const deleteTag = async (tagId: string): Promise<void> => {
+export const deleteTag = async (tagId: number): Promise<void> => {
   const cs = new ChromeStorage();
 
   const tagList = await getTagsList();
@@ -58,26 +47,13 @@ export const deleteTag = async (tagId: string): Promise<void> => {
   await clearStarByTagId(tagId);
 };
 
-export const addTag = async (name: string): Promise<ITag> => {
-  const cs = new ChromeStorage();
-
-  const tagsList = (await cs.get(CHROME_STORAGE_KEY)) as ITag[];
-
-  if (tagsList.some((tag) => tag.name === name)) {
-    return;
-  }
-
-  const tag: ITag = {
-    id: uuid.uuid(),
+export const addTag = async (name: string): Promise<number> => {
+  return await db.tags.add({
     name,
-  };
-
-  await cs.push(CHROME_STORAGE_KEY, tag);
-
-  return tag;
+  });
 };
 
-export const updateTag = async (id: string, tag: Pick<ITag, 'name'>) => {
+export const updateTag = async (id: number, tag: Pick<ITag, 'name'>) => {
   const cs = new ChromeStorage();
 
   const newTag: ITag = {

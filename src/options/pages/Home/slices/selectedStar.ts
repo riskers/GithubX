@@ -5,7 +5,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 const initialState: IStar = {
   tagsId: [],
   fullName: '',
-  groupId: '',
+  groupId: 0,
   id: -1,
   htmlUrl: '',
 };

@@ -1,15 +1,16 @@
 import { getAllStarListFromGithub, IStar } from '@/common/api';
 import ChromeStorage from '@/common/ChromeStorage';
+import { IGroup } from '@/content_script/model/Group';
+import { db } from '@/content_script/services/local/db';
 import { remove } from 'lodash';
 
 const CHROME_STORAGE_KEY = 'STAR_LIST';
 
 export const resetStars = async (username: string): Promise<void> => {
-  const res = await getAllStarListFromGithub(username);
+  await db.stars.clear();
 
-  const cs = new ChromeStorage();
-  await cs.remove(CHROME_STORAGE_KEY);
-  await cs.set(CHROME_STORAGE_KEY, res);
+  const res = await getAllStarListFromGithub(username);
+  await db.stars.bulkAdd(res);
 };
 
 const getAllStars = async (): Promise<IStar[]> => {
@@ -18,17 +19,30 @@ const getAllStars = async (): Promise<IStar[]> => {
   return starList;
 };
 
-export const getStarsListByGroup = async (groupId: string): Promise<IStar[]> => {
-  const starList = await getAllStars();
-
-  return starList.filter((star) => {
-    return star.groupId === groupId;
-  });
+/**
+ * one to one
+ */
+export const getStarsListByGroup = async (groupId: number): Promise<IStar[]> => {
+  return await db.stars
+    .where({
+      groupId,
+    })
+    .with({ group: 'groupId' });
 };
-export const getStarsListByTag = async (tagId: string): Promise<IStar[]> => {
+
+/**
+ * many to many
+ */
+export const getStarsListByTag = async (tagId: number): Promise<IStar[]> => {
   const starList = await getAllStars();
   return starList.filter((star) => {
     return star.tagsId.includes(tagId);
+  });
+};
+
+export const updateStar = async (star: IStar): Promise<void> => {
+  await db.stars.update(star.id, {
+    groupId: star.groupId,
   });
 };
 
@@ -38,20 +52,6 @@ export const getStarsListByTag = async (tagId: string): Promise<IStar[]> => {
 export const addStar = async (star: IStar): Promise<void> => {
   const cs = new ChromeStorage();
   await cs.set(CHROME_STORAGE_KEY, star);
-};
-
-export const updateStar = async (pstar: IStar): Promise<void> => {
-  const cs = new ChromeStorage();
-
-  const starList = await getStarsListByGroup(pstar.groupId);
-  const newStarsList = starList.map((star) => {
-    if (star.id === pstar.id) {
-      return pstar;
-    }
-    return star;
-  });
-
-  await cs.set(CHROME_STORAGE_KEY, newStarsList);
 };
 
 /**
@@ -68,7 +68,7 @@ export const delStar = async (fullName: string): Promise<void> => {
 /**
  * clear star's tag by specific tagId
  */
-export const clearStarByTagId = async (tagId: string): Promise<void> => {
+export const clearStarByTagId = async (tagId: number): Promise<void> => {
   const cs = new ChromeStorage();
 
   let starList = await getStarsListByTag(tagId);

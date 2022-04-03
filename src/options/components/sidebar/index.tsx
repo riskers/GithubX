@@ -17,7 +17,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const SideBar = () => {
   const [openNewGroup, setOpenNewGroup] = React.useState<boolean>(false);
-  const [newGroup, setNewGroup] = React.useState<string>('');
   const ref = React.useRef(null);
 
   const dispatch = useDispatch();
@@ -31,16 +30,6 @@ const SideBar = () => {
       dispatch(fetchTags());
     })();
   }, []);
-
-  React.useEffect(() => {
-    (async () => {
-      if (!newGroup) return;
-
-      await addGroup(newGroup);
-
-      fetchData();
-    })();
-  }, [newGroup]);
 
   React.useEffect(() => {
     fetchData();
@@ -94,7 +83,7 @@ const SideBar = () => {
                 }}
               />
 
-              <EditGroup group={group} />
+              <EditGroup name={group.name} id={group.id} />
             </Stack>
           );
         })}
@@ -132,8 +121,9 @@ const SideBar = () => {
 
                 // input is not null and not repeat in groupList
                 if (groupName.trim() && !isRepeat) {
-                  setNewGroup(groupName);
+                  addGroup(groupName);
                   ref.current.value = '';
+                  dispatch(fetchGroups());
                 }
               }
             }}

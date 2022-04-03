@@ -34,10 +34,10 @@ export const AppContext = React.createContext<IAppContext>({
   selectFullName: '',
   selectGroup: {
     name: '',
-    id: '-1',
+    id: 0,
   },
   selectTag: {
-    id: '-1',
+    id: 0,
     name: '',
   },
   groupList: [],
