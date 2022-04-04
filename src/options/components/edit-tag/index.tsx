@@ -1,12 +1,10 @@
-import { deleteTag, getTagsList, ITag, updateTag } from '@/services/idb/tag';
-import { AppContext } from '@/options';
-import { selectorStar } from '@/options/slices/selectedStar';
 import { fetchTags } from '@/options/slices/tagSlice';
+import { deleteTag, ITag, updateTag } from '@/services/idb/tag';
 import styled from '@emotion/styled';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import { Button, IconButton, Popover, Stack, TextField } from '@mui/material';
 import * as React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 interface IProps {
   tag: ITag;
