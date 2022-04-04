@@ -1,10 +1,7 @@
 import { getAllStarListFromGithub, IStar } from '@/common/api';
-import ChromeStorage from '@/common/ChromeStorage';
-import { IGroup } from '@/content_script/model/Group';
 import { db } from '@/content_script/services/local/db';
-import { remove } from 'lodash';
-
-const CHROME_STORAGE_KEY = 'STAR_LIST';
+import { getGroupInfo } from '@/content_script/services/local/group';
+import { getTagsInStar } from '@/content_script/services/local/tag';
 
 export const resetStars = async (username: string): Promise<void> => {
   await db.stars.clear();
@@ -13,77 +10,67 @@ export const resetStars = async (username: string): Promise<void> => {
   await db.stars.bulkAdd(res);
 };
 
-const getAllStars = async (): Promise<IStar[]> => {
-  const cs = new ChromeStorage();
-  const starList = (await cs.get(CHROME_STORAGE_KEY)) as IStar[];
-  return starList;
-};
-
-/**
- * one to one
- */
 export const getStarsListByGroup = async (groupId: number): Promise<IStar[]> => {
-  return await db.stars
+  const starList = await db.stars
     .where({
       groupId,
     })
     .with({ group: 'groupId' });
+
+  for (const star of starList) {
+    const tags = await getTagsInStar(star.id);
+    star.tags = tags;
+  }
+
+  return starList;
 };
 
 /**
- * many to many
+ * Many To Many
+ *
+ * 1. get star list where tag id = tagId
+ * 2. add group
+ * 3. add tag
  */
-export const getStarsListByTag = async (tagId: number): Promise<IStar[]> => {
-  const starList = await getAllStars();
-  return starList.filter((star) => {
-    return star.tagsId.includes(tagId);
-  });
+export const getStarsListByTag = async (tagId: number) => {
+  const tidInSidList = await db.starsJTags
+    .where({
+      tid: tagId,
+    })
+    .with({ tag: 'tid', star: 'sid' });
+
+  for (let tidInSid of tidInSidList) {
+    const groupId = (tidInSid as any).star.groupId;
+    const group = await getGroupInfo(groupId);
+    (tidInSid as any).star.group = group;
+
+    const tags = await getTagsInStar(tidInSid.sid);
+    (tidInSid as any).star.tags = tags;
+  }
+
+  return tidInSidList.map((xx) => (xx as any).star);
 };
 
-export const updateStar = async (star: IStar): Promise<void> => {
-  await db.stars.update(star.id, {
-    groupId: star.groupId,
-  });
+export const getStarInfo = async (id: number): Promise<IStar> => {
+  const starInfo = await db.stars.where({ id }).first();
+
+  starInfo.tags = await getTagsInStar(id);
+  starInfo.group = await getGroupInfo(starInfo.groupId);
+
+  return starInfo;
 };
 
-/**
- * 点击 star 按钮时单个触发保存
- */
 export const addStar = async (star: IStar): Promise<void> => {
-  const cs = new ChromeStorage();
-  await cs.set(CHROME_STORAGE_KEY, star);
+  await db.stars.put(star);
 };
 
 /**
- * TODO: 使用 objectId
  * 点击 star 按钮时单个触发删除
  */
-export const delStar = async (fullName: string): Promise<void> => {
-  // const query = new leancloud.Query(LEANCLOUD_CLASS_NAME);
-  // query.equalTo('fullName', fullName);
-  // const star = await query.find();
-  // await leancloud.Object.createWithoutData(LEANCLOUD_CLASS_NAME, star[0].id).destroy();
-};
-
-/**
- * clear star's tag by specific tagId
- */
-export const clearStarByTagId = async (tagId: number): Promise<void> => {
-  const cs = new ChromeStorage();
-
-  let starList = await getStarsListByTag(tagId);
-  starList = starList.map((star) => {
-    if (star.tagsId.includes(tagId)) {
-      const l = star.tagsId;
-
-      remove(l, (tag) => {
-        return tag === tagId;
-      });
-
-      star.tagsId = l;
-    }
-    return star;
-  });
-
-  await cs.set(CHROME_STORAGE_KEY, starList);
+export const delStar = async (id: number): Promise<void> => {
+  await db.stars
+    .where({
+      id,
+    })
+    .delete();
 };

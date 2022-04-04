@@ -3,7 +3,6 @@ import { RootState } from '@/options/store';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: IStar = {
-  tagsId: [],
   fullName: '',
   groupId: 0,
   id: -1,

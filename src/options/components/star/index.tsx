@@ -1,10 +1,11 @@
 import { IStar } from '@/common/api';
-import { getGroupList } from '@/content_script/services/local/group';
-import { updateStar } from '@/content_script/services/local/stars';
-import { addTag, getTagsList, ITag } from '@/content_script/services/local/tag';
-import { AppContext } from '@/options';
+import { addStar } from '@/content_script/services/local/stars';
+import { addSJT, deleteSJT } from '@/content_script/services/local/starsJTags';
+import { addTag, ITag } from '@/content_script/services/local/tag';
 import { fetchGroups } from '@/options/pages/Home/slices/groupSlice';
-import { fetchStarsByGroup } from '@/options/pages/Home/slices/starsSlice';
+import { selectorItem } from '@/options/pages/Home/slices/selectedItemSlice';
+import { fetchStarsByGroup, fetchStarsByTag } from '@/options/pages/Home/slices/starsSlice';
+import { fetchTags } from '@/options/pages/Home/slices/tagSlice';
 import { RootState } from '@/options/store';
 import EditIcon from '@mui/icons-material/Edit';
 import {
@@ -18,52 +19,43 @@ import {
   SelectChangeEvent,
   TextField,
 } from '@mui/material';
-import { without } from 'lodash';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 interface IProps {
   star: IStar;
-
-  /**
-   * stars' tags id list
-   */
-  starTagsId: number[];
 }
 
-const EditRepo = (props: IProps) => {
-  const { setGroupList, tagsList, setTagsList, setStarsList } = React.useContext(AppContext);
+const Star = (props: IProps) => {
   const [openEditTag, setOpenEditTag] = React.useState<boolean>(false);
   const [openEditGroup, setOpenEditGroup] = React.useState<boolean>(false);
-  const [repoTagsList, setRepoTagsList] = React.useState<ITag[]>([]);
 
-  const groups = useSelector((state: RootState) => state.groups);
-  const { data: groupList } = groups;
   const dispatch = useDispatch();
+  const groups = useSelector((state: RootState) => state.groups);
+  const tags = useSelector((state: RootState) => state.tags);
+  const selectedItem = useSelector(selectorItem);
+
+  const { data: groupList } = groups;
+
+  // tags option list
+  const { data: allTagsList } = tags;
 
   const handleChangeGroup = () => {
     dispatch(fetchStarsByGroup(props.star.groupId));
     dispatch(fetchGroups());
   };
 
-  // const updateRepoTags = async (tagsId: string[]) => {
-  //   const tags = await getTag(tagsId);
-  //   setRepoTagsList(tags);
-  // };
-
-  const updateAllGroupList = async () => {
-    const groupList = await getGroupList();
-    setGroupList(groupList);
-  };
-
-  const updateAllTaglist = async () => {
-    const tags = await getTagsList();
-    setTagsList(tags);
-  };
-
-  const handleClick = React.useCallback(() => {
+  const handleClick = () => {
     setOpenEditTag(false);
-  }, []);
+  };
+
+  const handleChangeTag = () => {
+    if (selectedItem.active === 'group') {
+      dispatch(fetchStarsByGroup(selectedItem.group.id));
+    } else {
+      dispatch(fetchStarsByTag(selectedItem.tag.id));
+    }
+  };
 
   React.useEffect(() => {
     document.addEventListener('click', handleClick, false);
@@ -78,9 +70,9 @@ const EditRepo = (props: IProps) => {
           multiple
           disableClearable
           size="small"
-          options={tagsList}
+          options={allTagsList}
           noOptionsText="Add a tag..."
-          value={repoTagsList}
+          value={props.star.tags}
           freeSolo
           filterSelectedOptions
           onChange={async (
@@ -90,48 +82,22 @@ const EditRepo = (props: IProps) => {
             d: AutocompleteChangeDetails<ITag> | AutocompleteChangeDetails<string>,
             // eslint-disable-next-line max-params
           ) => {
-            // console.log(v, r, d);
-            const vlist = repoTagsList.map((tag) => tag.id);
+            console.log(v, r, d);
+            // const vlist = repoTagsList.map((tag) => tag.id);
+            const sid = props.star.id;
 
             if (r === 'createOption') {
-              const tagId = await addTag(d.option as string);
-              const newStar: IStar = {
-                ...props.star,
-                tagsId: vlist.concat(tagId),
-              };
-
-              console.log(tagId);
-
-              // await updateRepoTags(repoTagsList.map((tag) => tag.id).concat(tag.id));
-              // await updateStar(newStar);
-              // await updateAllTaglist();
+              await addTag(d.option as string, sid);
             }
 
             if (r === 'selectOption') {
               const tag = d.option as ITag;
-              // await updateRepoTags(repoTagsList.map((tag) => tag.id).concat(tag.id));
-
-              const newStar: IStar = {
-                ...props.star,
-                tagsId: vlist.concat(tag.id),
-              };
-              await updateStar(newStar);
-              await updateAllTaglist();
+              await addSJT(tag.id, sid);
             }
 
             if (r === 'removeOption') {
               const tag = d.option as ITag;
-
-              const excludeTagIds = without(vlist, tag.id);
-
-              // await updateRepoTags(excludeTagIds);
-
-              const newStar: IStar = {
-                ...props.star,
-                tagsId: excludeTagIds,
-              };
-              await updateStar(newStar);
-              await updateAllTaglist();
+              await deleteSJT(tag.id, sid);
             }
 
             if (r === 'clear') {
@@ -141,6 +107,9 @@ const EditRepo = (props: IProps) => {
             if (r === 'blur') {
               // console.log('blur');
             }
+
+            dispatch(fetchTags());
+            handleChangeTag();
           }}
           getOptionLabel={(option) => {
             if (typeof option === 'string') {
@@ -160,7 +129,7 @@ const EditRepo = (props: IProps) => {
         />
       ) : (
         <Container onClick={() => setOpenEditTag(true)} style={{ padding: 0 }}>
-          {repoTagsList.map((tag) => {
+          {props.star?.tags?.map((tag) => {
             return (
               <Chip size="small" key={tag.id} label={tag.name} color="primary" clickable style={{ marginRight: 5 }} />
             );
@@ -192,7 +161,7 @@ const EditRepo = (props: IProps) => {
 
             setOpenEditGroup(false);
 
-            await updateStar(newStar);
+            await addStar(newStar);
             handleChangeGroup();
           }}
         >
@@ -225,4 +194,4 @@ const EditRepo = (props: IProps) => {
   );
 };
 
-export default EditRepo;
+export default Star;

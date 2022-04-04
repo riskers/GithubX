@@ -83,7 +83,7 @@ const SideBar = () => {
                 }}
               />
 
-              <EditGroup name={group.name} id={group.id} />
+              {group.id !== 0 && <EditGroup name={group.name} id={group.id} />}
             </Stack>
           );
         })}

@@ -1,8 +1,4 @@
-import ChromeStorage from '@/common/ChromeStorage';
 import { db } from '@/content_script/services/local/db';
-import { getStarsListByGroup } from '@/content_script/services/local/stars';
-import { remove } from 'lodash';
-import uuid from 'lodash-uuid';
 
 export interface IGroup {
   id?: number;
@@ -10,11 +6,9 @@ export interface IGroup {
   totalStars?: number;
 }
 
-const CHROME_STORAGE_KEY = 'GROUP_LIST';
 export const DEFAULT_GROUP: IGroup = {
   id: 0,
   name: 'UNGROUP',
-  totalStars: 0,
 };
 
 export const resetGroup = async (): Promise<void> => {
@@ -22,14 +16,12 @@ export const resetGroup = async (): Promise<void> => {
   await db.groups.put(DEFAULT_GROUP);
 };
 
-export const getGroup = async (id: number): Promise<IGroup> => {
-  const cs = new ChromeStorage();
-
-  const groupList = (await cs.get(CHROME_STORAGE_KEY)) as IGroup[];
-
-  return groupList.find((group) => {
-    return group.id === id;
-  });
+export const getGroupInfo = async (groupId: number) => {
+  return await db.groups
+    .where({
+      id: groupId,
+    })
+    .first();
 };
 
 /**
@@ -58,6 +50,12 @@ export const updateGroup = async (groupId: number, groupName: string) => {
   await db.groups.update(groupId, { name: groupName });
 };
 
+/**
+ * delete group and change stars in this group to DEFAULT group
+ */
 export const deleteGroup = async (groupId: number) => {
+  const star = await db.stars.where({ groupId }).first();
+  await db.stars.update(star.id, { groupId: 0 });
+
   await db.groups.where({ id: groupId }).delete();
 };
