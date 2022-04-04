@@ -1,10 +1,11 @@
 import { IStar } from '@/common/api';
-import { DEFAULT_SELECTED_ITEM } from '@/options/pages/Home/slices/selectedItemSlice';
+import { DEFAULT_SELECTED_ITEM } from '@/options/slices/selectedItemSlice';
 import { RootState } from '@/options/store';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialState: IStar = {
   fullName: '',
+  groupId: 0,
   id: -1,
   htmlUrl: '',
   group: DEFAULT_SELECTED_ITEM.group,

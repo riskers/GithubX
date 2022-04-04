@@ -1,5 +1,5 @@
-import { IGist } from '@/content_script/model/Gist';
-import { getAllGistList } from '@/content_script/services/leancloud/gist';
+import { IGist } from '@/services/leancloud/model/Gist';
+import { getAllGistList } from '@/services/leancloud/gist';
 import TreeItem from '@mui/lab/TreeItem';
 import TreeView from '@mui/lab/TreeView';
 import React from 'react';

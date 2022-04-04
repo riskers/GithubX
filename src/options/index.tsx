@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 import { IStar } from '@/common/api';
-import { DEFAULT_GROUP, IGroup } from '@/content_script/services/local/group';
-import { getSettings, ISettings } from '@/content_script/services/local/settings';
+import { DEFAULT_GROUP, IGroup } from '@/services/idb/group';
+import { getSettings, ISettings } from '@/services/idb/settings';
 import Main from '@/options/components/main';
 import SideBar from '@/options/components/sidebar';
 import StarList from '@/options/components/star-list';
@@ -12,7 +12,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { ITag } from '../content_script/services/local/tag';
+import { ITag } from '../services/idb/tag';
 import './style.css';
 
 interface IAppContext {
@@ -34,10 +34,10 @@ export const AppContext = React.createContext<IAppContext>({
   selectFullName: '',
   selectGroup: {
     name: '',
-    id: '-1',
+    id: 0,
   },
   selectTag: {
-    id: '-1',
+    id: 0,
     name: '',
   },
   groupList: [],

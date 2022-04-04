@@ -1,6 +1,9 @@
-import { getTagsList } from '@/content_script/services/local/tag';
+import { getTagsList } from '@/services/idb/tag';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
+/**
+ * update tags in side bar
+ */
 export const fetchTags = createAsyncThunk('tag/fetchTags', async () => {
   const tagList = await getTagsList();
   return tagList;

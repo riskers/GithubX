@@ -1,7 +1,7 @@
-import { resetGroup } from '@/content_script/services/local/group';
-import { getSettings, setSettings } from '@/content_script/services/local/settings';
-import { resetStars } from '@/content_script/services/local/stars';
-import { resetTag } from '@/content_script/services/local/tag';
+import { resetGroup } from '@/services/idb/group';
+import { getSettings, setSettings } from '@/services/idb/settings';
+import { resetStars } from '@/services/idb/stars';
+import { resetTag } from '@/services/idb/tag';
 import delay from '@/utils/delay';
 import {
   Button,

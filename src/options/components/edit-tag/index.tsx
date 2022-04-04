@@ -1,11 +1,12 @@
-import { deleteTag, getTagsList, ITag, updateTag } from '@/content_script/services/local/tag';
+import { deleteTag, getTagsList, ITag, updateTag } from '@/services/idb/tag';
 import { AppContext } from '@/options';
-import { selectorStar } from '@/options/pages/Home/slices/selectedStar';
+import { selectorStar } from '@/options/slices/selectedStar';
+import { fetchTags } from '@/options/slices/tagSlice';
 import styled from '@emotion/styled';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import { Button, IconButton, Popover, Stack, TextField } from '@mui/material';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 interface IProps {
   tag: ITag;
@@ -21,18 +22,8 @@ const SmallButton = styled(Button)(() => {
 });
 
 const EditTag: React.FC<IProps> = (props: IProps) => {
-  const { setTagsList } = React.useContext(AppContext);
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
-
-  const starInfo = useSelector(selectorStar);
-
-  const fetchTagList = React.useCallback(() => {
-    (async () => {
-      // TODO get tags info from api, don't do this
-      const list = await getTagsList();
-      setTagsList(list);
-    })();
-  }, []);
+  const dispatch = useDispatch();
 
   const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -44,7 +35,12 @@ const EditTag: React.FC<IProps> = (props: IProps) => {
 
   const handleUpdate = async (tagName: string) => {
     await updateTag(props.tag.id, { name: tagName });
-    fetchTagList();
+    dispatch(fetchTags());
+  };
+
+  const handleDelete = async () => {
+    await deleteTag(props.tag.id);
+    dispatch(fetchTags());
   };
 
   const open = Boolean(anchorEl);
@@ -53,7 +49,6 @@ const EditTag: React.FC<IProps> = (props: IProps) => {
   return (
     <div className="edit-group">
       <IconButton
-        aria-describedby={props.tag.id}
         onClick={handleOpen}
         aria-label="edit"
         size="small"
@@ -65,7 +60,7 @@ const EditTag: React.FC<IProps> = (props: IProps) => {
       </IconButton>
 
       <Popover
-        id={props.tag.id}
+        id={props.tag.id.toString()}
         open={open}
         anchorEl={anchorEl}
         anchorOrigin={{
@@ -86,7 +81,7 @@ const EditTag: React.FC<IProps> = (props: IProps) => {
             inputRef={ref}
             onKeyPress={async (e) => {
               if (e.key === 'Enter') {
-                handleUpdate(ref.current.value);
+                await handleUpdate(ref.current.value);
                 handleClose();
               }
             }}
@@ -96,7 +91,7 @@ const EditTag: React.FC<IProps> = (props: IProps) => {
             size="small"
             fullWidth
             onClick={async () => {
-              handleUpdate(ref.current.value);
+              await handleUpdate(ref.current.value);
               handleClose();
             }}
           >
@@ -108,8 +103,7 @@ const EditTag: React.FC<IProps> = (props: IProps) => {
             color="error"
             fullWidth
             onClick={async () => {
-              await deleteTag(props.tag.id);
-              fetchTagList();
+              await handleDelete();
               handleClose();
             }}
           >
@@ -121,4 +115,7 @@ const EditTag: React.FC<IProps> = (props: IProps) => {
   );
 };
 
-export default EditTag;
+export default React.memo(EditTag, (prevProps, nextProps) => {
+  if (prevProps.tag.id === nextProps.tag.id) return true;
+  return false;
+});

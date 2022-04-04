@@ -1,11 +1,10 @@
-import groupSlice from '@/options/pages/Home/slices/groupSlice';
-import selectedItemSlice from '@/options/pages/Home/slices/selectedItemSlice';
-import selectedStarSlice from '@/options/pages/Home/slices/selectedStar';
-import starsSlice from '@/options/pages/Home/slices/starsSlice';
-import tagSlice from '@/options/pages/Home/slices/tagSlice';
+import groupSlice from '@/options/slices/groupSlice';
+import selectedItemSlice from '@/options/slices/selectedItemSlice';
+import selectedStarSlice from '@/options/slices/selectedStar';
+import starsSlice from '@/options/slices/starsSlice';
+import tagSlice from '@/options/slices/tagSlice';
 import { configureStore, ThunkDispatch } from '@reduxjs/toolkit';
-import { devToolsEnhancer } from '@reduxjs/toolkit/dist/devtoolsExtension';
-import { AnyAction, applyMiddleware } from 'redux';
+import { AnyAction } from 'redux';
 
 const logger = (store) => (next) => (action) => {
   console.group(action.type);

@@ -2,9 +2,9 @@ import './style.css';
 
 import AddGistBtn from '@/content_script/pages/gist/AddGistBtn';
 import Sidebar from '@/content_script/pages/gist/Sidebar';
-import { isExistsGist } from '@/content_script/services/leancloud/gist';
+import { isExistsGist } from '@/services/leancloud/gist';
 import * as React from 'react';
-import { IGist } from '@/content_script/model/Gist';
+import { IGist } from '@/services/leancloud/model/Gist';
 
 export const gistContext = React.createContext(null);
 export const URL = window.location.href;

@@ -1,12 +1,12 @@
-import { getStarsListByGroup, getStarsListByTag } from '@/content_script/services/local/stars';
+import { getStarsListByGroup, getStarsListByTag } from '@/services/idb/stars';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-export const fetchStarsByGroup = createAsyncThunk('stars/fetchStarsByGroup', async (groupId: string) => {
+export const fetchStarsByGroup = createAsyncThunk('stars/fetchStarsByGroup', async (groupId: number) => {
   const stars = await getStarsListByGroup(groupId);
   return stars;
 });
 
-export const fetchStarsByTag = createAsyncThunk('stars/fetchStarsByTag', async (tagId: string) => {
+export const fetchStarsByTag = createAsyncThunk('stars/fetchStarsByTag', async (tagId: number) => {
   const stars = await getStarsListByTag(tagId);
   console.log(stars);
   return stars;
@@ -20,7 +20,6 @@ export const starsSlice = createSlice({
   },
   reducers: {},
   extraReducers: (builder) => {
-    // TODO: ugly
     builder
       .addCase(fetchStarsByGroup.pending, (state) => {
         state.loading = true;

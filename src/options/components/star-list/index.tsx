@@ -1,11 +1,10 @@
 import { IStar } from '@/common/api';
-import { addTag } from '@/content_script/services/local/tag';
-import EditRepo from '@/options/components/edit-repo';
-import { DEFAULT_SELECTED_ITEM, selectorItem } from '@/options/pages/Home/slices/selectedItemSlice';
-import { selectedStarSlice, selectorStar } from '@/options/pages/Home/slices/selectedStar';
-import { fetchStarsByGroup, fetchStarsByTag } from '@/options/pages/Home/slices/starsSlice';
+import Star from '@/options/components/star';
+import { DEFAULT_SELECTED_ITEM, selectorItem } from '@/options/slices/selectedItemSlice';
+import { selectedStarSlice, selectorStar } from '@/options/slices/selectedStar';
+import { fetchStarsByGroup, fetchStarsByTag } from '@/options/slices/starsSlice';
 import { AppDispatch, RootState } from '@/options/store';
-import { Button, Dialog, DialogContent, DialogTitle, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import classNames from 'classnames';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -41,55 +40,40 @@ const StarList: React.FC = () => {
   }, [selectedItem.tag.id, dispatch]);
 
   return (
-    <>
-      <div className="star-list">
-        {stars.data.length !== 0 ? (
-          stars.data?.map((star: IStar) => {
-            return (
+    <div className="star-list">
+      {stars.data.length !== 0 ? (
+        stars.data?.map((star: IStar) => {
+          return (
+            <div
+              key={star.id}
+              className={classNames('star', {
+                selected: selectedStar.id === star.id,
+              })}
+              onClick={() => {
+                dispatch(selectedStarSlice.actions.selectStar(star));
+              }}
+            >
+              <div>
+                <h2>{star.fullName}</h2>
+              </div>
+
               <div
-                key={star.id}
-                className={classNames('star', {
-                  selected: selectedStar.id === star.id,
-                })}
-                onClick={() => {
-                  dispatch(selectedStarSlice.actions.selectStar(star));
+                className="edit-area"
+                onClick={(e) => {
+                  e.stopPropagation();
                 }}
               >
-                <div>
-                  <h2>{star.fullName}</h2>
-                </div>
-
-                <div
-                  className="edit-area"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                >
-                  <EditRepo star={star} />
-                </div>
+                <Star star={star} />
               </div>
-            );
-          })
-        ) : (
-          <Stack justifyContent="center" alignItems="center" style={{ fontSize: 20, padding: 30, color: '#c5d2dd' }}>
-            Empty...
-          </Stack>
-        )}
-      </div>
-
-      <Dialog open={false}>
-        <DialogTitle>Edit Repo</DialogTitle>
-        <DialogContent>
-          <Button
-            onClick={async () => {
-              await addTag('acvcv');
-            }}
-          >
-            add a tag
-          </Button>
-        </DialogContent>
-      </Dialog>
-    </>
+            </div>
+          );
+        })
+      ) : (
+        <Stack justifyContent="center" alignItems="center" style={{ fontSize: 20, padding: 30, color: '#c5d2dd' }}>
+          Empty...
+        </Stack>
+      )}
+    </div>
   );
 };
 

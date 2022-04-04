@@ -1,9 +1,9 @@
 import { IStar } from '@/common/api';
 import { ACTION_SHOW_OPTION_PAGE } from '@/common/constants';
-import { DEFAULT_GROUP, getGroupList, IGroup, resetGroup } from '@/content_script/services/local/group';
-import { resetSettings, setSettings } from '@/content_script/services/local/settings';
-import { getStarsListByGroup, resetStars } from '@/content_script/services/local/stars';
-import { resetTag } from '@/content_script/services/local/tag';
+import { DEFAULT_GROUP, getGroupList, IGroup, resetGroup } from '@/services/idb/group';
+import { setSettings } from '@/services/idb/settings';
+import { getStarsListByGroup, resetStars } from '@/services/idb/stars';
+import { resetTag } from '@/services/idb/tag';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TreeItem from '@mui/lab/TreeItem';

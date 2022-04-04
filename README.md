@@ -14,6 +14,7 @@ Only Storaged on Local drive.
 * [ ] Auto tag and group when staring a repo
 * [ ] Alias Github Users
 * [ ] Manger Gist
+* [ ] MySQL And IDB compatibility
 
 
 Powered By [react-chrome-boilerplate](https://github.com/riskers/react-chrome-boilerplate)

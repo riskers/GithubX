@@ -1,8 +1,8 @@
-import { getGroupList } from '@/content_script/services/local/group';
+import * as IDBAPI from '@/services/idb/group';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const fetchGroups = createAsyncThunk('group/fetchGroups', async () => {
-  const groupList = await getGroupList();
+  const groupList = await IDBAPI.getGroupList();
   return groupList;
 });
 

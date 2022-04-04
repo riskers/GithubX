@@ -1,10 +1,10 @@
-import { addGroup } from '@/content_script/services/local/group';
+import { addGroup } from '@/services/idb/group';
 import Accordion from '@/options/components/accordion';
 import EditGroup from '@/options/components/edit-group';
 import EditTag from '@/options/components/edit-tag';
-import { fetchGroups } from '@/options/pages/Home/slices/groupSlice';
-import { selectedItemSlice, selectorItem } from '@/options/pages/Home/slices/selectedItemSlice';
-import { fetchTags } from '@/options/pages/Home/slices/tagSlice';
+import { fetchGroups } from '@/options/slices/groupSlice';
+import { selectedItemSlice, selectorItem } from '@/options/slices/selectedItemSlice';
+import { fetchTags } from '@/options/slices/tagSlice';
 import { RootState } from '@/options/store';
 import AddIcon from '@mui/icons-material/Add';
 import AllInboxIcon from '@mui/icons-material/AllInbox';
@@ -17,7 +17,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const SideBar = () => {
   const [openNewGroup, setOpenNewGroup] = React.useState<boolean>(false);
-  const [newGroup, setNewGroup] = React.useState<string>('');
   const ref = React.useRef(null);
 
   const dispatch = useDispatch();
@@ -31,16 +30,6 @@ const SideBar = () => {
       dispatch(fetchTags());
     })();
   }, []);
-
-  React.useEffect(() => {
-    (async () => {
-      if (!newGroup) return;
-
-      await addGroup(newGroup);
-
-      fetchData();
-    })();
-  }, [newGroup]);
 
   React.useEffect(() => {
     fetchData();
@@ -94,7 +83,7 @@ const SideBar = () => {
                 }}
               />
 
-              <EditGroup group={group} />
+              {group.id !== 0 && <EditGroup name={group.name} id={group.id} />}
             </Stack>
           );
         })}
@@ -132,8 +121,9 @@ const SideBar = () => {
 
                 // input is not null and not repeat in groupList
                 if (groupName.trim() && !isRepeat) {
-                  setNewGroup(groupName);
+                  addGroup(groupName);
                   ref.current.value = '';
+                  dispatch(fetchGroups());
                 }
               }
             }}
