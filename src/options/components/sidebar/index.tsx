@@ -1,10 +1,10 @@
-import { addGroup } from '@/content_script/services/local/group';
+import { addGroup } from '@/services/idb/group';
 import Accordion from '@/options/components/accordion';
 import EditGroup from '@/options/components/edit-group';
 import EditTag from '@/options/components/edit-tag';
-import { fetchGroups } from '@/options/pages/Home/slices/groupSlice';
-import { selectedItemSlice, selectorItem } from '@/options/pages/Home/slices/selectedItemSlice';
-import { fetchTags } from '@/options/pages/Home/slices/tagSlice';
+import { fetchGroups } from '@/options/slices/groupSlice';
+import { selectedItemSlice, selectorItem } from '@/options/slices/selectedItemSlice';
+import { fetchTags } from '@/options/slices/tagSlice';
 import { RootState } from '@/options/store';
 import AddIcon from '@mui/icons-material/Add';
 import AllInboxIcon from '@mui/icons-material/AllInbox';

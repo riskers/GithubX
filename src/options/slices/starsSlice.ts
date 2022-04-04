@@ -1,4 +1,4 @@
-import { getStarsListByGroup, getStarsListByTag } from '@/content_script/services/local/stars';
+import { getStarsListByGroup, getStarsListByTag } from '@/services/idb/stars';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const fetchStarsByGroup = createAsyncThunk('stars/fetchStarsByGroup', async (groupId: number) => {

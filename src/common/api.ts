@@ -1,5 +1,5 @@
-import { DEFAULT_GROUP, IGroup } from '@/content_script/services/local/group';
-import { ITag } from '@/content_script/services/local/tag';
+import { DEFAULT_GROUP, IGroup } from '@/services/idb/group';
+import { ITag } from '@/services/idb/tag';
 
 export interface IGithubStarResponse {
   starred_at: string;

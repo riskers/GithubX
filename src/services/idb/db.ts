@@ -1,7 +1,7 @@
 import { IStar } from '@/common/api';
-import { IGroup } from '@/content_script/services/local/group';
-import { IStarsJTags } from '@/content_script/services/local/starsJTags';
-import { ITag } from '@/content_script/services/local/tag';
+import { IGroup } from '@/services/idb/group';
+import { IStarsJTags } from '@/services/idb/starsJTags';
+import { ITag } from '@/services/idb/tag';
 import Dexie, { Table } from 'dexie';
 import relationships from 'dexie-relationships';
 

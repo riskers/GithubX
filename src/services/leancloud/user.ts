@@ -1,5 +1,5 @@
 import leancloud from '@/utils/leancloud';
-import GithubUser, { IGithubUser } from '@/content_script/model/User';
+import GithubUser, { IGithubUser } from '@/services/leancloud/model/User';
 
 const LEANCLOUD_CLASS_NAME = 'GithubUser';
 

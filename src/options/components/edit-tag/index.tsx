@@ -1,7 +1,7 @@
-import { deleteTag, getTagsList, ITag, updateTag } from '@/content_script/services/local/tag';
+import { deleteTag, getTagsList, ITag, updateTag } from '@/services/idb/tag';
 import { AppContext } from '@/options';
-import { selectorStar } from '@/options/pages/Home/slices/selectedStar';
-import { fetchTags } from '@/options/pages/Home/slices/tagSlice';
+import { selectorStar } from '@/options/slices/selectedStar';
+import { fetchTags } from '@/options/slices/tagSlice';
 import styled from '@emotion/styled';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import { Button, IconButton, Popover, Stack, TextField } from '@mui/material';

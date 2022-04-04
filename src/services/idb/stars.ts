@@ -1,7 +1,7 @@
 import { getAllStarListFromGithub, IStar } from '@/common/api';
-import { db } from '@/content_script/services/local/db';
-import { getGroupInfo } from '@/content_script/services/local/group';
-import { getTagsInStar } from '@/content_script/services/local/tag';
+import { db } from '@/services/idb/db';
+import { getGroupInfo } from '@/services/idb/group';
+import { getTagsInStar } from '@/services/idb/tag';
 
 export const resetStars = async (username: string): Promise<void> => {
   await db.stars.clear();

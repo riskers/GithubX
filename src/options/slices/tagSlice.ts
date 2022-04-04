@@ -1,4 +1,4 @@
-import { getTagsList } from '@/content_script/services/local/tag';
+import { getTagsList } from '@/services/idb/tag';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 /**

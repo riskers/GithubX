@@ -1,5 +1,3 @@
-import ChromeStorage from '@/common/ChromeStorage';
-
 export const getGistTitle = (): string => {
   let gistTitle = '';
   try {

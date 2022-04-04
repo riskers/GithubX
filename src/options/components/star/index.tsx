@@ -1,11 +1,11 @@
 import { IStar } from '@/common/api';
-import { addStar } from '@/content_script/services/local/stars';
-import { addSJT, deleteSJT } from '@/content_script/services/local/starsJTags';
-import { addTag, ITag } from '@/content_script/services/local/tag';
-import { fetchGroups } from '@/options/pages/Home/slices/groupSlice';
-import { selectorItem } from '@/options/pages/Home/slices/selectedItemSlice';
-import { fetchStarsByGroup, fetchStarsByTag } from '@/options/pages/Home/slices/starsSlice';
-import { fetchTags } from '@/options/pages/Home/slices/tagSlice';
+import { addStar } from '@/services/idb/stars';
+import { addSJT, deleteSJT } from '@/services/idb/starsJTags';
+import { addTag, ITag } from '@/services/idb/tag';
+import { fetchGroups } from '@/options/slices/groupSlice';
+import { selectorItem } from '@/options/slices/selectedItemSlice';
+import { fetchStarsByGroup, fetchStarsByTag } from '@/options/slices/starsSlice';
+import { fetchTags } from '@/options/slices/tagSlice';
 import { RootState } from '@/options/store';
 import EditIcon from '@mui/icons-material/Edit';
 import {

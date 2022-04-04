@@ -1,5 +1,5 @@
-import { deleteGroup, IGroup, updateGroup } from '@/content_script/services/local/group';
-import { fetchGroups } from '@/options/pages/Home/slices/groupSlice';
+import { deleteGroup, IGroup, updateGroup } from '@/services/idb/group';
+import { fetchGroups } from '@/options/slices/groupSlice';
 import styled from '@emotion/styled';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import { Button, IconButton, Popover, Stack, TextField } from '@mui/material';

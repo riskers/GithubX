@@ -1,6 +1,6 @@
 import ChromeStorage from '@/common/ChromeStorage';
-import { db } from '@/content_script/services/local/db';
-import { addSJT, deleteSJTByTid } from '@/content_script/services/local/starsJTags';
+import { db } from '@/services/idb/db';
+import { addSJT, deleteSJTByTid } from '@/services/idb/starsJTags';
 
 export interface ITag {
   id?: number;

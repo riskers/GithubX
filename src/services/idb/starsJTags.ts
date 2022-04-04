@@ -1,4 +1,4 @@
-import { db } from '@/content_script/services/local/db';
+import { db } from '@/services/idb/db';
 
 export interface IStarsJTags {
   id?: number;

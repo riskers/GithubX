@@ -1,8 +1,8 @@
 import { IStar } from '@/common/api';
 import Star from '@/options/components/star';
-import { DEFAULT_SELECTED_ITEM, selectorItem } from '@/options/pages/Home/slices/selectedItemSlice';
-import { selectedStarSlice, selectorStar } from '@/options/pages/Home/slices/selectedStar';
-import { fetchStarsByGroup, fetchStarsByTag } from '@/options/pages/Home/slices/starsSlice';
+import { DEFAULT_SELECTED_ITEM, selectorItem } from '@/options/slices/selectedItemSlice';
+import { selectedStarSlice, selectorStar } from '@/options/slices/selectedStar';
+import { fetchStarsByGroup, fetchStarsByTag } from '@/options/slices/starsSlice';
 import { AppDispatch, RootState } from '@/options/store';
 import { Stack } from '@mui/material';
 import classNames from 'classnames';

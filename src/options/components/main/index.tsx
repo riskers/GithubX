@@ -1,5 +1,5 @@
 import { getRepoContent } from '@/common/api';
-import { selectorStar } from '@/options/pages/Home/slices/selectedStar';
+import { selectorStar } from '@/options/slices/selectedStar';
 import * as React from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useSelector } from 'react-redux';
