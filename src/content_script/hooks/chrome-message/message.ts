@@ -10,4 +10,5 @@ const ACTIONS = [
 
 export interface IAction {
   type: typeof ACTIONS[number];
+  payload?: any;
 }

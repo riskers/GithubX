@@ -2,12 +2,10 @@ import { IAction } from '@/content_script/hooks/chrome-message/message';
 import { useEffect, useState } from 'react';
 
 /**
- * receive message from background to content script
+ * receive message from background to content script and send message to background
  */
 const ChromeMessageHook = () => {
   const [message, setMessage] = useState<IAction>(null);
-
-  console.log(message);
 
   const handleMessage = (request) => {
     const { type } = request;
@@ -26,7 +24,7 @@ const ChromeMessageHook = () => {
     chrome.runtime.sendMessage(message);
   };
 
-  return { message, sendMessage };
+  return [message, sendMessage] as const;
 };
 
 export default ChromeMessageHook;
