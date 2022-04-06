@@ -1,37 +1,27 @@
-import { getFullName, getHtmlUrl } from '@/common/tools';
-import React from 'react';
+import ChromeMessageHook from '@/content_script/hooks/chrome-message';
+import {
+  ACTION_INTERCEPT_NETWORK_STAR_CLOSE,
+  ACTION_INTERCEPT_NETWORK_STAR_OPEN,
+} from '@/content_script/hooks/chrome-message/message';
+import { Dialog } from '@mui/material';
+import React, { useState } from 'react';
 
 const Repo: React.FC = () => {
-  const clickStarBtn = (e: Event) => {
-    const target = e.target as Element;
-    if (target.classList.contains('btn-with-count')) {
-      const parent = target.parentElement;
-      const fullName = getFullName();
-      if (parent.classList.contains('unstarred')) {
-        // 点击了 STAR 按钮
-        console.log('star');
-        // addStar({
-        //   starredAt: '',
-        //   fullName,
-        //   htmlUrl: getHtmlUrl(),
-        //   group: '',
-        //   tags: [],
-        // });
-      } else {
-        // 点击了 UNSTAR 按钮
-        console.log('unstar');
-        // delStar(fullName);
-      }
-    }
+  const { message, sendMessage } = ChromeMessageHook();
+
+  if (!message) return null;
+
+  const { type } = message;
+
+  const handleClose = async () => {
+    sendMessage({ type: ACTION_INTERCEPT_NETWORK_STAR_CLOSE });
   };
 
-  React.useEffect(() => {
-    document.addEventListener('click', clickStarBtn, false);
-
-    return () => document.removeEventListener('click', clickStarBtn);
-  }, []);
-
-  return <>repo page</>;
+  return (
+    <Dialog onClose={handleClose} open={type === ACTION_INTERCEPT_NETWORK_STAR_OPEN}>
+      this is repo!
+    </Dialog>
+  );
 };
 
 export default Repo;

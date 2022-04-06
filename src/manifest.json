@@ -21,7 +21,7 @@
       "js": [
         "content_script.bundle.js"
       ],
-      "run_at": "document_idle"
+      "run_at": "document_end"
     }
   ],
   "background": {
@@ -30,7 +30,9 @@
   },
   "permissions": [
     "storage",
-    "unlimitedStorage"
+    "unlimitedStorage",
+    "webRequest",
+    "tabs"
   ],
   "host_permissions": [
     "<all_urls>"
