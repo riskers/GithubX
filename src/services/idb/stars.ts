@@ -60,6 +60,11 @@ export const getStarInfo = async (id: number): Promise<IStar> => {
   return starInfo;
 };
 
+export const getStarInfoByUrl = async (url: string) => {
+  const starInfo = await db.stars.where({ htmlUrl: url }).first();
+  return starInfo;
+};
+
 export const addStar = async (star: IStar): Promise<void> => {
   await db.stars.put(star);
 };

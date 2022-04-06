@@ -16,7 +16,7 @@ class GithubPlusDB extends Dexie {
     this.version(1).stores({
       groups: '++id',
       tags: '++id',
-      stars: '++id, groupId -> groups.id',
+      stars: '++id, groupId -> groups.id, htmlUrl',
       starsJTags: '[sid+tid], sid -> stars.id, tid -> tags.id',
     });
   }

@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
  * receive message from background to content script and send message to background
  */
 const ChromeMessageHook = () => {
-  const [message, setMessage] = useState<IAction>(null);
+  const [message, setMessage] = useState<IAction<any>>(null);
 
   const handleMessage = (request) => {
     const { type } = request;
@@ -20,7 +20,7 @@ const ChromeMessageHook = () => {
     };
   }, []);
 
-  const sendMessage = (message: IAction) => {
+  const sendMessage = (message: IAction<any>) => {
     chrome.runtime.sendMessage(message);
   };
 

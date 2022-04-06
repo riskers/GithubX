@@ -8,7 +8,7 @@ const ACTIONS = [
   ACTION_INTERCEPT_NETWORK_STAR_CLOSE,
 ] as const;
 
-export interface IAction {
+export interface IAction<T> {
   type: typeof ACTIONS[number];
-  payload?: any;
+  payload?: T;
 }
