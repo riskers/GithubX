@@ -82,7 +82,7 @@ const Star = (props: IProps) => {
             d: AutocompleteChangeDetails<ITag> | AutocompleteChangeDetails<string>,
             // eslint-disable-next-line max-params
           ) => {
-            console.log(v, r, d);
+            // console.log(v, r, d);
             // const vlist = repoTagsList.map((tag) => tag.id);
             const sid = props.star.id;
 
@@ -119,11 +119,15 @@ const Star = (props: IProps) => {
             return option.name;
           }}
           renderTags={(value: ITag[], getTagProps) => {
-            console.log('renderTags', value);
             return value.map((option, index) => {
-              console.log(option);
               return (
-                <Chip color="success" label={tags[index].name} key={index} size="small" {...getTagProps({ index })} />
+                <Chip
+                  color="success"
+                  label={allTagsList[index].name}
+                  key={index}
+                  size="small"
+                  {...getTagProps({ index })}
+                />
               );
             });
           }}
@@ -169,7 +173,7 @@ const Star = (props: IProps) => {
             handleChangeGroup();
           }}
         >
-          {groups.data.map((group) => {
+          {groupList.map((group) => {
             return (
               <MenuItem key={group.id} value={group.id}>
                 {group.name}
