@@ -24,16 +24,12 @@ const SideBar = () => {
   const groups = useSelector((state: RootState) => state.groups);
   const tags = useSelector((state: RootState) => state.tags);
 
-  const fetchData = React.useCallback(() => {
+  React.useEffect(() => {
     (async () => {
       dispatch(fetchGroups());
       dispatch(fetchTags());
     })();
-  }, []);
-
-  React.useEffect(() => {
-    fetchData();
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="sidebar">

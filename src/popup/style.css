@@ -1,0 +1,111 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+img {
+  max-width: 100%;
+}
+
+.github-plus-app {
+  display: grid;
+  grid-template-columns: 280px 400px 1fr;
+  column-gap: 15px;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar {
+  grid-column: 1/2;
+  background: #13283a;
+  color: #b8c2cc;
+}
+
+.group-container {
+
+}
+
+.group-container:hover .edit-group {
+  display: block;
+}
+
+.group-container:hover .star-number {
+  display: none;
+}
+
+.edit-group {
+  display: none;
+}
+
+.star-number {
+
+}
+
+.group {
+  cursor: pointer;
+  color: #cdcdcd;
+  font-size: 16px;
+  padding:15px;
+}
+
+.group.selected:hover {
+  color: #2BA379;
+}
+
+.group.selected {
+  color: #2BA379;
+  /* background: #0c2133; */
+  font-weight: 600;
+}
+
+.group:hover {
+  color: #FFF;
+}
+
+.star-list {
+  grid-column: 2/3;
+  border-left: 1px solid #dae1e7;
+  border-right: 1px solid #dae1e7;
+  max-height: 100vh;
+  overflow-y: scroll;
+}
+
+.star{
+  color: #2BA379;
+  border-bottom: 1px solid #dae1e7;
+  padding: 10px 17px;
+  margin: 0;
+  cursor: pointer;
+  /* min-height: 130px; */
+}
+
+.edit-area {
+  padding: 25px 0 10px 0;
+}
+
+.star.selected {
+  border-left: 3px solid #21a179;
+  background-color: #f8fafc;
+}
+
+.star h2 {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.star:hover .edit-label {
+  opacity: 100;
+}
+
+.edit-label {
+  transition: opacity 0.2s;
+  opacity: 0;
+  /* margin: 10px 3px ; */
+}
+
+.main {
+  grid-column: 3/4;
+  max-height: 100vh;
+  overflow-y: scroll;
+}

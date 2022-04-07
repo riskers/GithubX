@@ -1,15 +1,19 @@
-import { IAction } from '@/content_script/hooks/chrome-message/message';
+import { IInterceptStar } from '@/background/network';
+import { IAction } from '@/content_script/hooks/oneway-message/message';
 import { useEffect, useState } from 'react';
 
 /**
  * receive message from background to content script and send message to background
  */
-const ChromeMessageHook = () => {
-  const [message, setMessage] = useState<IAction<any>>(null);
+const ChromeMessageHook = <T>() => {
+  const [message, setMessage] = useState<IAction<T>>(null);
+
+  const sendMessage = (message: IAction<any>) => {
+    chrome.runtime.sendMessage(message);
+  };
 
   const handleMessage = (request) => {
-    const { type } = request;
-    setMessage({ type });
+    setMessage(request);
   };
 
   useEffect(() => {
@@ -19,10 +23,6 @@ const ChromeMessageHook = () => {
       chrome.runtime.onMessage.removeListener(handleMessage);
     };
   }, []);
-
-  const sendMessage = (message: IAction<any>) => {
-    chrome.runtime.sendMessage(message);
-  };
 
   return [message, sendMessage] as const;
 };

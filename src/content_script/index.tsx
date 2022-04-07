@@ -1,7 +1,8 @@
 import Repo from '@/content_script/pages/repo';
+import store from '@/content_script/store';
 import * as React from 'react';
-import { render } from 'react-dom';
-import './style.css';
+import * as ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 
 window.addEventListener('load', () => {
   const href = location.href;
@@ -11,7 +12,12 @@ window.addEventListener('load', () => {
     const dom = document.createElement('div');
     document.body.appendChild(dom);
 
-    render(<Repo />, dom);
+    ReactDOM.render(
+      <Provider store={store}>
+        <Repo />
+      </Provider>,
+      dom,
+    );
   }
 
   /* if (href === `https://github.com/${username}?tab=following`) {

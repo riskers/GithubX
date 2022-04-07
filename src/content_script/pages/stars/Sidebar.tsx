@@ -1,5 +1,5 @@
 import { IStar } from '@/common/api';
-import { ACTION_SHOW_OPTION_PAGE } from '@/content_script/hooks/chrome-message/message';
+import { ACTION_SHOW_OPTION_PAGE } from '@/content_script/hooks/oneway-message/message';
 import { DEFAULT_GROUP, getGroupList, IGroup, resetGroup } from '@/services/idb/group';
 import { setSettings } from '@/services/idb/settings';
 import { getStarsListByGroup, resetStars } from '@/services/idb/stars';
