@@ -1,8 +1,8 @@
+import theme from '@/common/theme';
 import Repo from '@/content_script/pages/repo';
-import store from '@/content_script/store';
+import { ThemeProvider } from '@mui/material';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
 
 window.addEventListener('load', () => {
   const href = location.href;
@@ -13,9 +13,9 @@ window.addEventListener('load', () => {
     document.body.appendChild(dom);
 
     ReactDOM.render(
-      <Provider store={store}>
+      <ThemeProvider theme={theme}>
         <Repo />
-      </Provider>,
+      </ThemeProvider>,
       dom,
     );
   }

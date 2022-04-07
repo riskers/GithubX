@@ -1,13 +1,19 @@
 import { IStar } from '@/common/api';
 import {
-  ACTION_INTERCEPT_NETWORK_STAR_CLOSE,
   ACTION_SHOW_OPTION_PAGE,
-  ACTION_INTERCEPT_NETWORK_STAR_OPEN,
+  ACTION_INTERCEPT_NETWORK_GET_INFO,
+  ACTION_INTERCEPT_NETWORK_STAR_ADD,
   IAction,
 } from '@/content_script/hooks/oneway-message/message';
 import { getGroupList, IGroup } from '@/services/idb/group';
 import { getStarInfoByUrl } from '@/services/idb/stars';
 import { getTagsList, ITag } from '@/services/idb/tag';
+
+export interface IIntercepotAddStar {
+  starInfo: IStar;
+  groupId: number;
+  tagsId: number[];
+}
 
 export interface IInterceptStar {
   starInfo: IStar;
@@ -31,7 +37,7 @@ chrome.webRequest.onCompleted.addListener(
     const tags = await getTagsList();
 
     chrome.tabs.sendMessage<IAction<IInterceptStar>>(tab.id, {
-      type: ACTION_INTERCEPT_NETWORK_STAR_OPEN,
+      type: ACTION_INTERCEPT_NETWORK_GET_INFO,
       payload: {
         starInfo,
         groups,
@@ -45,7 +51,7 @@ chrome.webRequest.onCompleted.addListener(
   },
 );
 
-chrome.runtime.onMessage.addListener(async (request) => {
+chrome.runtime.onMessage.addListener(async (request: IAction<any>) => {
   const { type } = request;
 
   // open option page in content_script page
@@ -53,12 +59,8 @@ chrome.runtime.onMessage.addListener(async (request) => {
     chrome.runtime.openOptionsPage();
   }
 
-  if (type === ACTION_INTERCEPT_NETWORK_STAR_CLOSE) {
-    const [tab] = await chrome.tabs.query({
-      active: true,
-      currentWindow: true,
-    });
-
-    chrome.tabs.sendMessage(tab.id, { type: ACTION_INTERCEPT_NETWORK_STAR_CLOSE });
+  if (type === ACTION_INTERCEPT_NETWORK_STAR_ADD) {
+    console.log(request.payload);
+    // add star
   }
 });

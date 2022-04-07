@@ -8,15 +8,15 @@ import { useEffect, useState } from 'react';
 const ChromeMessageHook = <T>() => {
   const [message, setMessage] = useState<IAction<T>>(null);
 
-  const sendMessage = (message: IAction<any>) => {
+  const sendMessage = <K>(message: IAction<K>) => {
     chrome.runtime.sendMessage(message);
   };
 
-  const handleMessage = (request) => {
-    setMessage(request);
-  };
-
   useEffect(() => {
+    const handleMessage = (request: IAction<T>) => {
+      setMessage(request);
+    };
+
     chrome.runtime.onMessage.addListener(handleMessage);
 
     return () => {
