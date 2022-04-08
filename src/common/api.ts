@@ -62,6 +62,26 @@ export const getStarListFromGithub = async (username: string, page: number): Pro
   }
 };
 
+export const getRepoInfo = async (fullName: string): Promise<Omit<IStar, 'groupId'>> => {
+  const url = `https://api.github.com/repos/${fullName}`;
+
+  const response = await fetch(url, {
+    headers: {
+      Accept: 'application/vnd.github.v3.star+json',
+    },
+  });
+
+  if (response.ok) {
+    const data: IRepo = await response.json();
+
+    return {
+      id: data.id,
+      fullName: data.full_name,
+      htmlUrl: data.html_url,
+    };
+  }
+};
+
 export interface IReadmeResponse {
   url: string;
   content: string;

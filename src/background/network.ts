@@ -1,22 +1,23 @@
-import { IStar } from '@/common/api';
+import { getRepoInfo, IStar } from '@/common/api';
 import {
-  ACTION_SHOW_OPTION_PAGE,
   ACTION_INTERCEPT_NETWORK_GET_INFO,
   ACTION_INTERCEPT_NETWORK_STAR_ADD,
+  ACTION_SHOW_OPTION_PAGE,
   IAction,
 } from '@/content_script/hooks/oneway-message/message';
 import { getGroupList, IGroup } from '@/services/idb/group';
-import { getStarInfoByUrl } from '@/services/idb/stars';
+import { addStar, getStarInfoByUrl } from '@/services/idb/stars';
+import { addSJT } from '@/services/idb/starsJTags';
 import { getTagsList, ITag } from '@/services/idb/tag';
 
 export interface IIntercepotAddStar {
-  starInfo: IStar;
+  fullName: string;
   groupId: number;
   tagsId: number[];
 }
 
 export interface IInterceptStar {
-  starInfo: IStar;
+  fullName: string;
   groups: IGroup[];
   tags: ITag[];
 }
@@ -29,6 +30,7 @@ chrome.webRequest.onCompleted.addListener(
       active: true,
       currentWindow: true,
     });
+    console.log(details);
 
     const htmlUrl = details.url.replace(/(.*)(\/(unstar|star))$/gi, '$1');
 
@@ -39,7 +41,7 @@ chrome.webRequest.onCompleted.addListener(
     chrome.tabs.sendMessage<IAction<IInterceptStar>>(tab.id, {
       type: ACTION_INTERCEPT_NETWORK_GET_INFO,
       payload: {
-        starInfo,
+        fullName: htmlUrl.replace('https://github.com/', ''),
         groups,
         tags,
       },
@@ -59,8 +61,19 @@ chrome.runtime.onMessage.addListener(async (request: IAction<any>) => {
     chrome.runtime.openOptionsPage();
   }
 
+  /**
+   * 1. add star
+   * 2. set group and tag
+   */
   if (type === ACTION_INTERCEPT_NETWORK_STAR_ADD) {
-    console.log(request.payload);
-    // add star
+    const { fullName, groupId, tagsId } = (request as IAction<IIntercepotAddStar>).payload;
+
+    const starInfo = await getRepoInfo(fullName);
+
+    await addStar({ ...starInfo, groupId });
+
+    for (let tagId of tagsId) {
+      await addSJT(tagId, starInfo.id);
+    }
   }
 });

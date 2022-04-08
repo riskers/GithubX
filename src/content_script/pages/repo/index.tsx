@@ -36,7 +36,7 @@ const Repo: React.FC = () => {
 
   if (!message) return null;
 
-  const { starInfo, groups, tags } = message.payload;
+  const { fullName, groups, tags } = message.payload;
 
   return (
     <Dialog onClose={handleClose} open={message?.type === ACTION_INTERCEPT_NETWORK_GET_INFO}>
@@ -71,7 +71,10 @@ const Repo: React.FC = () => {
 
         {tags.length !== 0 && (
           <FormControl fullWidth style={{ marginTop: 15 }}>
+            <InputLabel id="uncontrolled-native-tag">Tag</InputLabel>
             <Select
+              labelId="uncontrolled-native-tag"
+              variant="outlined"
               inputProps={{
                 style: {
                   color: 'red',
@@ -83,7 +86,7 @@ const Repo: React.FC = () => {
                   color: 'red',
                 },
               }}
-              label="tag"
+              // label="tag"
               multiple
               input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
               value={tagIds}
@@ -92,13 +95,20 @@ const Repo: React.FC = () => {
                 const tids = typeof value === 'string' ? value.split(',') : value;
                 setTagIds(tids.map((tid) => parseInt(tid, 10)));
               }}
-              renderValue={(selected) => (
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-                  {selected.map((value) => (
-                    <Chip key={value} label={value} color="success" size="small" />
-                  ))}
-                </Box>
-              )}
+              renderValue={(selected) => {
+                const getTagName = (v: number) => {
+                  const z = tags.find((tag) => tag.id === v);
+                  return z.name;
+                };
+
+                return (
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                    {selected.map((tagId) => (
+                      <Chip key={tagId} label={getTagName(tagId)} color="success" size="small" />
+                    ))}
+                  </Box>
+                );
+              }}
             >
               {tags?.map((tag) => {
                 return (
@@ -125,12 +135,7 @@ const Repo: React.FC = () => {
               payload: {
                 groupId,
                 tagsId: tagIds,
-                starInfo: {
-                  id: 1,
-                  htmlUrl: '',
-                  groupId,
-                  fullName: '',
-                },
+                fullName,
               },
             });
           }}
