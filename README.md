@@ -4,6 +4,8 @@
 
 Tag and group your github stars:
 
+![](https://i.imgur.com/dZlYXCi.png)
+
 ## Data Always Storaged on Local
 
 Can't sync data with multi drive.
@@ -11,10 +13,13 @@ Only Storaged on Local drive.
 
 ## TODO
 
-* [ ] Auto tag and group when staring a repo
-* [ ] Alias Github Users
 * [ ] Manger Gist
-* [ ] MySQL And IDB compatibility
+* [ ] Alias Github Users
+* [ ] MySQL And IDB compatibility (Sorting out the interface hierarchy)
+* [ ] Github Auth (For API faster)
 
+## Thanks
 
-Powered By [react-chrome-boilerplate](https://github.com/riskers/react-chrome-boilerplate)
+* [Dexie](https://dexie.org/): wondful IndexedDB lib
+* [MUI](https://mui.com/): my favorite React UI lib
+* [react-chrome-boilerplate](https://github.com/riskers/react-chrome-boilerplate) I made for developing Chrome Extension in React

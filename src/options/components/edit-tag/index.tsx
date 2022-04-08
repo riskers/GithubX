@@ -120,6 +120,7 @@ const EditTag: React.FC<IProps> = (props: IProps) => {
 };
 
 export default React.memo(EditTag, (prevProps, nextProps) => {
-  if (prevProps.tag.id === nextProps.tag.id) return true;
+  if (prevProps.tag.name === nextProps.tag.name) return true;
+
   return false;
 });
