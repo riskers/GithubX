@@ -1,24 +1,20 @@
 import { RootState } from '@/options/store';
-import { createSlice } from '@reduxjs/toolkit';
+import { IGroup } from '@/services/idb/group';
+import { ITag } from '@/services/idb/tag';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const DEFAULT_GROUP = { id: -1, name: '' };
-const DEFAULT_TAG = { id: -1, name: '' };
+const NO_SELECT_GROUP = { id: -1, name: '' };
+const NO_SELECT_TAG = { id: -1, name: '' };
 
 interface ISelectItem {
-  group: {
-    id: number;
-    name: string;
-  };
-  tag: {
-    id: number;
-    name: string;
-  };
+  group: IGroup;
+  tag: ITag;
   active: 'tag' | 'group' | null;
 }
 
 export const DEFAULT_SELECTED_ITEM = {
-  group: DEFAULT_GROUP,
-  tag: DEFAULT_TAG,
+  group: NO_SELECT_GROUP,
+  tag: NO_SELECT_TAG,
   active: null,
 };
 
@@ -28,14 +24,14 @@ export const selectedItemSlice = createSlice({
   name: 'selectedItem',
   initialState,
   reducers: {
-    selectGroup: (state, action) => {
+    selectGroup: (state, action: PayloadAction<Pick<ISelectItem, 'group'>>) => {
       // https://github.com/reduxjs/redux-toolkit/issues/521#issuecomment-624796711
       state.group = action.payload.group;
-      state.tag = DEFAULT_TAG;
+      state.tag = NO_SELECT_TAG;
       state.active = 'group';
     },
-    selectTag: (state, action) => {
-      state.group = DEFAULT_GROUP;
+    selectTag: (state, action: PayloadAction<Pick<ISelectItem, 'tag'>>) => {
+      state.group = NO_SELECT_GROUP;
       state.tag = action.payload.tag;
       state.active = 'tag';
     },

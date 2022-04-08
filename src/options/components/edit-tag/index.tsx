@@ -1,4 +1,7 @@
+import { selectedItemSlice } from '@/options/slices/selectedItemSlice';
+import { fetchStarsByGroup } from '@/options/slices/starsSlice';
 import { fetchTags } from '@/options/slices/tagSlice';
+import { DEFAULT_GROUP } from '@/services/idb/group';
 import { deleteTag, ITag, updateTag } from '@/services/idb/tag';
 import styled from '@emotion/styled';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
@@ -38,6 +41,9 @@ const EditTag: React.FC<IProps> = (props: IProps) => {
 
   const handleDelete = async () => {
     await deleteTag(props.tag.id);
+    dispatch(fetchStarsByGroup(DEFAULT_GROUP.id));
+    // after delete a tag, get a default group
+    dispatch(selectedItemSlice.actions.selectGroup({ group: DEFAULT_GROUP }));
     dispatch(fetchTags());
   };
 

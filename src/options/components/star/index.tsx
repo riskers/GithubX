@@ -1,13 +1,12 @@
 import { IStar } from '@/common/api';
-import { addStar } from '@/services/idb/stars';
-import { addSJT, deleteSJT } from '@/services/idb/starsJTags';
-import { addTag, ITag } from '@/services/idb/tag';
 import { fetchGroups } from '@/options/slices/groupSlice';
 import { selectorItem } from '@/options/slices/selectedItemSlice';
 import { fetchStarsByGroup, fetchStarsByTag } from '@/options/slices/starsSlice';
 import { fetchTags } from '@/options/slices/tagSlice';
 import { RootState } from '@/options/store';
-import EditIcon from '@mui/icons-material/Edit';
+import { addStar } from '@/services/idb/stars';
+import { addSJT, deleteSJT } from '@/services/idb/starsJTags';
+import { addTag, ITag } from '@/services/idb/tag';
 import {
   Autocomplete,
   AutocompleteChangeDetails,
@@ -62,8 +61,6 @@ const Star = (props: IProps) => {
     return () => document.removeEventListener('click', handleClick, false);
   });
 
-  console.log(props.star.tags);
-
   return (
     <div className="edit-repo">
       {openEditTag ? (
@@ -84,7 +81,7 @@ const Star = (props: IProps) => {
             d: AutocompleteChangeDetails<ITag> | AutocompleteChangeDetails<string>,
             // eslint-disable-next-line max-params
           ) => {
-            console.log(v, r, d);
+            // console.log(v, r, d);
 
             const sid = props.star.id;
 
@@ -194,7 +191,6 @@ const Star = (props: IProps) => {
             size="small"
             label={props.star.group.name}
             color="secondary"
-            icon={<EditIcon />}
             clickable
             style={{ marginRight: 5, borderRadius: 5, marginTop: 10 }}
           />
