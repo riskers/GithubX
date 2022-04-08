@@ -15,7 +15,14 @@ export const getStarsListByGroup = async (groupId: number): Promise<IStar[]> => 
     .where({
       groupId,
     })
-    .with({ group: 'groupId' });
+    .reverse()
+    .sortBy('updateTime');
+
+  const group = await getGroupInfo(groupId);
+
+  for (let star of starList) {
+    star.group = group;
+  }
 
   for (const star of starList) {
     const tags = await getTagsInStar(star.id);
@@ -48,7 +55,11 @@ export const getStarsListByTag = async (tagId: number) => {
     (tidInSid as any).star.tags = tags;
   }
 
-  return tidInSidList.map((xx) => (xx as any).star);
+  return tidInSidList
+    .map((xx) => (xx as any).star)
+    .sort((a, b) => {
+      return a.updateTime - b.updateTime;
+    });
 };
 
 export const getStarInfo = async (id: number): Promise<IStar> => {
@@ -65,6 +76,9 @@ export const getStarInfoByUrl = async (url: string) => {
   return starInfo;
 };
 
+/**
+ * save and update star
+ */
 export const addStar = async (star: IStar): Promise<void> => {
   await db.stars.put(star);
 };

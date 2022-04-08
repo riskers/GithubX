@@ -70,7 +70,7 @@ chrome.runtime.onMessage.addListener(async (request: IAction<any>) => {
 
     const starInfo = await getRepoInfo(fullName);
 
-    await addStar({ ...starInfo, groupId });
+    await addStar({ ...starInfo, groupId, updateTime: Date.now(), createTime: Date.now() });
 
     for (let tagId of tagsId) {
       await addSJT(tagId, starInfo.id);
