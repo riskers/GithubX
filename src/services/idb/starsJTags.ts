@@ -23,6 +23,14 @@ export const deleteSJT = async (tid: number, sid: number) => {
   await db.starsJTags.where({ tid, sid }).delete();
 };
 
+export const deleteSJTBySid = async (sid: number) => {
+  await db.starsJTags
+    .where({
+      sid,
+    })
+    .delete();
+};
+
 export const deleteSJTByTid = async (tid: number) => {
   await db.starsJTags
     .where({

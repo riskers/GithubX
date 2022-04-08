@@ -13,13 +13,7 @@ export const getGistTitle = (): string => {
 };
 
 // repo page
-export const getFullName = (): string => {
-  location.href.match(/(?:github.com)\/(\w+\/\w+)/gi);
-
-  return RegExp.$1;
-};
-
-export const getHtmlUrl = (): string => {
-  const m = location.href.match(/(github.com\/\w+\/\w+)/gi);
-  return m[0];
+export const getFullName = (details: chrome.webRequest.WebResponseCacheDetails): string => {
+  const url = details.url.replace(/(.*)(\/(unstar|star))$/gi, '$1');
+  return url.replace('https://github.com/', '');
 };

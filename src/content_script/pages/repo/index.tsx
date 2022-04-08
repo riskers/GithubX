@@ -1,9 +1,6 @@
 import { IIntercepotAddStar, IInterceptStar } from '@/background/network';
 import ChromeMessageHook from '@/content_script/hooks/oneway-message';
-import {
-  ACTION_INTERCEPT_NETWORK_GET_INFO,
-  ACTION_INTERCEPT_NETWORK_STAR_ADD,
-} from '@/content_script/hooks/oneway-message/message';
+import { INTERCEPT_GETSTARINFO_B2C, INTERCEPT_STARADD_C2B } from '@/content_script/hooks/oneway-message/message';
 import { DEFAULT_GROUP } from '@/services/idb/group';
 import {
   Button,
@@ -23,23 +20,35 @@ import { Box } from '@mui/system';
 import React, { useState } from 'react';
 
 const Repo: React.FC = () => {
-  // set group id = 0 when did't star this repo before:
+  /**
+   * set group id = 0 when did't star this repo before:
+   */
   const [groupId, setGroupId] = useState<number>(DEFAULT_GROUP.id);
+
   const [tagIds, setTagIds] = useState<number[]>([]);
+
   const [message, sendMessage] = ChromeMessageHook<IInterceptStar>();
 
-  const handleClose = async () => {
-    sendMessage({ type: ACTION_INTERCEPT_NETWORK_STAR_ADD });
+  const open = Boolean(message?.type === INTERCEPT_GETSTARINFO_B2C);
+
+  const addStar = () => {
+    sendMessage<IIntercepotAddStar>({
+      type: INTERCEPT_STARADD_C2B,
+      payload: {
+        groupId,
+        tagsId: tagIds,
+        fullName,
+      },
+    });
   };
 
-  console.log(message);
-
   if (!message) return null;
+  if (message.type !== INTERCEPT_GETSTARINFO_B2C) return null;
 
   const { fullName, groups, tags } = message.payload;
 
   return (
-    <Dialog onClose={handleClose} open={message?.type === ACTION_INTERCEPT_NETWORK_GET_INFO}>
+    <Dialog open={open}>
       <DialogTitle>Group and Tag</DialogTitle>
       <DialogContent sx={{ width: 460 }}>
         <FormControl fullWidth>
@@ -75,18 +84,6 @@ const Repo: React.FC = () => {
             <Select
               labelId="uncontrolled-native-tag"
               variant="outlined"
-              inputProps={{
-                style: {
-                  color: 'red',
-                },
-              }}
-              sx={{
-                color: 'success.main',
-                '& label': {
-                  color: 'red',
-                },
-              }}
-              // label="tag"
               multiple
               input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
               value={tagIds}
@@ -122,22 +119,17 @@ const Repo: React.FC = () => {
         )}
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
+        <Button
+          onClick={() => {
+            addStar();
+          }}
+        >
+          Cancel
+        </Button>
         <Button
           autoFocus
-          onClick={async () => {
-            console.log(groupId);
-            console.log(tagIds);
-            // handleClose();
-
-            sendMessage<IIntercepotAddStar>({
-              type: ACTION_INTERCEPT_NETWORK_STAR_ADD,
-              payload: {
-                groupId,
-                tagsId: tagIds,
-                fullName,
-              },
-            });
+          onClick={() => {
+            addStar();
           }}
         >
           OK
