@@ -20,12 +20,8 @@ Only Storaged on Local drive.
 
 ## TODO
 
-* [ ] Manger Gist
-* [ ] Reset
-* [ ] i18n
-* [ ] Alias Github Users
-* [ ] MySQL And IDB compatibility (Sorting out the interface hierarchy)
-* [ ] Github Auth (For API faster)
+* [0.0.2](https://github.com/riskers/github-plus-extension/projects/1)
+* [0.0.3](https://github.com/riskers/github-plus-extension/projects/3)
 
 ## Thanks
 
