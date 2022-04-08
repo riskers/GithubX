@@ -62,6 +62,8 @@ const Star = (props: IProps) => {
     return () => document.removeEventListener('click', handleClick, false);
   });
 
+  console.log(props.star.tags);
+
   return (
     <div className="edit-repo">
       {openEditTag ? (
@@ -82,16 +84,24 @@ const Star = (props: IProps) => {
             d: AutocompleteChangeDetails<ITag> | AutocompleteChangeDetails<string>,
             // eslint-disable-next-line max-params
           ) => {
-            // console.log(v, r, d);
-            // const vlist = repoTagsList.map((tag) => tag.id);
+            console.log(v, r, d);
+
             const sid = props.star.id;
 
             if (r === 'createOption') {
-              await addTag(d.option as string, sid);
+              const option = d.option as string;
+              const exist = props.star.tags.map((tag) => tag.name).some((tagName) => tagName === option);
+
+              if (exist) return;
+              await addTag(option, sid);
             }
 
             if (r === 'selectOption') {
               const tag = d.option as ITag;
+
+              const exist = props.star.tags.map((tag) => tag.name).some((tagName) => tagName === tag.name);
+              if (exist) return;
+
               await addSJT(tag.id, sid);
             }
 
@@ -120,15 +130,7 @@ const Star = (props: IProps) => {
           }}
           renderTags={(value: ITag[], getTagProps) => {
             return value.map((option, index) => {
-              return (
-                <Chip
-                  color="success"
-                  label={allTagsList[index].name}
-                  key={index}
-                  size="small"
-                  {...getTagProps({ index })}
-                />
-              );
+              return <Chip color="success" label={option.name} key={index} size="small" {...getTagProps({ index })} />;
             });
           }}
           renderInput={(params) => {
