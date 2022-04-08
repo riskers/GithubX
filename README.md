@@ -1,10 +1,17 @@
 # github-plus-extension
 
+> Chrome Extension enhance github
+
+
 ## Manger Github Stars Repo
 
 Tag and group your github stars:
 
 ![](https://i.imgur.com/dZlYXCi.png)
+
+## Download
+
+https://chrome.google.com/webstore/detail/github-plus/nmcddfeclkbhehidjoadbmkaajoppapo
 
 ## Data Always Storaged on Local
 
