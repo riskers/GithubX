@@ -14,6 +14,7 @@ import { Button, Chip, Divider, Stack, TextField } from '@mui/material';
 import classNames from 'classnames';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import Logo from '@/options/components/header';
 
 const SideBar = () => {
   const [openNewGroup, setOpenNewGroup] = React.useState<boolean>(false);
@@ -33,6 +34,7 @@ const SideBar = () => {
 
   return (
     <div className="sidebar">
+      <Logo />
       <Stack direction="row" justifyContent="space-between" alignItems="center" style={{ padding: '13px' }}>
         <Stack>STARS</Stack>
         <Button>
