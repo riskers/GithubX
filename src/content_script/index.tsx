@@ -5,20 +5,18 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 window.addEventListener('load', () => {
-  const href = location.href;
+  // const href = location.href;
 
   // REPO page
-  if (href === 'https://github.com/airbnb/visx') {
-    const dom = document.createElement('div');
-    document.body.appendChild(dom);
+  const dom = document.createElement('div');
+  document.body.appendChild(dom);
 
-    ReactDOM.render(
-      <ThemeProvider theme={theme}>
-        <Repo />
-      </ThemeProvider>,
-      dom,
-    );
-  }
+  ReactDOM.render(
+    <ThemeProvider theme={theme}>
+      <Repo />
+    </ThemeProvider>,
+    dom,
+  );
 
   /* if (href === `https://github.com/${username}?tab=following`) {
     const userDom = document.querySelectorAll('.d-table-cell.col-9.v-align-top.pr-3');
