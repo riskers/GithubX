@@ -13,7 +13,7 @@ const entry = {
   'popup/index': [ROOT + '/src/popup/index'],
 };
 
-module.exports = {
+const config = {
   entry: entry,
   mode: mode,
   output: {
@@ -21,7 +21,6 @@ module.exports = {
     filename: '[name].bundle.js',
     sourceMapFilename: '[name].bundle.map.js',
   },
-  devtool: 'cheap-module-source-map',
   module: {
     rules: [
       {
@@ -86,3 +85,9 @@ module.exports = {
     }),
   ],
 };
+
+if (mode === 'development') {
+  config.devtool = 'cheap-module-source-map'
+}
+
+module.exports = config;
