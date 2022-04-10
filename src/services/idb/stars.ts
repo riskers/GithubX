@@ -10,6 +10,20 @@ export const resetStars = async (username: string): Promise<void> => {
   await db.stars.bulkAdd(res);
 };
 
+export const syncStars = async (username: string): Promise<void> => {
+  const res = await getAllStarListFromGithub(username);
+
+  for (let star of res) {
+    const s = await db.stars.where({ id: star.id }).first();
+    console.log(s);
+
+    // had not existed
+    if (s !== null) {
+      db.stars.add(star);
+    }
+  }
+};
+
 export const getStarsListByGroup = async (groupId: number): Promise<IStar[]> => {
   const starList = await db.stars
     .where({

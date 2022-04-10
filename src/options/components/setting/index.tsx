@@ -1,5 +1,5 @@
 import { fetchGroups } from '@/options/slices/groupSlice';
-import { clearData, fetchSettings, settingsSlice } from '@/options/slices/settingsSlice';
+import { resetAppData, fetchSettings, settingsSlice } from '@/options/slices/settingsSlice';
 import { fetchTags } from '@/options/slices/tagSlice';
 import { RootState } from '@/options/store';
 import { usePrevious } from 'react-use';
@@ -68,7 +68,7 @@ const Settings = () => {
             variant="contained"
             disabled={settings.loading}
             onClick={async () => {
-              dispatch(clearData(username));
+              dispatch(resetAppData(username));
               if (isUpdate) {
                 setUserName('');
               }

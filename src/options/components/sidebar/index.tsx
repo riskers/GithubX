@@ -6,7 +6,7 @@ import EditTag from '@/options/components/edit-tag';
 import Logo from '@/options/components/header';
 import { fetchGroups } from '@/options/slices/groupSlice';
 import { selectedItemSlice, selectorItem } from '@/options/slices/selectedItemSlice';
-import { settingsSlice } from '@/options/slices/settingsSlice';
+import { settingsSlice, syncData } from '@/options/slices/settingsSlice';
 import { fetchTags } from '@/options/slices/tagSlice';
 import { RootState } from '@/options/store';
 import { addGroup } from '@/services/idb/group';
@@ -40,6 +40,10 @@ const SideBar = () => {
     dispatch(settingsSlice.actions.openSettingsModel());
   };
 
+  const handleSyncData = () => {
+    dispatch(syncData());
+  };
+
   return (
     <div className="sidebar">
       <Logo />
@@ -50,7 +54,7 @@ const SideBar = () => {
             <Button onClick={handleOpenSettings} title="reset app">
               <RefreshIcon sx={{ fontSize: 14 }} />
             </Button>
-            <Button title="Synchronize with the Github">
+            <Button title="Synchronize with the Github" onClick={handleSyncData}>
               <GetAppRoundedIcon color="success" sx={{ fontSize: 14 }} />
             </Button>
           </ButtonGroup>
