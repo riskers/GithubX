@@ -7,7 +7,6 @@ import * as React from 'react';
 const Home = () => {
   return (
     <>
-      <SideBar />
       <StarList />
       <Main />
       <Settings />
