@@ -1,6 +1,4 @@
-import ChromeStorage from '@/common/ChromeStorage';
-
-const CHROME_STORAGE_KEY = 'SETTINGS';
+import { db } from '@/services/idb/db';
 
 export interface ISettings {
   /**
@@ -20,21 +18,13 @@ export interface ISettings {
 }
 
 export const resetSettings = async (): Promise<void> => {
-  const cs = new ChromeStorage();
-
-  await cs.remove(CHROME_STORAGE_KEY);
-  await cs.set(CHROME_STORAGE_KEY, {});
+  await db.settings.clear();
 };
 
 export const getSettings = async (): Promise<ISettings> => {
-  const cs = new ChromeStorage();
-
-  const settings = (await cs.get(CHROME_STORAGE_KEY)) as ISettings;
-
-  return settings;
+  return await db.settings.toCollection().first();
 };
 
 export const setSettings = async (settings: ISettings): Promise<void> => {
-  const cs = new ChromeStorage();
-  await cs.set(CHROME_STORAGE_KEY, settings);
+  await db.settings.put(settings);
 };

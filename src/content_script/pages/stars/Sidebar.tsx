@@ -1,9 +1,7 @@
 import { IStar } from '@/common/api';
 import { ACTION_SHOW_OPTION_PAGE } from '@/content_script/hooks/oneway-message/message';
-import { DEFAULT_GROUP, getGroupList, IGroup, resetGroup } from '@/services/idb/group';
-import { setSettings } from '@/services/idb/settings';
-import { getStarsListByGroup, resetStars } from '@/services/idb/stars';
-import { resetTag } from '@/services/idb/tag';
+import { DEFAULT_GROUP, getGroupList, IGroup } from '@/services/idb/group';
+import { getStarsListByGroup } from '@/services/idb/stars';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import TreeItem from '@mui/lab/TreeItem';
@@ -47,13 +45,13 @@ const Sidebar = () => {
     <div className="github-plus-stars-list">
       <button
         onClick={async () => {
-          await setSettings({ username: 'riskers' });
-          await resetStars('riskers');
-          await resetGroup();
-          await resetTag();
+          // await setSettings({ username: 'riskers' });
+          // await resetStars('riskers');
+          // await resetGroup();
+          // await resetTag();
         }}
       >
-        reset riskers
+        reset
       </button>
 
       <button

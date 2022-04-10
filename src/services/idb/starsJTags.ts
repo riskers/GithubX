@@ -12,6 +12,10 @@ export interface IStarsJTags {
   tid: number;
 }
 
+export const resetStarJTag = async () => {
+  await db.starsJTags.clear();
+};
+
 export const addSJT = async (tid: number, sid: number) => {
   await db.starsJTags.add({
     tid,

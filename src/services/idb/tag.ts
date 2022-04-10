@@ -1,4 +1,3 @@
-import ChromeStorage from '@/common/ChromeStorage';
 import { db } from '@/services/idb/db';
 import { addSJT, deleteSJTByTid } from '@/services/idb/starsJTags';
 

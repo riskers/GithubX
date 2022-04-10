@@ -1,6 +1,7 @@
 import groupSlice from '@/options/slices/groupSlice';
 import selectedItemSlice from '@/options/slices/selectedItemSlice';
 import selectedStarSlice from '@/options/slices/selectedStar';
+import settingsSlice from '@/options/slices/settingsSlice';
 import starsSlice from '@/options/slices/starsSlice';
 import tagSlice from '@/options/slices/tagSlice';
 import { configureStore, ThunkDispatch } from '@reduxjs/toolkit';
@@ -20,6 +21,7 @@ const store = configureStore({
     stars: starsSlice,
     groups: groupSlice,
     tags: tagSlice,
+    settings: settingsSlice,
     selectedItem: selectedItemSlice,
     selectedStar: selectedStarSlice,
   },

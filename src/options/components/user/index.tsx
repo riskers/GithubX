@@ -1,8 +1,7 @@
-import { resetGroup } from '@/services/idb/group';
-import { getSettings, setSettings } from '@/services/idb/settings';
-import { resetStars } from '@/services/idb/stars';
-import { resetTag } from '@/services/idb/tag';
-import delay from '@/utils/delay';
+import { fetchGroups } from '@/options/slices/groupSlice';
+import { clearData, fetchSettings, settingsSlice } from '@/options/slices/settingsSlice';
+import { fetchTags } from '@/options/slices/tagSlice';
+import { RootState } from '@/options/store';
 import {
   Button,
   Dialog,
@@ -16,28 +15,32 @@ import {
   Tooltip,
 } from '@mui/material';
 import * as React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Settings = () => {
-  const [open, setOpen] = React.useState<boolean>(false);
+  const dispatch = useDispatch();
+
+  const settings = useSelector((state: RootState) => state.settings);
   const [username, setUserName] = React.useState<string>('');
-  const [syncPending, setSyncPending] = React.useState<boolean>(false);
 
   React.useEffect(() => {
-    (async () => {
-      const settings = await getSettings();
-      const username = settings?.username ?? '';
+    dispatch(fetchSettings());
+    dispatch(fetchGroups());
+    dispatch(fetchTags());
+  }, [dispatch, settings.data.username]);
 
-      setUserName(username);
-      if (username === '') {
-        setOpen(true);
-      }
-    })();
-  }, []);
+  const handleCloseSettings = () => {
+    dispatch(settingsSlice.actions.closeSettingsMode());
+  };
+
+  const isOpen = () => {
+    return settings.open || settings.data.username === '';
+  };
 
   return (
-    <Dialog open={open} fullWidth>
+    <Dialog open={isOpen()} fullWidth onClose={handleCloseSettings}>
       <Stack sx={{ width: '100%', color: 'grey.500' }} spacing={2}>
-        {syncPending && <LinearProgress color="secondary" />}
+        {settings.loading && <LinearProgress color="secondary" />}
       </Stack>
       <DialogTitle>Settings</DialogTitle>
       <DialogContent>
@@ -62,17 +65,9 @@ const Settings = () => {
           <Button
             color="primary"
             variant="contained"
-            disabled={syncPending}
+            disabled={settings.loading}
             onClick={async () => {
-              setSyncPending(true);
-              await resetStars(username);
-              await resetGroup();
-              await resetTag();
-              await setSettings({ username });
-              setSyncPending(false);
-              setOpen(false);
-              await delay(1000);
-              window.location.reload();
+              dispatch(clearData(username));
             }}
           >
             OK

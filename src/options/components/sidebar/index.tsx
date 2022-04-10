@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Logo from '@/options/components/header';
 import { getVersion } from '@/common/tools';
 import { DISCUSS_URL, GITHUB_URL, REPORT_BUG_URL } from '@/common/constants';
+import { settingsSlice } from '@/options/slices/settingsSlice';
 
 const SideBar = () => {
   const [openNewGroup, setOpenNewGroup] = React.useState<boolean>(false);
@@ -34,13 +35,17 @@ const SideBar = () => {
     })();
   }, [dispatch]);
 
+  const handleOpenSettings = () => {
+    dispatch(settingsSlice.actions.openSettingsModel());
+  };
+
   return (
     <div className="sidebar">
       <Logo />
       <div style={{ flex: 1, maxHeight: 'calc(100vh - 40px)' }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center" style={{ padding: '13px' }}>
           <Stack>STARS</Stack>
-          <Button>
+          <Button onClick={handleOpenSettings}>
             <RefreshIcon />
           </Button>
         </Stack>
