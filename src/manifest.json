@@ -1,13 +1,13 @@
 {
   "manifest_version": 3,
-  "version": "0.0.1",
-  "name": "github-plus",
-  "description": "github-plus",
+  "version": "0.0.2",
+  "name": "GithubX",
+  "description": "Enhance Github",
   "action": {
     "default_title": "github-plus"
   },
   "icons": {
-    "16": "assets/logo.png"
+    "48": "assets/logo48.png"
   },
   "web_accessible_resources": [
     {
@@ -21,7 +21,7 @@
       "js": [
         "content_script.bundle.js"
       ],
-      "run_at": "document_idle"
+      "run_at": "document_end"
     }
   ],
   "background": {
@@ -30,7 +30,9 @@
   },
   "permissions": [
     "storage",
-    "unlimitedStorage"
+    "unlimitedStorage",
+    "webRequest",
+    "tabs"
   ],
   "host_permissions": [
     "<all_urls>"

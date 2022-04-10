@@ -17,6 +17,8 @@ export interface IStar {
   fullName: string;
   htmlUrl: string;
   groupId: number;
+  createTime?: number;
+  updateTime?: number;
   group?: IGroup;
   tags?: ITag[];
 }
@@ -35,6 +37,8 @@ export const getAllStarListFromGithub = async (username: string): Promise<IStar[
         fullName: data.repo.full_name,
         htmlUrl: data.repo.html_url,
         groupId: DEFAULT_GROUP.id,
+        createTime: Date.now(),
+        updateTime: Date.now(),
       };
     });
 
@@ -59,6 +63,26 @@ export const getStarListFromGithub = async (username: string, page: number): Pro
 
   if (response.ok) {
     return response.json();
+  }
+};
+
+export const getRepoInfo = async (fullName: string): Promise<Omit<IStar, 'groupId'>> => {
+  const url = `https://api.github.com/repos/${fullName}`;
+
+  const response = await fetch(url, {
+    headers: {
+      Accept: 'application/vnd.github.v3.star+json',
+    },
+  });
+
+  if (response.ok) {
+    const data: IRepo = await response.json();
+
+    return {
+      id: data.id,
+      fullName: data.full_name,
+      htmlUrl: data.html_url,
+    };
   }
 };
 

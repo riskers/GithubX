@@ -10,12 +10,32 @@ export const resetStars = async (username: string): Promise<void> => {
   await db.stars.bulkAdd(res);
 };
 
+export const syncStars = async (username: string): Promise<void> => {
+  const res = await getAllStarListFromGithub(username);
+
+  for (let star of res) {
+    const s = await db.stars.where({ id: star.id }).first();
+
+    // had not existed
+    if (s !== null) {
+      db.stars.add(star);
+    }
+  }
+};
+
 export const getStarsListByGroup = async (groupId: number): Promise<IStar[]> => {
   const starList = await db.stars
     .where({
       groupId,
     })
-    .with({ group: 'groupId' });
+    .reverse()
+    .sortBy('updateTime');
+
+  const group = await getGroupInfo(groupId);
+
+  for (let star of starList) {
+    star.group = group;
+  }
 
   for (const star of starList) {
     const tags = await getTagsInStar(star.id);
@@ -48,7 +68,11 @@ export const getStarsListByTag = async (tagId: number) => {
     (tidInSid as any).star.tags = tags;
   }
 
-  return tidInSidList.map((xx) => (xx as any).star);
+  return tidInSidList
+    .map((xx) => (xx as any).star)
+    .sort((a, b) => {
+      return a.updateTime - b.updateTime;
+    });
 };
 
 export const getStarInfo = async (id: number): Promise<IStar> => {
@@ -60,6 +84,14 @@ export const getStarInfo = async (id: number): Promise<IStar> => {
   return starInfo;
 };
 
+export const getStarInfoByUrl = async (url: string) => {
+  const starInfo = await db.stars.where({ htmlUrl: url }).first();
+  return starInfo;
+};
+
+/**
+ * save and update star
+ */
 export const addStar = async (star: IStar): Promise<void> => {
   await db.stars.put(star);
 };

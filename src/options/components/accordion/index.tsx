@@ -1,16 +1,19 @@
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import CodeOffRoundedIcon from '@mui/icons-material/CodeOffRounded';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Button, Container, Stack, Typography } from '@mui/material';
 import * as React from 'react';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 interface IProps {
   title: string;
   open: boolean;
-  children: React.ReactNode;
+  children: React.ReactNode[];
 }
 
 const Accordion = (props: IProps) => {
   const [expand, setExpand] = React.useState<boolean>(props.open);
+  const isEmpty = props.children.length === 0;
+
   return (
     <>
       <Stack direction="row" style={{ padding: '0 15px' }}>
@@ -36,11 +39,11 @@ const Accordion = (props: IProps) => {
         </Button>
       </Stack>
 
-      {expand && props.children}
-      {expand && !props.children && (
+      {expand && !isEmpty && props.children}
+      {expand && isEmpty && (
         <Container>
           <Stack style={{ color: '#606f7b' }} alignItems="center">
-            empty...
+            <CodeOffRoundedIcon />
           </Stack>
         </Container>
       )}

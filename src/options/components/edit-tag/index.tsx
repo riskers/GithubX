@@ -1,12 +1,13 @@
-import { deleteTag, getTagsList, ITag, updateTag } from '@/services/idb/tag';
-import { AppContext } from '@/options';
-import { selectorStar } from '@/options/slices/selectedStar';
+import { selectedItemSlice } from '@/options/slices/selectedItemSlice';
+import { fetchStarsByGroup } from '@/options/slices/starsSlice';
 import { fetchTags } from '@/options/slices/tagSlice';
+import { DEFAULT_GROUP } from '@/services/idb/group';
+import { deleteTag, ITag, updateTag } from '@/services/idb/tag';
 import styled from '@emotion/styled';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import { Button, IconButton, Popover, Stack, TextField } from '@mui/material';
 import * as React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 interface IProps {
   tag: ITag;
@@ -40,6 +41,9 @@ const EditTag: React.FC<IProps> = (props: IProps) => {
 
   const handleDelete = async () => {
     await deleteTag(props.tag.id);
+    dispatch(fetchStarsByGroup(DEFAULT_GROUP.id));
+    // after delete a tag, get a default group
+    dispatch(selectedItemSlice.actions.selectGroup({ group: DEFAULT_GROUP }));
     dispatch(fetchTags());
   };
 
@@ -116,6 +120,7 @@ const EditTag: React.FC<IProps> = (props: IProps) => {
 };
 
 export default React.memo(EditTag, (prevProps, nextProps) => {
-  if (prevProps.tag.id === nextProps.tag.id) return true;
+  if (prevProps.tag.name === nextProps.tag.name) return true;
+
   return false;
 });

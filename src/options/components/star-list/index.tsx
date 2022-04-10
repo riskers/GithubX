@@ -4,6 +4,7 @@ import { DEFAULT_SELECTED_ITEM, selectorItem } from '@/options/slices/selectedIt
 import { selectedStarSlice, selectorStar } from '@/options/slices/selectedStar';
 import { fetchStarsByGroup, fetchStarsByTag } from '@/options/slices/starsSlice';
 import { AppDispatch, RootState } from '@/options/store';
+import CodeOffRoundedIcon from '@mui/icons-material/CodeOffRounded';
 import { Stack } from '@mui/material';
 import classNames from 'classnames';
 import * as React from 'react';
@@ -30,14 +31,14 @@ const StarList: React.FC = () => {
       if (isDefaultGroup) return;
       dispatch(fetchStarsByGroup(selectedItem.group.id));
     })();
-  }, [selectedItem.group.id, dispatch]);
+  }, [selectedItem.group.id, isDefaultGroup, dispatch]);
 
   React.useEffect(() => {
     (async () => {
       if (isDefaultTag) return;
       dispatch(fetchStarsByTag(selectedItem.tag.id));
     })();
-  }, [selectedItem.tag.id, dispatch]);
+  }, [selectedItem.tag.id, isDefaultTag, dispatch]);
 
   return (
     <div className="star-list">
@@ -70,7 +71,7 @@ const StarList: React.FC = () => {
         })
       ) : (
         <Stack justifyContent="center" alignItems="center" style={{ fontSize: 20, padding: 30, color: '#c5d2dd' }}>
-          Empty...
+          <CodeOffRoundedIcon sx={{ fontSize: 60 }} />
         </Stack>
       )}
     </div>

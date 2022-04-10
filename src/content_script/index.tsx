@@ -1,18 +1,22 @@
-import * as React from 'react';
-import { render } from 'react-dom';
-import User from './pages/user';
-import Gist from '@/content_script/pages/gist';
-import Stars from '@/content_script/pages/stars';
+import theme from '@/common/theme';
 import Repo from '@/content_script/pages/repo';
-import App from '@/content_script/pages/app';
-import './style.css';
+import { ThemeProvider } from '@mui/material';
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 
 window.addEventListener('load', () => {
-  const href = location.href;
+  // const href = location.href;
 
-  // const appContainer = document.createElement('div');
-  // render(<App />, appContainer);
-  // document.body.append(appContainer);
+  // REPO page
+  const dom = document.createElement('div');
+  document.body.appendChild(dom);
+
+  ReactDOM.render(
+    <ThemeProvider theme={theme}>
+      <Repo />
+    </ThemeProvider>,
+    dom,
+  );
 
   /* if (href === `https://github.com/${username}?tab=following`) {
     const userDom = document.querySelectorAll('.d-table-cell.col-9.v-align-top.pr-3');
@@ -29,14 +33,6 @@ window.addEventListener('load', () => {
   //   document.querySelector('.vcard-names').appendChild(dom);
 
   //   render(<User />, dom);
-  // }
-
-  // REPO page
-  // if (href === 'https://github.com/airbnb/visx') {
-  //   const dom = document.createElement('div');
-  //   document.body.appendChild(dom);
-
-  //   render(<Repo />, dom);
   // }
 
   // GIST page

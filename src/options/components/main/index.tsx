@@ -5,6 +5,8 @@ import ReactMarkdown from 'react-markdown';
 import { useSelector } from 'react-redux';
 import rehypeSanitize from 'rehype-sanitize';
 import remarkGfm from 'remark-gfm';
+import HourglassEmptyRoundedIcon from '@mui/icons-material/HourglassEmptyRounded';
+import { Stack } from '@mui/material';
 
 const Main: React.FC = () => {
   const selectedStar = useSelector(selectorStar);
@@ -21,9 +23,15 @@ const Main: React.FC = () => {
 
   return (
     <div className="main">
-      <ReactMarkdown rehypePlugins={[rehypeSanitize]} remarkPlugins={[remarkGfm]}>
-        {decodeURIComponent(escape(window.atob(readme)))}
-      </ReactMarkdown>
+      {readme ? (
+        <ReactMarkdown rehypePlugins={[rehypeSanitize]} remarkPlugins={[remarkGfm]}>
+          {decodeURIComponent(escape(window.atob(readme)))}
+        </ReactMarkdown>
+      ) : (
+        <Stack style={{ color: '#c5d2dd', paddingTop: 30 }} alignItems="center">
+          <HourglassEmptyRoundedIcon sx={{ fontSize: 120 }} />
+        </Stack>
+      )}
     </div>
   );
 };

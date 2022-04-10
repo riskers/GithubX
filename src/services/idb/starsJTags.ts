@@ -12,6 +12,10 @@ export interface IStarsJTags {
   tid: number;
 }
 
+export const resetStarJTag = async () => {
+  await db.starsJTags.clear();
+};
+
 export const addSJT = async (tid: number, sid: number) => {
   await db.starsJTags.add({
     tid,
@@ -21,6 +25,14 @@ export const addSJT = async (tid: number, sid: number) => {
 
 export const deleteSJT = async (tid: number, sid: number) => {
   await db.starsJTags.where({ tid, sid }).delete();
+};
+
+export const deleteSJTBySid = async (sid: number) => {
+  await db.starsJTags
+    .where({
+      sid,
+    })
+    .delete();
 };
 
 export const deleteSJTByTid = async (tid: number) => {

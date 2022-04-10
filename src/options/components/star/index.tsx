@@ -1,13 +1,12 @@
 import { IStar } from '@/common/api';
-import { addStar } from '@/services/idb/stars';
-import { addSJT, deleteSJT } from '@/services/idb/starsJTags';
-import { addTag, ITag } from '@/services/idb/tag';
 import { fetchGroups } from '@/options/slices/groupSlice';
 import { selectorItem } from '@/options/slices/selectedItemSlice';
 import { fetchStarsByGroup, fetchStarsByTag } from '@/options/slices/starsSlice';
 import { fetchTags } from '@/options/slices/tagSlice';
 import { RootState } from '@/options/store';
-import EditIcon from '@mui/icons-material/Edit';
+import { addStar } from '@/services/idb/stars';
+import { addSJT, deleteSJT } from '@/services/idb/starsJTags';
+import { addTag, ITag } from '@/services/idb/tag';
 import {
   Autocomplete,
   AutocompleteChangeDetails,
@@ -82,16 +81,24 @@ const Star = (props: IProps) => {
             d: AutocompleteChangeDetails<ITag> | AutocompleteChangeDetails<string>,
             // eslint-disable-next-line max-params
           ) => {
-            console.log(v, r, d);
-            // const vlist = repoTagsList.map((tag) => tag.id);
+            // console.log(v, r, d);
+
             const sid = props.star.id;
 
             if (r === 'createOption') {
-              await addTag(d.option as string, sid);
+              const option = d.option as string;
+              const exist = props.star.tags.map((tag) => tag.name).some((tagName) => tagName === option);
+
+              if (exist) return;
+              await addTag(option, sid);
             }
 
             if (r === 'selectOption') {
               const tag = d.option as ITag;
+
+              const exist = props.star.tags.map((tag) => tag.name).some((tagName) => tagName === tag.name);
+              if (exist) return;
+
               await addSJT(tag.id, sid);
             }
 
@@ -119,12 +126,8 @@ const Star = (props: IProps) => {
             return option.name;
           }}
           renderTags={(value: ITag[], getTagProps) => {
-            console.log('renderTags', value);
             return value.map((option, index) => {
-              console.log(option);
-              return (
-                <Chip color="success" label={tags[index].name} key={index} size="small" {...getTagProps({ index })} />
-              );
+              return <Chip color="success" label={option.name} key={index} size="small" {...getTagProps({ index })} />;
             });
           }}
           renderInput={(params) => {
@@ -169,7 +172,7 @@ const Star = (props: IProps) => {
             handleChangeGroup();
           }}
         >
-          {groups.data.map((group) => {
+          {groupList.map((group) => {
             return (
               <MenuItem key={group.id} value={group.id}>
                 {group.name}
@@ -188,7 +191,6 @@ const Star = (props: IProps) => {
             size="small"
             label={props.star.group.name}
             color="secondary"
-            icon={<EditIcon />}
             clickable
             style={{ marginRight: 5, borderRadius: 5, marginTop: 10 }}
           />

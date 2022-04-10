@@ -8,7 +8,6 @@ export const fetchStarsByGroup = createAsyncThunk('stars/fetchStarsByGroup', asy
 
 export const fetchStarsByTag = createAsyncThunk('stars/fetchStarsByTag', async (tagId: number) => {
   const stars = await getStarsListByTag(tagId);
-  console.log(stars);
   return stars;
 });
 

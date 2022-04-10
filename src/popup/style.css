@@ -8,14 +8,6 @@ img {
   max-width: 100%;
 }
 
-a {
-  color: #CCC;
-  text-decoration: none;
-}
-a:hover {
-  text-decoration: underline;
-}
-
 .github-plus-app {
   display: grid;
   grid-template-columns: 280px 400px 1fr;
@@ -28,10 +20,6 @@ a:hover {
   grid-column: 1/2;
   background: #13283a;
   color: #b8c2cc;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
 }
 
 .group-container {
