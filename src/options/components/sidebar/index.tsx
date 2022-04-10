@@ -16,7 +16,7 @@ import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Logo from '@/options/components/header';
 import { getVersion } from '@/common/tools';
-import { GITHUB_URL } from '@/common/constants';
+import { DISCUSS_URL, GITHUB_URL, REPORT_BUG_URL } from '@/common/constants';
 
 const SideBar = () => {
   const [openNewGroup, setOpenNewGroup] = React.useState<boolean>(false);
@@ -37,7 +37,7 @@ const SideBar = () => {
   return (
     <div className="sidebar">
       <Logo />
-      <div style={{ flex: 1, overflowY: 'scroll', maxHeight: 'calc(100vh - 40px)' }}>
+      <div style={{ flex: 1, maxHeight: 'calc(100vh - 40px)' }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center" style={{ padding: '13px' }}>
           <Stack>STARS</Stack>
           <Button>
@@ -196,6 +196,12 @@ const SideBar = () => {
       <div className="footer">
         <a href={GITHUB_URL} target="_blank">
           {getVersion()}
+        </a>
+        <a href={REPORT_BUG_URL} target="_blank">
+          Report Bug
+        </a>
+        <a href={DISCUSS_URL} target="_blank">
+          Discuss feature
         </a>
       </div>
     </div>

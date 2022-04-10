@@ -1,10 +1,11 @@
-import { deleteGroup, IGroup, updateGroup } from '@/services/idb/group';
+import { DEFAULT_GROUP, deleteGroup, IGroup, updateGroup } from '@/services/idb/group';
 import { fetchGroups } from '@/options/slices/groupSlice';
 import styled from '@emotion/styled';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
 import { Button, IconButton, Popover, Stack, TextField } from '@mui/material';
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
+import { selectedItemSlice } from '@/options/slices/selectedItemSlice';
 
 const SmallButton = styled(Button)(() => {
   return {
@@ -36,6 +37,7 @@ const EditGroup = (props: Pick<IGroup, 'id' | 'name'>) => {
 
   const handleDelete = async () => {
     await deleteGroup(props.id);
+    dispatch(selectedItemSlice.actions.selectGroup({ group: DEFAULT_GROUP }));
     dispatch(fetchGroups());
   };
 

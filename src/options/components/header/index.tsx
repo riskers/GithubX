@@ -5,7 +5,7 @@ const Logo = () => {
   const img = chrome.runtime.getURL('assets/logo.png');
   return (
     <Stack direction="row" alignItems="center">
-      <div style={{ width: 110 }}>
+      <div style={{ width: 70 }}>
         <img src={img} />
       </div>
     </Stack>

@@ -54,8 +54,12 @@ export const updateGroup = async (groupId: number, groupName: string) => {
  * delete group and change stars in this group to DEFAULT group
  */
 export const deleteGroup = async (groupId: number) => {
-  const star = await db.stars.where({ groupId }).first();
-  await db.stars.update(star.id, { groupId: 0 });
+  const stars = await db.stars.where({ groupId }).toArray();
+  if (stars) {
+    for (let star of stars) {
+      await db.stars.update(star.id, { groupId: 0 });
+    }
+  }
 
   await db.groups.where({ id: groupId }).delete();
 };
