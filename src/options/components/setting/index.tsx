@@ -2,6 +2,7 @@ import { fetchGroups } from '@/options/slices/groupSlice';
 import { clearData, fetchSettings, settingsSlice } from '@/options/slices/settingsSlice';
 import { fetchTags } from '@/options/slices/tagSlice';
 import { RootState } from '@/options/store';
+import { usePrevious } from 'react-use';
 import {
   Button,
   Dialog,
@@ -9,8 +10,6 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  LinearProgress,
-  Stack,
   TextField,
   Tooltip,
 } from '@mui/material';
@@ -23,25 +22,23 @@ const Settings = () => {
   const settings = useSelector((state: RootState) => state.settings);
   const [username, setUserName] = React.useState<string>('');
 
+  const updateTime = usePrevious(settings.data.updatedTime);
+  const isUpdate = React.useMemo(() => {
+    return updateTime === settings.data.updatedTime;
+  }, [settings.data.updatedTime, updateTime]);
+
   React.useEffect(() => {
     dispatch(fetchSettings());
     dispatch(fetchGroups());
     dispatch(fetchTags());
-  }, [dispatch, settings.data.username]);
+  }, [dispatch, isUpdate]);
 
   const handleCloseSettings = () => {
     dispatch(settingsSlice.actions.closeSettingsMode());
   };
 
-  const isOpen = () => {
-    return settings.open || settings.data.username === '';
-  };
-
   return (
-    <Dialog open={isOpen()} fullWidth onClose={handleCloseSettings}>
-      <Stack sx={{ width: '100%', color: 'grey.500' }} spacing={2}>
-        {settings.loading && <LinearProgress color="secondary" />}
-      </Stack>
+    <Dialog open={settings.open} fullWidth onClose={handleCloseSettings}>
       <DialogTitle>Settings</DialogTitle>
       <DialogContent>
         <TextField
@@ -57,7 +54,11 @@ const Settings = () => {
           }}
         />
 
-        <DialogContentText style={{ color: '#60616f', marginTop: 7 }} />
+        <DialogContentText style={{ color: '#d1d1d6', marginTop: 7 }}>
+          This will cause the App to reset.
+          <br />
+          If this is your first startup, ignore this message.
+        </DialogContentText>
       </DialogContent>
 
       <DialogActions>
@@ -68,6 +69,9 @@ const Settings = () => {
             disabled={settings.loading}
             onClick={async () => {
               dispatch(clearData(username));
+              if (isUpdate) {
+                setUserName('');
+              }
             }}
           >
             OK

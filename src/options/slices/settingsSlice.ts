@@ -20,26 +20,28 @@ export const clearData = createAsyncThunk<IDBAPI.ISettings, string>('settings/cl
   await resetTag();
   await resetStarJTag();
 
-  await IDBAPI.resetSettings();
-  await IDBAPI.setSettings({
+  const setting = {
     username,
     createdTime: Date.now(),
     updatedTime: Date.now(),
-  });
+  };
+
+  await IDBAPI.resetSettings();
+  await IDBAPI.setSettings(setting);
 
   await delay(1000);
 
-  return {
-    username,
-  };
+  return setting;
 });
+
+const initData: IDBAPI.ISettings = {
+  username: null,
+};
 
 export const settingsSlice = createSlice({
   name: 'user',
   initialState: {
-    data: {
-      username: null,
-    },
+    data: initData,
     /**
      * fetch some api
      */
@@ -62,16 +64,23 @@ export const settingsSlice = createSlice({
       .addCase(fetchSettings.fulfilled, (state, action) => {
         if (!action.payload) {
           state.data.username = '';
+          state.open = true;
         } else {
-          state.data = action.payload;
+          state.data.username = action.payload.username;
+          state.data.createdTime = action.payload.createdTime;
+          state.data.updatedTime = action.payload.updatedTime;
         }
       })
+
       .addCase(clearData.pending, (state, action) => {
         state.loading = true;
       })
       .addCase(clearData.fulfilled, (state, action) => {
         state.data.username = action.payload.username;
+        state.data.createdTime = action.payload.createdTime;
+        state.data.updatedTime = action.payload.updatedTime;
         state.loading = false;
+        state.open = false;
       });
   },
 });

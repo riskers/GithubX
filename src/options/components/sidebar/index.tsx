@@ -1,23 +1,24 @@
-import { addGroup } from '@/services/idb/group';
+import { DISCUSS_URL, GITHUB_URL, REPORT_BUG_URL } from '@/common/constants';
+import { getVersion } from '@/common/tools';
 import Accordion from '@/options/components/accordion';
 import EditGroup from '@/options/components/edit-group';
 import EditTag from '@/options/components/edit-tag';
+import Logo from '@/options/components/header';
 import { fetchGroups } from '@/options/slices/groupSlice';
 import { selectedItemSlice, selectorItem } from '@/options/slices/selectedItemSlice';
+import { settingsSlice } from '@/options/slices/settingsSlice';
 import { fetchTags } from '@/options/slices/tagSlice';
 import { RootState } from '@/options/store';
+import { addGroup } from '@/services/idb/group';
 import AddIcon from '@mui/icons-material/Add';
 import AllInboxIcon from '@mui/icons-material/AllInbox';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import SellIcon from '@mui/icons-material/Sell';
-import { Button, Chip, Divider, Stack, TextField } from '@mui/material';
+import { Box, Button, ButtonGroup, Chip, Stack, TextField } from '@mui/material';
 import classNames from 'classnames';
+import GetAppRoundedIcon from '@mui/icons-material/GetAppRounded';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Logo from '@/options/components/header';
-import { getVersion } from '@/common/tools';
-import { DISCUSS_URL, GITHUB_URL, REPORT_BUG_URL } from '@/common/constants';
-import { settingsSlice } from '@/options/slices/settingsSlice';
 
 const SideBar = () => {
   const [openNewGroup, setOpenNewGroup] = React.useState<boolean>(false);
@@ -45,9 +46,14 @@ const SideBar = () => {
       <div style={{ flex: 1, maxHeight: 'calc(100vh - 40px)' }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center" style={{ padding: '13px' }}>
           <Stack>STARS</Stack>
-          <Button onClick={handleOpenSettings}>
-            <RefreshIcon />
-          </Button>
+          <ButtonGroup>
+            <Button onClick={handleOpenSettings} title="reset app">
+              <RefreshIcon sx={{ fontSize: 14 }} />
+            </Button>
+            <Button title="Synchronize with the Github">
+              <GetAppRoundedIcon color="success" sx={{ fontSize: 14 }} />
+            </Button>
+          </ButtonGroup>
         </Stack>
         <Accordion title="GROUPS" open>
           {groups.data?.map((group) => {
@@ -198,17 +204,21 @@ const SideBar = () => {
         </Accordion>
       </div>
 
-      <div className="footer">
-        <a href={GITHUB_URL} target="_blank">
-          {getVersion()}
-        </a>
-        <a href={REPORT_BUG_URL} target="_blank">
-          Report Bug
-        </a>
-        <a href={DISCUSS_URL} target="_blank">
-          Discuss feature
-        </a>
-      </div>
+      <Stack direction="row" justifyContent="space-between" style={{ padding: 13 }}>
+        <Box>
+          <a href={GITHUB_URL} target="_blank">
+            {getVersion()}
+          </a>
+        </Box>
+        <Box>
+          <a href={REPORT_BUG_URL} target="_blank" style={{ marginRight: 10 }}>
+            Report Bug
+          </a>
+          <a href={DISCUSS_URL} target="_blank">
+            Discuss feature
+          </a>
+        </Box>
+      </Stack>
     </div>
   );
 };

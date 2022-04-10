@@ -1,4 +1,5 @@
 import theme from '@/common/theme';
+import Progress from '@/options/components/progress';
 import Home from '@/options/pages/Home';
 import store from '@/options/store';
 import { ThemeProvider } from '@mui/material/styles';
@@ -14,6 +15,7 @@ const App: React.FC = () => {
         <div className="github-plus-app">
           <Home />
         </div>
+        <Progress />
       </Provider>
     </ThemeProvider>
   );

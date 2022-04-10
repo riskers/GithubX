@@ -2,18 +2,17 @@
 
 > Chrome Extension enhance github
 
+## Download
 
-## Manger Github Stars Repo
+https://chrome.google.com/webstore/detail/github-plus/nmcddfeclkbhehidjoadbmkaajoppapo
+
+## Organize Your Github Stars
 
 Tag and group your github stars:
 
 ![](https://i.imgur.com/dZlYXCi.png)
 
-## Download
-
-https://chrome.google.com/webstore/detail/github-plus/nmcddfeclkbhehidjoadbmkaajoppapo
-
-## Data Always Storaged on Local
+## Data is stored locally
 
 Can't sync data with multi drive.
 Only Storaged on Local drive.

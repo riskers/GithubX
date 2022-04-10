@@ -12,6 +12,9 @@ a {
   color: #CCC;
   text-decoration: none;
 }
+a:hover {
+  text-decoration: underline;
+}
 
 .github-plus-app {
   display: grid;
@@ -29,10 +32,6 @@ a {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-}
-
-.footer {
-  padding: 10px;
 }
 
 .group-container {
