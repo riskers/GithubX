@@ -17,3 +17,8 @@ export const getFullName = (details: chrome.webRequest.WebResponseCacheDetails):
   const url = details.url.replace(/(.*)(\/(unstar|star))$/gi, '$1');
   return url.replace('https://github.com/', '');
 };
+
+export const getVersion = () => {
+  const manifest = chrome.runtime.getManifest();
+  return manifest.version;
+};
