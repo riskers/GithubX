@@ -15,7 +15,6 @@ export const syncStars = async (username: string): Promise<void> => {
 
   for (let star of res) {
     const s = await db.stars.where({ id: star.id }).first();
-    console.log(s);
 
     // had not existed
     if (s !== null) {
