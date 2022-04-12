@@ -20,7 +20,7 @@ a:hover {
   display: grid;
   grid-template-columns: 280px 400px 1fr;
   column-gap: 15px;
-  min-height: 100vh;
+  height: 100vh;
   overflow: hidden;
 }
 
@@ -28,10 +28,9 @@ a:hover {
   grid-column: 1/2;
   background: #13283a;
   color: #b8c2cc;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+  height: 100vh;
+  overflow-y: scroll;
+  position: relative;
 }
 
 .group-container {

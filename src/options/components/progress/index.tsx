@@ -6,7 +6,7 @@ import { color } from '@mui/system';
 
 export const Progress = () => {
   const settings = useSelector((state: RootState) => state.settings);
-  console.log(settings);
+
   if (!settings.loading) return null;
 
   return (
