@@ -1,10 +1,10 @@
-# github-plus-extension
+# GithubX
 
-> Chrome Extension enhance github
+> Chrome Extension enhance Github
 
 ## Download
 
-https://chrome.google.com/webstore/detail/github-plus/nmcddfeclkbhehidjoadbmkaajoppapo
+[Chrome WebStore](https://chrome.google.com/webstore/detail/githubx/nmcddfeclkbhehidjoadbmkaajoppapo)
 
 ## Organize Your Github Stars
 
