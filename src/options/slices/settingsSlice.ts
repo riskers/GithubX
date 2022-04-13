@@ -14,20 +14,19 @@ export const fetchSettings = createAsyncThunk('settings/fetchSettings', async ()
 /**
  * reset app data
  */
-export const resetAppData = createAsyncThunk<IDBAPI.ISettings, string>('settings/clear', async (username: string) => {
-  await resetStars(username);
-  await resetGroup();
-  await resetTag();
-  await resetStarJTag();
-
+export const resetAppData = createAsyncThunk<IDBAPI.ISettings, string>('settings/clear', async (token: string) => {
+  await IDBAPI.resetSettings();
   const setting = {
-    username,
+    token,
     createdTime: Date.now(),
     updatedTime: Date.now(),
   };
-
-  await IDBAPI.resetSettings();
   await IDBAPI.setSettings(setting);
+
+  await resetStars();
+  await resetGroup();
+  await resetTag();
+  await resetStarJTag();
 
   await delay(1000);
 
@@ -37,9 +36,7 @@ export const resetAppData = createAsyncThunk<IDBAPI.ISettings, string>('settings
 export const syncData = createAsyncThunk('settings/sync', async () => {
   const setting = await IDBAPI.getSettings();
 
-  const { username } = setting;
-
-  await syncStars(username);
+  await syncStars();
 
   await delay(1000);
 
@@ -51,11 +48,11 @@ export const syncData = createAsyncThunk('settings/sync', async () => {
 });
 
 const initData: IDBAPI.ISettings = {
-  username: null,
+  token: null,
 };
 
 export const settingsSlice = createSlice({
-  name: 'user',
+  name: 'setting',
   initialState: {
     data: initData,
     /**
@@ -79,10 +76,10 @@ export const settingsSlice = createSlice({
     builder
       .addCase(fetchSettings.fulfilled, (state, action) => {
         if (!action.payload) {
-          state.data.username = '';
+          state.data.token = '';
           state.open = true;
         } else {
-          state.data.username = action.payload.username;
+          state.data.token = action.payload.token;
           state.data.createdTime = action.payload.createdTime;
           state.data.updatedTime = action.payload.updatedTime;
         }
@@ -92,7 +89,7 @@ export const settingsSlice = createSlice({
         state.loading = true;
       })
       .addCase(resetAppData.fulfilled, (state, action) => {
-        state.data.username = action.payload.username;
+        state.data.token = action.payload.token;
         state.data.createdTime = action.payload.createdTime;
         state.data.updatedTime = action.payload.updatedTime;
         state.loading = false;
@@ -103,7 +100,7 @@ export const settingsSlice = createSlice({
         state.loading = true;
       })
       .addCase(syncData.fulfilled, (state, action) => {
-        state.data.username = action.payload.username;
+        state.data.token = action.payload.token;
         state.data.createdTime = action.payload.createdTime;
         state.data.updatedTime = action.payload.updatedTime;
         state.loading = false;

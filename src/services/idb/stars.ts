@@ -3,15 +3,15 @@ import { db } from '@/services/idb/db';
 import { getGroupInfo } from '@/services/idb/group';
 import { getTagsInStar } from '@/services/idb/tag';
 
-export const resetStars = async (username: string): Promise<void> => {
+export const resetStars = async (): Promise<void> => {
   await db.stars.clear();
 
-  const res = await getAllStarListFromGithub(username);
+  const res = await getAllStarListFromGithub();
   await db.stars.bulkAdd(res);
 };
 
-export const syncStars = async (username: string): Promise<void> => {
-  const res = await getAllStarListFromGithub(username);
+export const syncStars = async (): Promise<void> => {
+  const res = await getAllStarListFromGithub();
 
   for (let star of res) {
     const s = await db.stars.where({ id: star.id }).first();
