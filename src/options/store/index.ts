@@ -1,3 +1,4 @@
+import gistSlice from '@/options/slices/gistSlice';
 import groupSlice from '@/options/slices/groupSlice';
 import selectedItemSlice from '@/options/slices/selectedItemSlice';
 import selectedStarSlice from '@/options/slices/selectedStar';
@@ -24,6 +25,7 @@ const store = configureStore({
     settings: settingsSlice,
     selectedItem: selectedItemSlice,
     selectedStar: selectedStarSlice,
+    gists: gistSlice,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
   devTools: process.env.NODE_ENV !== 'production',

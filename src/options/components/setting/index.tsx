@@ -53,7 +53,7 @@ const Settings = () => {
             setUserName(e.target.value);
           }}
         />
-
+        https://github.com/settings/tokens
         <DialogContentText style={{ color: '#d1d1d6', marginTop: 7 }}>
           This will cause the App to reset.
           <br />

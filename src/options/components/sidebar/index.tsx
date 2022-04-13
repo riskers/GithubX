@@ -77,6 +77,7 @@ const SideBar = () => {
               {TABS.map((tab) => {
                 return (
                   <Tab
+                    disableRipple
                     label={tab.title}
                     key={tab.index}
                     sx={{
