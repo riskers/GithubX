@@ -75,14 +75,14 @@ export const getStarsListByTag = async (tagId: number) => {
     });
 };
 
-export const getStarInfo = async (id: number): Promise<IStar> => {
+/* export const getStarInfo = async (id: number): Promise<IStar> => {
   const starInfo = await db.stars.where({ id }).first();
 
   starInfo.tags = await getTagsInStar(id);
   starInfo.group = await getGroupInfo(starInfo.groupId);
 
   return starInfo;
-};
+}; */
 
 export const getStarInfoByUrl = async (url: string) => {
   const starInfo = await db.stars.where({ htmlUrl: url }).first();

@@ -4,6 +4,7 @@ import { fetchTags } from '@/options/slices/tagSlice';
 import { RootState } from '@/options/store';
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -36,7 +37,9 @@ const Settings = () => {
   }, [dispatch, isUpdate]);
 
   const handleCloseSettings = () => {
-    dispatch(settingsSlice.actions.closeSettingsMode());
+    if (!settings.loading) {
+      dispatch(settingsSlice.actions.closeSettingsMode());
+    }
   };
 
   return (
@@ -59,25 +62,35 @@ const Settings = () => {
           <Link href="https://github.com/settings/tokens" target="_blank" underline="always" rel="noopener">
             <Box component="span">Apply Github Token ?</Box>
           </Link>
+          <span style={{ marginLeft: 15, color: '#ccc' }}>storaged locally</span>
         </DialogContentText>
       </DialogContent>
 
       <DialogActions>
-        <Tooltip title="All data will storage in local.">
+        <Box sx={{ m: 1, position: 'relative' }}>
           <Button
             color="primary"
             variant="contained"
             disabled={settings.loading}
             onClick={async () => {
               dispatch(resetAppData(token));
-              if (isUpdate) {
-                setToken('');
-              }
             }}
           >
             OK
           </Button>
-        </Tooltip>
+          {settings.loading && (
+            <CircularProgress
+              size={24}
+              sx={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                marginTop: '-12px',
+                marginLeft: '-12px',
+              }}
+            />
+          )}
+        </Box>
       </DialogActions>
     </Dialog>
   );

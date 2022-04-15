@@ -63,6 +63,19 @@ export const getTagsInStar = async (sid: number) => {
   return tags;
 };
 
+export const getTagsInGist = async (gid: number) => {
+  const gidInTidList = await db.starsJTags.where({ gid }).toArray();
+
+  let tags = [];
+
+  for (let gidInTid of gidInTidList) {
+    const tagInfo = await getTagInfo(gidInTid.tid);
+    tags.push(tagInfo);
+  }
+
+  return tags;
+};
+
 /**
  * 1. TABLE tag: delete the tag
  * 2. TABLE starsJTags: delete tid = tagId

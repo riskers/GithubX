@@ -1,3 +1,4 @@
+import { IGist } from '@/services/idb/gist';
 import { DEFAULT_GROUP, IGroup } from '@/services/idb/group';
 import { getToken } from '@/services/idb/settings';
 import { ITag } from '@/services/idb/tag';
@@ -27,12 +28,45 @@ export const getUserInfo = async () => {
   return await octokit.rest.users.getAuthenticated();
 };
 
-export const getGistsList = async () => {
+const getGistsList = async (page: number) => {
   const token = await getToken();
   const octokit = new Octokit({ auth: token });
   // https://docs.github.com/cn/rest/reference/gists#list-gists-for-the-authenticated-user
-  const res = await octokit.request('GET /gists', {});
+  const res = await octokit.request('GET /gists', {
+    page,
+    per_page: 20,
+  });
   return res.data;
+};
+
+export const getAllGistFromGithub = async () => {
+  let page = 1;
+  let ending = false;
+  let res: IGist[] = [];
+
+  while (!ending) {
+    const pres = await getGistsList(page);
+
+    const gists: IGist[] = pres.map((data) => {
+      return {
+        _id: data.id,
+        groupId: DEFAULT_GROUP.id,
+        description: data.description,
+        htmlUrl: data.html_url,
+        createTime: Date.now(),
+        updateTime: Date.now(),
+      };
+    });
+
+    page++;
+    if (pres.length === 0) {
+      ending = true;
+    }
+
+    res = res.concat(...gists);
+  }
+
+  return res;
 };
 
 export const getStarListFromGithub = async (page: number): Promise<IRepo[]> => {

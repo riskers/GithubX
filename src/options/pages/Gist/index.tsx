@@ -1,13 +1,13 @@
 import { getGistList } from '@/options/slices/gistSlice';
+import { DEFAULT_GROUP } from '@/services/idb/group';
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
 
 const Gist = () => {
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-    dispatch(getGistList());
+    dispatch(getGistList(DEFAULT_GROUP.id));
   }, [dispatch]);
 
   return <div>gist</div>;

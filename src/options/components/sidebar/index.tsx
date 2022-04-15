@@ -4,6 +4,7 @@ import Accordion from '@/options/components/accordion';
 import EditGroup from '@/options/components/edit-group';
 import EditTag from '@/options/components/edit-tag';
 import Logo from '@/options/components/header';
+import Settings from '@/options/components/setting';
 import TabPanel, { TABS } from '@/options/components/sidebar/components/tab-panel';
 import { fetchGroups } from '@/options/slices/groupSlice';
 import { selectedItemSlice, selectorItem } from '@/options/slices/selectedItemSlice';
@@ -268,6 +269,8 @@ const SideBar = () => {
           </Box>
         </Stack>
       </div>
+
+      <Settings />
 
       <Outlet />
     </div>

@@ -1,9 +1,9 @@
-import { getGistsList } from '@/common/api';
+import { getGistsListByGroup } from '@/services/idb/gist';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-export const getGistList = createAsyncThunk('gist/fetch', async () => {
-  const res = await getGistsList();
-  return res;
+export const getGistList = createAsyncThunk('gist/fetch', async (groupId: number) => {
+  const gists = await getGistsListByGroup(groupId);
+  return gists;
 });
 
 export const gistSlice = createSlice({

@@ -1,3 +1,5 @@
+import { resetGists } from '@/services/idb/gist';
+import { resetGistJTag } from '@/services/idb/gistsJTags';
 import { resetGroup } from '@/services/idb/group';
 import * as IDBAPI from '@/services/idb/settings';
 import { resetStars, syncStars } from '@/services/idb/stars';
@@ -27,6 +29,8 @@ export const resetAppData = createAsyncThunk<IDBAPI.ISettings, string>('settings
   await resetGroup();
   await resetTag();
   await resetStarJTag();
+  await resetGists();
+  await resetGistJTag();
 
   await delay(1000);
 
