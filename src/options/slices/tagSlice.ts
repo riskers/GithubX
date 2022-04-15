@@ -1,4 +1,4 @@
-import { getTagsList } from '@/services/idb/tag';
+import { getTagsList, ITag } from '@/services/idb/tag';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 /**
@@ -9,12 +9,19 @@ export const fetchTags = createAsyncThunk('tag/fetchTags', async () => {
   return tagList;
 });
 
+export interface ITagState {
+  loading: boolean;
+  data: ITag[];
+}
+
+const initialState = {
+  loading: false,
+  data: [],
+};
+
 const tagSlice = createSlice({
   name: 'tags',
-  initialState: {
-    loading: false,
-    data: [],
-  },
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
