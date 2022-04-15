@@ -19,7 +19,7 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<SideBar />}>
               <Route index element={<Home />} />
-              <Route path="gist" element={<Gist />} />
+              <Route path="/gist" element={<Gist />} />
             </Route>
           </Routes>
         </HashRouter>

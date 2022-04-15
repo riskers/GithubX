@@ -21,7 +21,7 @@ import { Box, Button, ButtonGroup, Chip, Stack, Tab, Tabs, TextField } from '@mu
 import classNames from 'classnames';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useMatch, useNavigate, useResolvedPath } from 'react-router-dom';
 
 const SideBar = () => {
   const [openNewGroup, setOpenNewGroup] = React.useState<boolean>(false);
@@ -31,7 +31,13 @@ const SideBar = () => {
   const selectedItem = useSelector(selectorItem);
   const groups = useSelector((state: RootState) => state.groups);
   const tags = useSelector((state: RootState) => state.tags);
-  const [tabIndex, setTabIndex] = React.useState<typeof TABS[number]['index']>(0);
+
+  const location = useLocation();
+  let resolved = useResolvedPath(location.pathname);
+  let match = useMatch({ path: resolved.pathname, end: true });
+
+  const i = TABS.findIndex((tab) => match.pathname === tab.url);
+  const [tabIndex, setTabIndex] = React.useState<number>(i);
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -125,7 +131,7 @@ const SideBar = () => {
                       <Chip
                         className="star-number"
                         size="small"
-                        label={group.totalStars}
+                        label={group.starCount}
                         sx={{
                           [`&`]: {
                             background: 'rgba(255,255,255, 0.1)',
