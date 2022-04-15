@@ -4,7 +4,8 @@ import { addSJT, deleteSJTByTid } from '@/services/idb/starsJTags';
 export interface ITag {
   id?: number;
   name: string;
-  totalStars?: number;
+  starCount?: number;
+  gistCount?: number;
 }
 
 export const resetTag = async (): Promise<void> => {
@@ -39,12 +40,11 @@ export const getTagsList = async (): Promise<ITag[]> => {
   const tagList = await db.tags.toArray();
 
   for (const tag of tagList) {
-    const starCount = await db.starsJTags
-      .where({
-        tid: tag.id,
-      })
-      .count();
-    tag.totalStars = starCount;
+    const starCount = await db.starsJTags.where({ tid: tag.id }).count();
+    const gistCount = await db.gistsJTags.where({ tid: tag.id }).count();
+
+    tag.starCount = starCount;
+    tag.gistCount = gistCount;
   }
 
   return tagList;
@@ -64,7 +64,7 @@ export const getTagsInStar = async (sid: number) => {
 };
 
 export const getTagsInGist = async (gid: number) => {
-  const gidInTidList = await db.starsJTags.where({ gid }).toArray();
+  const gidInTidList = await db.gistsJTags.where({ gid }).toArray();
 
   let tags = [];
 

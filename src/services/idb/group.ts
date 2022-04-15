@@ -3,7 +3,8 @@ import { db } from '@/services/idb/db';
 export interface IGroup {
   id?: number;
   name: string;
-  totalStars?: number;
+  starCount?: number;
+  gistCount?: number;
 }
 
 export const DEFAULT_GROUP: IGroup = {
@@ -36,7 +37,15 @@ export const getGroupList = async (): Promise<IGroup[]> => {
         groupId: group.id,
       })
       .count();
-    group.totalStars = starsCount;
+
+    const gistsCount = await db.gists
+      .where({
+        groupId: group.id,
+      })
+      .count();
+
+    group.starCount = starsCount;
+    group.gistCount = gistsCount;
   }
 
   return groupList;
