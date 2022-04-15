@@ -36,8 +36,11 @@ const SideBar = () => {
   let resolved = useResolvedPath(location.pathname);
   let match = useMatch({ path: resolved.pathname, end: true });
 
-  const i = TABS.findIndex((tab) => match.pathname === tab.url);
-  const [tabIndex, setTabIndex] = React.useState<number>(i);
+  const initIndex = React.useMemo(() => {
+    return TABS.findIndex((tab) => match.pathname === tab.url);
+  }, [match]);
+
+  const [tabIndex, setTabIndex] = React.useState<number>(initIndex);
   const navigate = useNavigate();
 
   React.useEffect(() => {
