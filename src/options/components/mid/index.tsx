@@ -25,7 +25,7 @@ interface IProps {
   star: IStar;
 }
 
-const Star = (props: IProps) => {
+const Mid = (props: IProps) => {
   const [openEditTag, setOpenEditTag] = React.useState<boolean>(false);
   const [openEditGroup, setOpenEditGroup] = React.useState<boolean>(false);
 
@@ -200,4 +200,4 @@ const Star = (props: IProps) => {
   );
 };
 
-export default Star;
+export default Mid;
