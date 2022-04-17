@@ -12,6 +12,10 @@ Tag and group your github stars:
 
 ![](https://i.imgur.com/dZlYXCi.png)
 
+Popup window when you star a repo:
+
+![](https://i.imgur.com/KOCn2xl.gif)
+
 ## Data is stored locally
 
 Can't sync data with multi drive.
