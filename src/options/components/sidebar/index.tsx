@@ -4,7 +4,7 @@ import Logo from '@/options/components/header';
 import Settings from '@/options/components/setting';
 import TabPanel, { TABS } from '@/options/components/sidebar/components/tab-panel';
 import Tag from '@/options/components/sidebar/components/tag';
-import { getGistList } from '@/options/slices/gistSlice';
+import { getGistListByGroup, getGistListByTag } from '@/options/slices/gistSlice';
 import { fetchGroups } from '@/options/slices/groupSlice';
 import { selectedItemSlice, selectorItem } from '@/options/slices/selectedItemSlice';
 import { settingsSlice, syncData } from '@/options/slices/settingsSlice';
@@ -55,7 +55,7 @@ const SideBar = () => {
   const hanleGistSelectGroup = React.useCallback(
     (group) => {
       dispatch(selectedItemSlice.actions.gistSelectGroup({ group }));
-      dispatch(getGistList(group.id));
+      dispatch(getGistListByGroup(group.id));
     },
     [dispatch],
   );
@@ -71,6 +71,7 @@ const SideBar = () => {
   const handleGistSelectTag = React.useCallback(
     (tag) => {
       dispatch(selectedItemSlice.actions.gistSelectTag({ tag }));
+      dispatch(getGistListByTag(tag.id));
     },
     [dispatch],
   );

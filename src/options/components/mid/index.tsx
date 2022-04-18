@@ -49,7 +49,7 @@ const Mid = (props: IProps) => {
   };
 
   const handleChangeTag = () => {
-    if (selectedItem.active === 'group') {
+    if (selectedItem.active === 'GROUP') {
       dispatch(fetchStarsByGroup(selectedItem.group.id));
     } else {
       dispatch(fetchStarsByTag(selectedItem.tag.id));

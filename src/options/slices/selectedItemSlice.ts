@@ -6,11 +6,29 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 const NO_SELECT_GROUP = { id: -1, name: '' };
 const NO_SELECT_TAG = { id: -1, name: '' };
 
+type SelectType = 'STAR' | 'GIST' | null;
+type SelectActive = 'TAG' | 'GROUP' | null;
+
 interface ISelectItem {
+  /**
+   * dimensionality
+   */
+  type: SelectType;
+
+  /**
+   * dimensionality
+   */
+  active: SelectActive;
+
+  /**
+   * select may be group
+   */
   group: IGroup;
+
+  /**
+   * select may be tag
+   */
   tag: ITag;
-  active: 'tag' | 'group' | null;
-  type: 'STAR' | 'GIST' | null;
 }
 
 export const DEFAULT_SELECTED_ITEM = {
@@ -28,30 +46,32 @@ export const selectedItemSlice = createSlice({
   reducers: {
     selectType: (state, action: PayloadAction<Pick<ISelectItem, 'type'>>) => {
       state.type = action.payload.type;
+      state.tag = NO_SELECT_TAG;
+      state.active = 'GROUP';
     },
     starSelectGroup: (state, action: PayloadAction<Pick<ISelectItem, 'group'>>) => {
       // https://github.com/reduxjs/redux-toolkit/issues/521#issuecomment-624796711
       state.group = action.payload.group;
       state.tag = NO_SELECT_TAG;
-      state.active = 'group';
+      state.active = 'GROUP';
       state.type = 'STAR';
     },
     starSelectTag: (state, action: PayloadAction<Pick<ISelectItem, 'tag'>>) => {
       state.group = NO_SELECT_GROUP;
       state.tag = action.payload.tag;
-      state.active = 'tag';
+      state.active = 'TAG';
       state.type = 'STAR';
     },
     gistSelectGroup: (state, action) => {
       state.group = action.payload.group;
       state.tag = NO_SELECT_TAG;
-      state.active = 'group';
+      state.active = 'GROUP';
       state.type = 'GIST';
     },
     gistSelectTag: (state, action) => {
       state.group = NO_SELECT_GROUP;
       state.tag = action.payload.tag;
-      state.active = 'tag';
+      state.active = 'TAG';
       state.type = 'GIST';
     },
   },
