@@ -1,6 +1,3 @@
-import { fetchGroups } from '@/options/slices/groupSlice';
-import { selectorItem } from '@/options/slices/selectedItemSlice';
-import { fetchStarsByGroup, fetchStarsByTag } from '@/options/slices/starsSlice';
 import { fetchTags } from '@/options/slices/tagSlice';
 import { RootState } from '@/options/store';
 import { IGroup } from '@/services/idb/group';

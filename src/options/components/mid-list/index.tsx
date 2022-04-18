@@ -1,7 +1,7 @@
 import Mid from '@/options/components/mid';
+import { getGistListByGroup, getGistListByTag } from '@/options/slices/gistSlice';
 import { fetchGroups } from '@/options/slices/groupSlice';
 import { selectorItem } from '@/options/slices/selectedItemSlice';
-import { getGistListByGroup, getGistListByTag } from '@/options/slices/gistSlice';
 import { selectedStarSlice, selectorStar } from '@/options/slices/selectedStar';
 import { fetchStarsByGroup, fetchStarsByTag, IListState } from '@/options/slices/starsSlice';
 import { AppDispatch } from '@/options/store';
@@ -17,10 +17,12 @@ import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useWindowSize } from 'react-use';
 import { FixedSizeList } from 'react-window';
+import OpenInNewTwoToneIcon from '@mui/icons-material/OpenInNewTwoTone';
+import { IStar } from '@/common/api';
 
 const StarRow = ({ data, index, style }) => {
   const dispatch: AppDispatch = useDispatch();
-  const star = data[index];
+  const star: IStar = data[index];
   const selectedStar = useSelector(selectorStar);
   const selectedItem = useSelector(selectorItem);
 
@@ -64,7 +66,19 @@ const StarRow = ({ data, index, style }) => {
         dispatch(selectedStarSlice.actions.selectStar(star));
       }}
     >
-      <h2>{star.fullName}</h2>
+      <Stack component="h2" direction="row" alignItems="center">
+        <span>{star.fullName}</span>
+        <a
+          href={star.htmlUrl}
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+          target="_blank"
+          className="link"
+        >
+          <OpenInNewTwoToneIcon sx={{ fontSize: 20 }} />
+        </a>
+      </Stack>
 
       <div
         className="edit-area"
@@ -122,9 +136,19 @@ const GistRow = ({ data, index, style }) => {
 
   return (
     <div key={gist.id} className="star" style={style}>
-      <Link target="_blank" href={gist.htmlUrl} underline="none">
-        <h2>{gist.description}</h2>
-      </Link>
+      <Stack component="h2" direction="row" alignItems="center">
+        <span>{gist.description}</span>
+        <a
+          href={gist.htmlUrl}
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
+          target="_blank"
+          className="link"
+        >
+          <OpenInNewTwoToneIcon sx={{ fontSize: 20 }} />
+        </a>
+      </Stack>
 
       <div
         className="edit-area"

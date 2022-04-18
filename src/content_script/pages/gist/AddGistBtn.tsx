@@ -1,5 +1,4 @@
 import { getGistTitle } from '@/common/tools';
-import Btn from '@/content_script/components/btn';
 import { addGist, delGist } from '@/services/leancloud/gist';
 import delay from '@/utils/delay';
 import React from 'react';
@@ -25,21 +24,20 @@ const AddGistBtn: React.FC = () => {
     await delay(1000);
   };
 
-  return (
-    <Btn
-      text={isExist ? '-' : '+'}
-      isLoading={isLoading}
-      className="btn btn-sm"
-      onClick={async () => {
-        if (isExist) {
-          await fetchDelGist();
-        } else {
-          await fetchAddGist();
-        }
-        setIsExist(!isExist);
-      }}
-    />
-  );
+  return null;
+  // <Btn
+  //   text={isExist ? '-' : '+'}
+  //   isLoading={isLoading}
+  //   className="btn btn-sm"
+  //   onClick={async () => {
+  //     if (isExist) {
+  //       await fetchDelGist();
+  //     } else {
+  //       await fetchAddGist();
+  //     }
+  //     setIsExist(!isExist);
+  //   }}
+  // />
 };
 
 export default AddGistBtn;

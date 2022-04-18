@@ -91,10 +91,15 @@ a:hover {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+  position: relative;
 }
 
 .star:hover {
   text-decoration: none;
+}
+
+.star .link {
+  margin-left: 10px;
 }
 
 .edit-area {
