@@ -23,12 +23,13 @@ Only Storaged on Local drive.
 
 ## TODO
 
-* [0.0.2](https://github.com/riskers/github-plus-extension/projects/1)
 * [0.0.3](https://github.com/riskers/github-plus-extension/projects/3)
 
-## Thanks
+## Thanks OpenSource and Free Services
 
 * [hatchful](https://hatchful.shopify.com/): Create a Logo in Seconds
 * [Dexie](https://dexie.org/): wondful IndexedDB lib
 * [MUI](https://mui.com/): my favorite React UI lib
+* [react-window](https://github.com/bvaughn/react-window): rendering large lists data
+* [octokit.js](https://github.com/octokit/octokit.js): GitHub API SDK
 * [react-chrome-boilerplate](https://github.com/riskers/react-chrome-boilerplate) I made for developing Chrome Extension in React
