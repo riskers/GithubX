@@ -1,5 +1,5 @@
 import { RootState } from '@/options/store';
-import { IGroup } from '@/services/idb/group';
+import { DEFAULT_GROUP, IGroup } from '@/services/idb/group';
 import { ITag } from '@/services/idb/tag';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
@@ -46,6 +46,7 @@ export const selectedItemSlice = createSlice({
   reducers: {
     selectType: (state, action: PayloadAction<Pick<ISelectItem, 'type'>>) => {
       state.type = action.payload.type;
+      state.group = NO_SELECT_GROUP;
       state.tag = NO_SELECT_TAG;
       state.active = 'GROUP';
     },

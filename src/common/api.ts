@@ -1,3 +1,4 @@
+import { IItem } from '@/options/components/mid';
 import { IGist } from '@/services/idb/gist';
 import { DEFAULT_GROUP, IGroup } from '@/services/idb/group';
 import { getToken } from '@/services/idb/settings';
@@ -11,15 +12,8 @@ export interface IRepo {
   html_url: string;
 }
 
-export interface IStar {
-  readonly id: number;
+export interface IStar extends IItem {
   fullName: string;
-  htmlUrl: string;
-  groupId: number;
-  createTime?: number;
-  updateTime?: number;
-  group?: IGroup;
-  tags?: ITag[];
 }
 
 export const getUserInfo = async () => {

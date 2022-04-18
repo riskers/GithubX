@@ -1,4 +1,5 @@
 import { db } from '@/services/idb/db';
+import { addGJT } from '@/services/idb/gistsJTags';
 import { addSJT, deleteSJTByTid } from '@/services/idb/starsJTags';
 
 export interface ITag {
@@ -12,12 +13,22 @@ export const resetTag = async (): Promise<void> => {
   await db.tags.clear();
 };
 
-export const addTag = async (name: string, sid: number): Promise<number> => {
+export const addTagWithSid = async (name: string, sid: number): Promise<number> => {
   const tagId = await db.tags.add({
     name,
   });
 
   await addSJT(tagId, sid);
+
+  return tagId;
+};
+
+export const addTagWithGid = async (name: string, gid: number): Promise<number> => {
+  const tagId = await db.tags.add({
+    name,
+  });
+
+  await addGJT(tagId, gid);
 
   return tagId;
 };

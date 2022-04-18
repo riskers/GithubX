@@ -1,18 +1,12 @@
 import { getAllGistFromGithub } from '@/common/api';
+import { IItem } from '@/options/components/mid';
 import { db } from '@/services/idb/db';
 import { getGroupInfo, IGroup } from '@/services/idb/group';
 import { getTagsInGist, ITag } from '@/services/idb/tag';
 
-export interface IGist {
+export interface IGist extends IItem {
   _id: string;
-  id?: number;
   description: string;
-  groupId: number;
-  htmlUrl: string;
-  group?: IGroup;
-  tags?: ITag[];
-  createTime?: number;
-  updateTime?: number;
 }
 
 export const resetGists = async () => {

@@ -1,12 +1,10 @@
-import { IStar } from '@/common/api';
 import { fetchGroups } from '@/options/slices/groupSlice';
 import { selectorItem } from '@/options/slices/selectedItemSlice';
 import { fetchStarsByGroup, fetchStarsByTag } from '@/options/slices/starsSlice';
 import { fetchTags } from '@/options/slices/tagSlice';
 import { RootState } from '@/options/store';
-import { addStar } from '@/services/idb/stars';
-import { addSJT, deleteSJT } from '@/services/idb/starsJTags';
-import { addTag, ITag } from '@/services/idb/tag';
+import { IGroup } from '@/services/idb/group';
+import { ITag } from '@/services/idb/tag';
 import {
   Autocomplete,
   AutocompleteChangeDetails,
@@ -21,8 +19,24 @@ import {
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+export interface IItem {
+  id?: number;
+  htmlUrl: string;
+  groupId: number;
+  createTime?: number;
+  updateTime?: number;
+  group?: IGroup;
+  tags?: ITag[];
+}
+
 interface IProps {
-  star: IStar;
+  item: IItem;
+  addItemInGroup?: (item: IItem) => void;
+  addTag: (tagName: string, itemId: IItem['id']) => void;
+  selectTag: (tag: ITag['id'], itemId: IItem['id']) => void;
+  deleteTag: (tag: ITag['id'], itemId: IItem['id']) => void;
+  handleChangeGroup: (groupId) => void;
+  handleChangeTag: () => void;
 }
 
 const Mid = (props: IProps) => {
@@ -32,46 +46,32 @@ const Mid = (props: IProps) => {
   const dispatch = useDispatch();
   const groups = useSelector((state: RootState) => state.groups);
   const tags = useSelector((state: RootState) => state.tags);
-  const selectedItem = useSelector(selectorItem);
+
+  const { item, addItemInGroup, addTag, selectTag, deleteTag, handleChangeGroup, handleChangeTag } = props;
 
   const { data: groupList } = groups;
-
-  // tags option list
   const { data: allTagsList } = tags;
 
-  const handleChangeGroup = () => {
-    dispatch(fetchStarsByGroup(props.star.groupId));
-    dispatch(fetchGroups());
-  };
-
-  const handleClick = () => {
+  const handleCloseTagEdit = () => {
     setOpenEditTag(false);
   };
 
-  const handleChangeTag = () => {
-    if (selectedItem.active === 'GROUP') {
-      dispatch(fetchStarsByGroup(selectedItem.group.id));
-    } else {
-      dispatch(fetchStarsByTag(selectedItem.tag.id));
-    }
-  };
-
   React.useEffect(() => {
-    document.addEventListener('click', handleClick, false);
-    return () => document.removeEventListener('click', handleClick, false);
+    document.addEventListener('click', handleCloseTagEdit, false);
+    return () => document.removeEventListener('click', handleCloseTagEdit, false);
   });
 
   return (
     <div className="edit-repo">
       {openEditTag ? (
         <Autocomplete
-          id={`tags-selected-${props.star.id}`}
+          id={`tags-selected-${item.id}`}
           multiple
           disableClearable
           size="small"
           options={allTagsList}
           noOptionsText="Add a tag..."
-          value={props.star.tags}
+          value={item.tags}
           freeSolo
           filterSelectedOptions
           onChange={async (
@@ -83,28 +83,28 @@ const Mid = (props: IProps) => {
           ) => {
             // console.log(v, r, d);
 
-            const sid = props.star.id;
+            const itemId = item.id;
 
             if (r === 'createOption') {
               const option = d.option as string;
-              const exist = props.star.tags.map((tag) => tag.name).some((tagName) => tagName === option);
+              const exist = item.tags.map((tag) => tag.name).some((tagName) => tagName === option);
 
               if (exist) return;
-              await addTag(option, sid);
+              await addTag(option, itemId);
             }
 
             if (r === 'selectOption') {
               const tag = d.option as ITag;
 
-              const exist = props.star.tags.map((tag) => tag.name).some((tagName) => tagName === tag.name);
+              const exist = item.tags.map((tag) => tag.name).some((tagName) => tagName === tag.name);
               if (exist) return;
 
-              await addSJT(tag.id, sid);
+              await selectTag(tag.id, itemId);
             }
 
             if (r === 'removeOption') {
               const tag = d.option as ITag;
-              await deleteSJT(tag.id, sid);
+              await deleteTag(tag.id, itemId);
             }
 
             if (r === 'clear') {
@@ -135,8 +135,13 @@ const Mid = (props: IProps) => {
           }}
         />
       ) : (
-        <Container onClick={() => setOpenEditTag(true)} style={{ padding: 0 }}>
-          {props.star?.tags?.map((tag) => {
+        <Container
+          onClick={() => {
+            setOpenEditTag(true);
+          }}
+          style={{ padding: 0 }}
+        >
+          {item?.tags?.map((tag) => {
             return (
               <Chip size="small" key={tag.id} label={tag.name} color="primary" clickable style={{ marginRight: 5 }} />
             );
@@ -154,22 +159,22 @@ const Mid = (props: IProps) => {
 
       {openEditGroup ? (
         <Select
-          id={`select-group-${props.star.group.id.toString()}`}
+          id={`select-group-${item.group.id.toString()}`}
           size="small"
           autoWidth
-          value={props.star.group.id.toString()}
+          value={item.group.id.toString()}
           style={{ marginTop: 10 }}
           onChange={async (event: SelectChangeEvent) => {
             const newGroupdId = parseInt(event.target.value, 10);
-            const newStar: IStar = {
-              ...props.star,
+            const newItem = {
+              ...item,
               groupId: newGroupdId,
             };
 
             setOpenEditGroup(false);
 
-            await addStar(newStar);
-            handleChangeGroup();
+            await addItemInGroup(newItem);
+            handleChangeGroup(item.group.id);
           }}
         >
           {groupList.map((group) => {
@@ -189,7 +194,7 @@ const Mid = (props: IProps) => {
         >
           <Chip
             size="small"
-            label={props.star.group.name}
+            label={item.group.name}
             color="secondary"
             clickable
             style={{ marginRight: 5, borderRadius: 5, marginTop: 10 }}

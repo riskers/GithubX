@@ -88,6 +88,9 @@ a:hover {
   padding: 10px 17px;
   margin: 0;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 }
 
 .star:hover {
