@@ -26,6 +26,9 @@ export const selectedItemSlice = createSlice({
   name: 'selectedItem',
   initialState,
   reducers: {
+    selectType: (state, action: PayloadAction<Pick<ISelectItem, 'type'>>) => {
+      state.type = action.payload.type;
+    },
     starSelectGroup: (state, action: PayloadAction<Pick<ISelectItem, 'group'>>) => {
       // https://github.com/reduxjs/redux-toolkit/issues/521#issuecomment-624796711
       state.group = action.payload.group;

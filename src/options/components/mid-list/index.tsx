@@ -1,7 +1,7 @@
 import Mid from '@/options/components/mid';
 import { selectorItem } from '@/options/slices/selectedItemSlice';
 import { selectedStarSlice, selectorStar } from '@/options/slices/selectedStar';
-import { IStarState } from '@/options/slices/starsSlice';
+import { IListState } from '@/options/slices/starsSlice';
 import { AppDispatch } from '@/options/store';
 import { IGist } from '@/services/idb/gist';
 import CodeOffRoundedIcon from '@mui/icons-material/CodeOffRounded';
@@ -43,7 +43,6 @@ const StarRow = ({ data, index, style }) => {
 };
 
 const GistRow = ({ data, index, style }) => {
-  const dispatch: AppDispatch = useDispatch();
   const gist: IGist = data[index];
 
   return (
@@ -63,7 +62,7 @@ const GistRow = ({ data, index, style }) => {
 };
 
 interface IProps {
-  content: IStarState;
+  content: IListState;
 }
 
 const MidList: React.FC<IProps> = (props) => {
@@ -92,4 +91,4 @@ const MidList: React.FC<IProps> = (props) => {
   );
 };
 
-export default React.memo(MidList);
+export default MidList;

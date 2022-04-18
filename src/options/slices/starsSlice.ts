@@ -12,7 +12,7 @@ export const fetchStarsByTag = createAsyncThunk('stars/fetchStarsByTag', async (
   return stars;
 });
 
-export interface IStarState {
+export interface IListState {
   loading: boolean;
   data: IStar[];
 }

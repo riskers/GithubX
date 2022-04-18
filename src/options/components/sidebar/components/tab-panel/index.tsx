@@ -2,8 +2,8 @@ import { Box } from '@mui/system';
 import * as React from 'react';
 
 export const TABS = [
-  { title: 'star', index: 0, url: '/' },
-  { title: 'gist', index: 1, url: '/gist' },
+  { title: 'star', index: 0, type: 'STAR', url: '/' },
+  { title: 'gist', index: 1, type: 'GIST', url: '/gist' },
 ] as const;
 
 interface IProps {

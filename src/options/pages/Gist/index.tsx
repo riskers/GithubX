@@ -6,12 +6,7 @@ import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 const Gist = () => {
-  const dispatch = useDispatch();
   const gists = useSelector((state: RootState) => state.gists);
-
-  // React.useEffect(() => {
-  //   dispatch(getGistList(DEFAULT_GROUP.id));
-  // }, [dispatch]);
 
   return (
     <div>

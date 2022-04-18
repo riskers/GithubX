@@ -106,6 +106,7 @@ const SideBar = () => {
               value={tabIndex}
               onChange={(event, index) => {
                 navigate(TABS[index].url, { replace: false });
+                dispatch(selectedItemSlice.actions.selectType({ type: TABS[index].type }));
                 setTabIndex(index);
               }}
             >
