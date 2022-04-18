@@ -1,3 +1,4 @@
+import { RootState } from '@/options/store';
 import { getGistsListByGroup } from '@/services/idb/gist';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 

@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 interface IProps {
   groups: IGroupState;
   count: 'starCount' | 'gistCount';
+  type: 'STAR' | 'GIST';
   selectGroup: (group: IGroup) => void;
 }
 
@@ -20,7 +21,7 @@ const Group: React.FC<IProps> = (props) => {
   const dispatch = useDispatch();
   const ref = React.useRef(null);
   const [openNewGroup, setOpenNewGroup] = React.useState<boolean>(false);
-  const { groups, count, selectGroup } = props;
+  const { groups, count, type, selectGroup } = props;
   const selectedItem = useSelector(selectorItem);
 
   return (
@@ -43,7 +44,7 @@ const Group: React.FC<IProps> = (props) => {
                 style={{ flex: 1 }}
                 className={classNames({
                   group: true,
-                  selected: group.id === selectedItem.group.id,
+                  selected: group.id === selectedItem.group.id && type === selectedItem.type,
                 })}
                 onClick={() => {
                   selectGroup(group);

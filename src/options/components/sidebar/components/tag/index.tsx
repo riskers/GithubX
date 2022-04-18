@@ -12,11 +12,12 @@ import { ITag } from '@/services/idb/tag';
 interface IProps {
   tags: ITagState;
   count: 'starCount' | 'gistCount';
+  type: 'STAR' | 'GIST';
   selectTag: (tag: ITag) => void;
 }
 
 const Tag: React.FC<IProps> = (props) => {
-  const { tags, count, selectTag } = props;
+  const { tags, count, type, selectTag } = props;
   const selectedItem = useSelector(selectorItem);
 
   return (
@@ -38,7 +39,7 @@ const Tag: React.FC<IProps> = (props) => {
               style={{ flex: 1 }}
               className={classNames({
                 group: true,
-                selected: tag.id === selectedItem.tag?.id,
+                selected: tag.id === selectedItem.tag?.id && type === selectedItem.type,
               })}
               onClick={() => {
                 selectTag(tag);

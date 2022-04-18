@@ -43,7 +43,7 @@ const EditTag: React.FC<IProps> = (props: IProps) => {
     await deleteTag(props.tag.id);
     dispatch(fetchStarsByGroup(DEFAULT_GROUP.id));
     // after delete a tag, get a default group
-    dispatch(selectedItemSlice.actions.selectGroup({ group: DEFAULT_GROUP }));
+    dispatch(selectedItemSlice.actions.starSelectGroup({ group: DEFAULT_GROUP }));
     dispatch(fetchTags());
   };
 

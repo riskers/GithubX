@@ -1,23 +1,22 @@
 import { DISCUSS_URL, GITHUB_URL, REPORT_BUG_URL } from '@/common/constants';
 import { getVersion } from '@/common/tools';
-import Accordion from '@/options/components/accordion';
-import EditTag from '@/options/components/edit-tag';
 import Logo from '@/options/components/header';
 import Settings from '@/options/components/setting';
 import TabPanel, { TABS } from '@/options/components/sidebar/components/tab-panel';
 import Tag from '@/options/components/sidebar/components/tag';
+import { getGistList } from '@/options/slices/gistSlice';
 import { fetchGroups } from '@/options/slices/groupSlice';
 import { selectedItemSlice, selectorItem } from '@/options/slices/selectedItemSlice';
 import { settingsSlice, syncData } from '@/options/slices/settingsSlice';
+import { fetchStarsByGroup, fetchStarsByTag } from '@/options/slices/starsSlice';
 import { fetchTags } from '@/options/slices/tagSlice';
 import { RootState } from '@/options/store';
 import GetAppRoundedIcon from '@mui/icons-material/GetAppRounded';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { Box, Button, ButtonGroup, Chip, Stack, Tab, Tabs, TextField } from '@mui/material';
-import classNames from 'classnames';
+import { Box, Button, ButtonGroup, Stack, Tab, Tabs } from '@mui/material';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink, Outlet, useLocation, useMatch, useNavigate, useResolvedPath } from 'react-router-dom';
+import { Outlet, useLocation, useMatch, useNavigate, useResolvedPath } from 'react-router-dom';
 import Group from './components/group';
 
 const SideBar = () => {
@@ -45,16 +44,33 @@ const SideBar = () => {
     })();
   }, [dispatch]);
 
-  const hanleSelectGroup = React.useCallback(
+  const hanleStarSelectGroup = React.useCallback(
     (group) => {
-      dispatch(selectedItemSlice.actions.selectGroup({ group }));
+      dispatch(selectedItemSlice.actions.starSelectGroup({ group }));
+      dispatch(fetchStarsByGroup(group.id));
     },
     [dispatch],
   );
 
-  const handleSelectTag = React.useCallback(
+  const hanleGistSelectGroup = React.useCallback(
+    (group) => {
+      dispatch(selectedItemSlice.actions.gistSelectGroup({ group }));
+      dispatch(getGistList(group.id));
+    },
+    [dispatch],
+  );
+
+  const handleStarSelectTag = React.useCallback(
     (tag) => {
-      dispatch(selectedItemSlice.actions.selectTag({ tag }));
+      dispatch(selectedItemSlice.actions.starSelectTag({ tag }));
+      dispatch(fetchStarsByTag(tag.id));
+    },
+    [dispatch],
+  );
+
+  const handleGistSelectTag = React.useCallback(
+    (tag) => {
+      dispatch(selectedItemSlice.actions.gistSelectTag({ tag }));
     },
     [dispatch],
   );
@@ -112,15 +128,15 @@ const SideBar = () => {
 
           <TabPanel value={TABS[0].index} index={tabIndex}>
             <Box style={{ paddingBottom: 30 }}>
-              <Group groups={groups} count="starCount" selectGroup={hanleSelectGroup} />
-              <Tag tags={tags} count="starCount" selectTag={handleSelectTag} />
+              <Group groups={groups} type="STAR" count="starCount" selectGroup={hanleStarSelectGroup} />
+              <Tag tags={tags} type="STAR" count="starCount" selectTag={handleStarSelectTag} />
             </Box>
           </TabPanel>
 
           <TabPanel value={TABS[1].index} index={tabIndex}>
             <Box style={{ paddingBottom: 30 }}>
-              <Group groups={groups} count="gistCount" selectGroup={hanleSelectGroup} />
-              <Tag tags={tags} count="gistCount" selectTag={handleSelectTag} />
+              <Group groups={groups} type="GIST" count="gistCount" selectGroup={hanleGistSelectGroup} />
+              <Tag tags={tags} type="GIST" count="gistCount" selectTag={handleGistSelectTag} />
             </Box>
           </TabPanel>
         </Box>

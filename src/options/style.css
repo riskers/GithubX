@@ -78,7 +78,7 @@ a:hover {
   grid-column: 2/3;
   border-left: 1px solid #dae1e7;
   border-right: 1px solid #dae1e7;
-  max-height: 100vh;
+  height: 100vh;
   overflow-y: scroll;
 }
 
@@ -88,7 +88,10 @@ a:hover {
   padding: 10px 17px;
   margin: 0;
   cursor: pointer;
-  /* min-height: 130px; */
+}
+
+.star:hover {
+  text-decoration: none;
 }
 
 .edit-area {

@@ -1,3 +1,4 @@
+import { IStar } from '@/common/api';
 import { getStarsListByGroup, getStarsListByTag } from '@/services/idb/stars';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
@@ -11,12 +12,19 @@ export const fetchStarsByTag = createAsyncThunk('stars/fetchStarsByTag', async (
   return stars;
 });
 
+export interface IStarState {
+  loading: boolean;
+  data: IStar[];
+}
+
+const initialState = {
+  loading: false,
+  data: [],
+};
+
 export const starsSlice = createSlice({
   name: 'stars',
-  initialState: {
-    loading: false,
-    data: [],
-  },
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
