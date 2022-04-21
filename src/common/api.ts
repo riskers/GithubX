@@ -1,8 +1,7 @@
 import { IItem } from '@/options/components/mid';
 import { IGist } from '@/services/idb/gist';
-import { DEFAULT_GROUP, IGroup } from '@/services/idb/group';
+import { DEFAULT_GROUP } from '@/services/idb/group';
 import { getToken } from '@/services/idb/settings';
-import { ITag } from '@/services/idb/tag';
 
 import { Octokit } from 'octokit';
 
@@ -67,7 +66,9 @@ export const getStarListFromGithub = async (page: number): Promise<IRepo[]> => {
   const token = await getToken();
   const octokit = new Octokit({ auth: token });
 
-  const res = await octokit.request(`GET /user/starred?page=${page}`);
+  const res = await octokit.request(`GET /user/starred`, {
+    page,
+  });
   return res.data;
 };
 
