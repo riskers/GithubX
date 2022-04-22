@@ -29,7 +29,7 @@ a:hover {
   background: #13283a;
   color: #b8c2cc;
   height: 100vh;
-  overflow-y: scroll;
+  overflow-y: auto;
   position: relative;
 }
 
@@ -79,7 +79,6 @@ a:hover {
   border-left: 1px solid #dae1e7;
   border-right: 1px solid #dae1e7;
   height: 100vh;
-  overflow-y: scroll;
 }
 
 .star{

@@ -1,9 +1,15 @@
 import Mid from '@/options/components/mid';
-import { getGistListByGroup, getGistListByTag } from '@/options/slices/gistSlice';
+import { getGistListByGroup, getGistListByTag, searchGistsByParams } from '@/options/slices/gistSlice';
 import { fetchGroups } from '@/options/slices/groupSlice';
 import { selectorItem } from '@/options/slices/selectedItemSlice';
 import { selectedStarSlice, selectorStar } from '@/options/slices/selectedStar';
-import { fetchStarsByGroup, fetchStarsByTag, IListState } from '@/options/slices/starsSlice';
+import {
+  fetchStarsByGroup,
+  fetchStarsByTag,
+  IListState,
+  searchStarsByParams,
+  starsSlice,
+} from '@/options/slices/starsSlice';
 import { AppDispatch } from '@/options/store';
 import { addGist } from '@/services/idb/gist';
 import { addGJT, deleteGJT } from '@/services/idb/gistsJTags';
@@ -11,7 +17,7 @@ import { addStar } from '@/services/idb/stars';
 import { addSJT, deleteSJT } from '@/services/idb/starsJTags';
 import { addTagWithGid, addTagWithSid } from '@/services/idb/tag';
 import CodeOffRoundedIcon from '@mui/icons-material/CodeOffRounded';
-import { Link, Stack } from '@mui/material';
+import { Link, Stack, TextField } from '@mui/material';
 import classNames from 'classnames';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,6 +25,8 @@ import { useWindowSize } from 'react-use';
 import { FixedSizeList } from 'react-window';
 import OpenInNewTwoToneIcon from '@mui/icons-material/OpenInNewTwoTone';
 import { IStar } from '@/common/api';
+import { Box } from '@mui/system';
+import Search from '@/options/components/search';
 
 const StarRow = ({ data, index, style }) => {
   const dispatch: AppDispatch = useDispatch();
@@ -170,21 +178,57 @@ const GistRow = ({ data, index, style }) => {
   );
 };
 
-interface IProps {
-  content: IListState;
-}
-
-const MidList: React.FC<IProps> = (props) => {
+const MidList: React.FC<{ content: IListState }> = (props) => {
   const { height } = useWindowSize();
   const selectedItem = useSelector(selectorItem);
   const { content } = props;
+  const dispatch = useDispatch();
+  const BOX_HEIGHT = 60;
+
+  const handleSearchStars = (fullName: string) => {
+    dispatch(
+      searchStarsByParams({
+        groupId: selectedItem.group.id,
+        tagId: selectedItem.tag.id,
+        fullName,
+      }),
+    );
+  };
+
+  const handleSearchGists = (fullName: string) => {
+    dispatch(
+      searchGistsByParams({
+        groupId: selectedItem.group.id,
+        tagId: selectedItem.tag.id,
+        fullName,
+      }),
+    );
+  };
 
   return (
     <div className="star-list">
+      {selectedItem.type === 'STAR' ? (
+        <Search
+          height={BOX_HEIGHT}
+          placeholder="search star..."
+          onSearch={(keyword) => {
+            handleSearchStars(keyword);
+          }}
+        />
+      ) : (
+        <Search
+          height={BOX_HEIGHT}
+          placeholder="search gist..."
+          onSearch={(keyword) => {
+            handleSearchGists(keyword);
+          }}
+        />
+      )}
+
       {content.data.length !== 0 ? (
         <FixedSizeList
           itemData={content.data}
-          height={height}
+          height={height - BOX_HEIGHT}
           width="100%"
           itemSize={190}
           itemCount={content.data.length}

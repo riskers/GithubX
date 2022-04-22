@@ -2,6 +2,7 @@ import { getAllGistFromGithub } from '@/common/api';
 import { IItem } from '@/options/components/mid';
 import { db } from '@/services/idb/db';
 import { getGroupInfo, IGroup } from '@/services/idb/group';
+import { ISearchParams } from '@/services/idb/stars';
 import { getTagsInGist, ITag } from '@/services/idb/tag';
 
 export interface IGist extends IItem {
@@ -66,6 +67,20 @@ export const getGistsListByTag = async (tagId: number) => {
     .sort((a, b) => {
       return a.updateTime - b.updateTime;
     });
+};
+
+export const searchGists = async (params: ISearchParams) => {
+  const { fullName, groupId, tagId } = params;
+
+  const res = await db.gists
+    .where({
+      fullName,
+      groupId,
+      tagId,
+    })
+    .toArray();
+
+  return res;
 };
 
 /**

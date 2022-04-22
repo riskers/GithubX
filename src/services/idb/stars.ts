@@ -45,6 +45,26 @@ export const getStarsListByGroup = async (groupId: number): Promise<IStar[]> => 
   return starList;
 };
 
+export interface ISearchParams {
+  fullName: string;
+  groupId?: number;
+  tagId?: number;
+}
+
+export const searchStars = async (params: ISearchParams) => {
+  const { fullName, groupId, tagId } = params;
+
+  const res = await db.stars
+    .where({
+      fullName,
+      groupId,
+      tagId,
+    })
+    .toArray();
+
+  return res;
+};
+
 /**
  * Many To Many
  *
