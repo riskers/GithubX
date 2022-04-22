@@ -27,7 +27,7 @@ Only Storaged on Local drive.
 
 ## Thanks OpenSource and Free Services
 
-* [hatchful](https://hatchful.shopify.com/): Create a Logo in Seconds
+* [hatchful](https://hatchful.shopify.com/): create a logo in a few seconds
 * [Dexie](https://dexie.org/): wondful IndexedDB lib
 * [MUI](https://mui.com/): my favorite React UI lib
 * [react-window](https://github.com/bvaughn/react-window): rendering large lists data
