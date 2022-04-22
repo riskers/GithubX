@@ -78,6 +78,5 @@ export const selectedItemSlice = createSlice({
   },
 });
 
-// export const { selectGroup, selectTag } = selectedItemSlice.actions;
 export const selectorItem = (state: RootState) => state.selectedItem;
 export default selectedItemSlice.reducer;

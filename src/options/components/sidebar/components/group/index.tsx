@@ -1,6 +1,7 @@
 import Accordion from '@/options/components/accordion';
 import EditGroup from '@/options/components/edit-group';
 import { fetchGroups, IGroupState } from '@/options/slices/groupSlice';
+import { NotifySlice } from '@/options/slices/notifySlice';
 import { selectorItem } from '@/options/slices/selectedItemSlice';
 import { addGroup, IGroup } from '@/services/idb/group';
 import AddIcon from '@mui/icons-material/Add';
@@ -100,6 +101,10 @@ const Group: React.FC<IProps> = (props) => {
                 const groupName = ref.current.value;
 
                 const isRepeat = groups.data.some((group) => group.name === groupName);
+
+                if (isRepeat) {
+                  dispatch(NotifySlice.actions.open({ message: 'repeat group name' }));
+                }
 
                 // input is not null and not repeat in groupList
                 if (groupName.trim() && !isRepeat) {
