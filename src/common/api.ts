@@ -128,15 +128,19 @@ export interface IReadmeResponse {
 }
 
 export const getRepoContent = async (fullname: string): Promise<IReadmeResponse> => {
-  const url = `https://api.github.com/repos/${fullname}/readme`;
+  const token = await getToken();
+  const octokit = new Octokit({ auth: token });
+  const res = await octokit.request(`GET /repos/${fullname}/readme`);
+  return res.data;
+  // const url = `https://api.github.com/repos/${fullname}/readme`;
 
-  const response = await fetch(`${url}`, {
-    headers: {
-      Accept: 'application/vnd.github.v3+json',
-    },
-  });
+  // const response = await fetch(`${url}`, {
+  //   headers: {
+  //     Accept: 'application/vnd.github.v3+json',
+  //   },
+  // });
 
-  if (response.ok) {
-    return response.json();
-  }
+  // if (response.ok) {
+  //   return response.json();
+  // }
 };

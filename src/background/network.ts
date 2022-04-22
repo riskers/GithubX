@@ -85,6 +85,8 @@ chrome.webRequest.onCompleted.addListener(
 
     const [tab] = await chrome.tabs.query({
       active: true,
+      windowType: 'normal',
+      url: ['*://github.com/*'],
       // currentWindow: true,
     });
 
