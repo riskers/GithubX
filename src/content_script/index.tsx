@@ -23,12 +23,11 @@ window.addEventListener('load', () => {
 
   chrome.runtime.onMessage.addListener((e: IAction<IInterceptIntoPage>) => {
     const dom = document.createElement('div');
-    document.body.appendChild(dom);
+    document.body.querySelector('.Layout-sidebar').prepend(dom);
 
     if (e.type === INTERCEPT_INTO_PAGE) {
       const starInfo = e.payload.star;
       if (starInfo) {
-        console.log(starInfo);
         ReactDOM.render(<Buttons starInfo={starInfo} />, dom);
       }
     }
