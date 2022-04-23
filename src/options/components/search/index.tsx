@@ -1,8 +1,20 @@
 import { Stack, TextField } from '@mui/material';
 import * as React from 'react';
+import { useThrottle } from 'react-use';
 
 const Search: React.FC<{ height: number; placeholder: string; onSearch: (keyword: string) => void }> = (props) => {
   const { height, placeholder, onSearch } = props;
+
+  const [keyword, setKeyword] = React.useState();
+  const throttleKeyword = useThrottle(keyword);
+
+  const handleChange = (e) => {
+    setKeyword(e);
+  };
+
+  React.useEffect(() => {
+    onSearch(throttleKeyword);
+  }, [onSearch, throttleKeyword]);
 
   return (
     <Stack
@@ -20,7 +32,7 @@ const Search: React.FC<{ height: number; placeholder: string; onSearch: (keyword
           },
         }}
         onChange={(e) => {
-          onSearch(e.target.value);
+          handleChange(e.target.value);
         }}
       />
     </Stack>
