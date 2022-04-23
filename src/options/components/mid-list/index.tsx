@@ -1,17 +1,11 @@
 import Mid from '@/options/components/mid';
-import { getGistListByGroup, getGistListByTag, searchGistsByParams } from '@/options/slices/gistSlice';
+import { getGistListByGroup, getGistListByTag } from '@/options/slices/gistSlice';
 import { fetchGroups } from '@/options/slices/groupSlice';
 import { selectorItem } from '@/options/slices/selectedItemSlice';
 import { selectedStarSlice, selectorStar } from '@/options/slices/selectedStar';
-import {
-  fetchStarsByGroup,
-  fetchStarsByTag,
-  IListState,
-  searchStarsByParams,
-  starsSlice,
-} from '@/options/slices/starsSlice';
+import { fetchStarsByGroup, fetchStarsByTag, IListState, starsSlice } from '@/options/slices/starsSlice';
 import { AppDispatch } from '@/options/store';
-import { addGist } from '@/services/idb/gist';
+import { addGist, getGistsListByGroup, getGistsListByTag } from '@/services/idb/gist';
 import { addGJT, deleteGJT } from '@/services/idb/gistsJTags';
 import { addStar } from '@/services/idb/stars';
 import { addSJT, deleteSJT } from '@/services/idb/starsJTags';
@@ -57,9 +51,9 @@ const StarRow = ({ data, index, style }) => {
 
   const handleChangeTag = () => {
     if (selectedItem.active === 'GROUP') {
-      dispatch(fetchStarsByGroup(selectedItem.group.id));
+      dispatch(fetchStarsByGroup({ groupId: selectedItem.group.id }));
     } else {
-      dispatch(fetchStarsByTag(selectedItem.tag.id));
+      dispatch(fetchStarsByTag({ tagId: selectedItem.tag.id }));
     }
   };
 
@@ -136,9 +130,9 @@ const GistRow = ({ data, index, style }) => {
 
   const handleChangeTag = () => {
     if (selectedItem.active === 'GROUP') {
-      dispatch(getGistListByGroup(selectedItem.group.id));
+      dispatch(getGistListByGroup({ groupId: selectedItem.group.id }));
     } else {
-      dispatch(getGistListByTag(selectedItem.tag.id));
+      dispatch(getGistListByTag({ tagId: selectedItem.tag.id }));
     }
   };
 
@@ -186,28 +180,24 @@ const MidList: React.FC<{ content: IListState }> = (props) => {
   const BOX_HEIGHT = 60;
 
   const handleSearchStars = (fullName: string) => {
-    dispatch(
-      searchStarsByParams({
-        groupId: selectedItem.group.id,
-        tagId: selectedItem.tag.id,
-        fullName,
-      }),
-    );
+    if (selectedItem.active === 'GROUP') {
+      dispatch(fetchStarsByGroup({ groupId: selectedItem.group.id, description: fullName }));
+    } else {
+      dispatch(fetchStarsByTag({ tagId: selectedItem.tag.id, fullName }));
+    }
   };
 
   const handleSearchGists = (fullName: string) => {
-    dispatch(
-      searchGistsByParams({
-        groupId: selectedItem.group.id,
-        tagId: selectedItem.tag.id,
-        fullName,
-      }),
-    );
+    if (selectedItem.active === 'GROUP') {
+      dispatch(getGistListByGroup({ groupId: selectedItem.group.id, description: fullName }));
+    } else {
+      dispatch(getGistListByTag({ tagId: selectedItem.tag.id, fullName }));
+    }
   };
 
   return (
     <div className="star-list">
-      {selectedItem.type === 'STAR' ? (
+      {selectedItem.active && selectedItem.type === 'STAR' && (
         <Search
           height={BOX_HEIGHT}
           placeholder="search star..."
@@ -215,7 +205,9 @@ const MidList: React.FC<{ content: IListState }> = (props) => {
             handleSearchStars(keyword);
           }}
         />
-      ) : (
+      )}
+
+      {selectedItem.active && selectedItem.type === 'GIST' && (
         <Search
           height={BOX_HEIGHT}
           placeholder="search gist..."

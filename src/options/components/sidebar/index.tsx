@@ -11,6 +11,8 @@ import { settingsSlice, syncData } from '@/options/slices/settingsSlice';
 import { fetchStarsByGroup, fetchStarsByTag } from '@/options/slices/starsSlice';
 import { fetchTags } from '@/options/slices/tagSlice';
 import { RootState } from '@/options/store';
+import { IGroup } from '@/services/idb/group';
+import { ITag } from '@/services/idb/tag';
 import GetAppRoundedIcon from '@mui/icons-material/GetAppRounded';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { Box, Button, ButtonGroup, Stack, Tab, Tabs } from '@mui/material';
@@ -21,7 +23,6 @@ import Group from './components/group';
 
 const SideBar = () => {
   const dispatch = useDispatch();
-  const selectedItem = useSelector(selectorItem);
   const groups = useSelector((state: RootState) => state.groups);
   const tags = useSelector((state: RootState) => state.tags);
 
@@ -34,7 +35,6 @@ const SideBar = () => {
   }, [match]);
 
   const [tabIndex, setTabIndex] = React.useState<number>(initIndex);
-
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -45,33 +45,33 @@ const SideBar = () => {
   }, [dispatch]);
 
   const hanleStarSelectGroup = React.useCallback(
-    (group) => {
+    (group: IGroup) => {
       dispatch(selectedItemSlice.actions.starSelectGroup({ group }));
-      dispatch(fetchStarsByGroup(group.id));
+      dispatch(fetchStarsByGroup({ groupId: group.id }));
     },
     [dispatch],
   );
 
   const hanleGistSelectGroup = React.useCallback(
-    (group) => {
+    (group: IGroup) => {
       dispatch(selectedItemSlice.actions.gistSelectGroup({ group }));
-      dispatch(getGistListByGroup(group.id));
+      dispatch(getGistListByGroup({ groupId: group.id }));
     },
     [dispatch],
   );
 
   const handleStarSelectTag = React.useCallback(
-    (tag) => {
+    (tag: ITag) => {
       dispatch(selectedItemSlice.actions.starSelectTag({ tag }));
-      dispatch(fetchStarsByTag(tag.id));
+      dispatch(fetchStarsByTag({ tagId: tag.id }));
     },
     [dispatch],
   );
 
   const handleGistSelectTag = React.useCallback(
-    (tag) => {
+    (tag: ITag) => {
       dispatch(selectedItemSlice.actions.gistSelectTag({ tag }));
-      dispatch(getGistListByTag(tag.id));
+      dispatch(getGistListByTag({ tagId: tag.id }));
     },
     [dispatch],
   );

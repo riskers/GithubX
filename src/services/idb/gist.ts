@@ -1,9 +1,9 @@
 import { getAllGistFromGithub } from '@/common/api';
 import { IItem } from '@/options/components/mid';
 import { db } from '@/services/idb/db';
-import { getGroupInfo, IGroup } from '@/services/idb/group';
-import { ISearchParams } from '@/services/idb/stars';
-import { getTagsInGist, ITag } from '@/services/idb/tag';
+import { getGroupInfo } from '@/services/idb/group';
+import { ISeachGroupParams, ISeachTagParams } from '@/services/idb/stars';
+import { getTagsInGist } from '@/services/idb/tag';
 
 export interface IGist extends IItem {
   _id: string;
@@ -17,8 +17,9 @@ export const resetGists = async () => {
   await db.gists.bulkAdd(res);
 };
 
-export const getGistsListByGroup = async (groupId: number): Promise<IGist[]> => {
-  const gistList = await db.gists
+export const getGistsListByGroup = async (params: ISeachGroupParams): Promise<IGist[]> => {
+  const { groupId, description: fullName } = params;
+  let gistList = await db.gists
     .where({
       groupId,
     })
@@ -36,7 +37,17 @@ export const getGistsListByGroup = async (groupId: number): Promise<IGist[]> => 
     gist.tags = tags;
   }
 
+  if (fullName) {
+    gistList = searchByDescription(gistList, fullName);
+  }
+
   return gistList;
+};
+
+const searchByDescription = (res: IGist[], fullName: string) => {
+  return res.filter((gist) => {
+    return new RegExp(fullName, 'ig').test(gist.description);
+  });
 };
 
 /**
@@ -46,7 +57,8 @@ export const getGistsListByGroup = async (groupId: number): Promise<IGist[]> => 
  * 2. add group
  * 3. add tag
  */
-export const getGistsListByTag = async (tagId: number) => {
+export const getGistsListByTag = async (params: ISeachTagParams) => {
+  const { tagId, fullName } = params;
   const tidInGidList = await db.gistsJTags
     .where({
       tid: tagId,
@@ -62,23 +74,15 @@ export const getGistsListByTag = async (tagId: number) => {
     (tidInGid as any).gist.tags = tags;
   }
 
-  return tidInGidList
+  let res = tidInGidList
     .map((xx) => (xx as any).gist)
     .sort((a, b) => {
       return a.updateTime - b.updateTime;
     });
-};
 
-export const searchGists = async (params: ISearchParams) => {
-  const { fullName, groupId, tagId } = params;
-
-  const res = await db.gists
-    .where({
-      fullName,
-      groupId,
-      tagId,
-    })
-    .toArray();
+  if (fullName) {
+    res = searchByDescription(res, fullName);
+  }
 
   return res;
 };

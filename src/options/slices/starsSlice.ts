@@ -1,19 +1,14 @@
 import { IStar } from '@/common/api';
-import { getStarsListByGroup, getStarsListByTag, ISearchParams, searchStars } from '@/services/idb/stars';
+import { getStarsListByGroup, getStarsListByTag, ISeachGroupParams, ISeachTagParams } from '@/services/idb/stars';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-export const fetchStarsByGroup = createAsyncThunk('stars/fetchStarsByGroup', async (groupId: number) => {
-  const stars = await getStarsListByGroup(groupId);
+export const fetchStarsByGroup = createAsyncThunk('stars/fetchStarsByGroup', async (params: ISeachGroupParams) => {
+  const stars = await getStarsListByGroup(params);
   return stars;
 });
 
-export const fetchStarsByTag = createAsyncThunk('stars/fetchStarsByTag', async (tagId: number) => {
-  const stars = await getStarsListByTag(tagId);
-  return stars;
-});
-
-export const searchStarsByParams = createAsyncThunk('stars/search', async (searchParams: ISearchParams) => {
-  const stars = await searchStars(searchParams);
+export const fetchStarsByTag = createAsyncThunk('stars/fetchStarsByTag', async (params: ISeachTagParams) => {
+  const stars = await getStarsListByTag(params);
   return stars;
 });
 
@@ -52,17 +47,6 @@ export const starsSlice = createSlice({
         state.loading = false;
       })
       .addCase(fetchStarsByTag.rejected, (state) => {
-        state.loading = false;
-      })
-
-      .addCase(searchStarsByParams.pending, (state) => {
-        state.loading = false;
-      })
-      .addCase(searchStarsByParams.fulfilled, (state, action) => {
-        state.loading = false;
-        state.data = action.payload;
-      })
-      .addCase(searchStarsByParams.rejected, (state) => {
         state.loading = false;
       });
   },
