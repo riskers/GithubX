@@ -9,7 +9,7 @@ import {
   INTERCEPT_INTO_PAGE,
 } from '@/content_script/hooks/oneway-message/message';
 import { getGroupList, IGroup } from '@/services/idb/group';
-import { addStar, delStar, getStarInfoByUrl } from '@/services/idb/stars';
+import { addStar, delStar, getStarInfoByFullName } from '@/services/idb/stars';
 import { addSJT, deleteSJTBySid } from '@/services/idb/starsJTags';
 import { getTagsList, ITag } from '@/services/idb/tag';
 
@@ -85,19 +85,19 @@ chrome.webRequest.onCompleted.addListener(
 
     const [tab] = await chrome.tabs.query({
       active: true,
-      windowType: 'normal',
-      url: ['*://github.com/*'],
-      // currentWindow: true,
+      currentWindow: true,
     });
-
-    if (!tab) return;
 
     // console.log(tab);
     // console.log(details);
 
-    const url = tab.url;
-    const star = await getStarInfoByUrl(url);
+    if (!tab) return;
+
+    const url = tab.url.replace('https://github.com/', '');
+    const star = await getStarInfoByFullName(url);
     // console.log(star);
+
+    if (!star) return;
 
     chrome.tabs.sendMessage<IAction<IInterceptIntoPage>>(tab.id, {
       type: INTERCEPT_INTO_PAGE,

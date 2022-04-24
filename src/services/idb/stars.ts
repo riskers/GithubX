@@ -114,10 +114,13 @@ export const getStarInfo = async (id: number): Promise<IStar> => {
   return starInfo;
 };
 
-export const getStarInfoByUrl = async (url: string) => {
-  const { id } = await db.stars.where({ htmlUrl: url }).first();
+export const getStarInfoByFullName = async (fullName) => {
+  console.log(fullName);
+  const star = await db.stars.where({ fullName }).first();
 
-  return await getStarInfo(id);
+  if (!star) return null;
+
+  return await getStarInfo(star.id);
 };
 
 /**

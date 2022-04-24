@@ -8,30 +8,17 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 window.addEventListener('load', () => {
-  // const href = location.href;
-
-  // REPO page
+  // REPO PAGE
   const dom = document.createElement('div');
-  document.body.appendChild(dom);
+  document.body.querySelector('.Layout-sidebar').prepend(dom);
 
   ReactDOM.render(
     <ThemeProvider theme={theme}>
       <Repo />
+      <Buttons />
     </ThemeProvider>,
     dom,
   );
-
-  chrome.runtime.onMessage.addListener((e: IAction<IInterceptIntoPage>) => {
-    const dom = document.createElement('div');
-    document.body.querySelector('.Layout-sidebar').prepend(dom);
-
-    if (e.type === INTERCEPT_INTO_PAGE) {
-      const starInfo = e.payload.star;
-      if (starInfo) {
-        ReactDOM.render(<Buttons starInfo={starInfo} />, dom);
-      }
-    }
-  });
 
   /* if (href === `https://github.com/${username}?tab=following`) {
     const userDom = document.querySelectorAll('.d-table-cell.col-9.v-align-top.pr-3');
