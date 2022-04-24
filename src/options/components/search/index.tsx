@@ -1,20 +1,22 @@
 import { Stack, TextField } from '@mui/material';
+import { useDebounceFn } from 'ahooks';
 import * as React from 'react';
-import { useThrottle } from 'react-use';
 
 const Search: React.FC<{ height: number; placeholder: string; onSearch: (keyword: string) => void }> = (props) => {
   const { height, placeholder, onSearch } = props;
 
   const [keyword, setKeyword] = React.useState();
-  const throttleKeyword = useThrottle(keyword);
 
-  const handleChange = (e) => {
-    setKeyword(e);
-  };
+  const { run } = useDebounceFn(
+    (v) => {
+      setKeyword(v);
+    },
+    { wait: 400 },
+  );
 
   React.useEffect(() => {
-    onSearch(throttleKeyword);
-  }, [onSearch, throttleKeyword]);
+    onSearch(keyword);
+  }, [onSearch, keyword]);
 
   return (
     <Stack
@@ -32,8 +34,11 @@ const Search: React.FC<{ height: number; placeholder: string; onSearch: (keyword
           },
         }}
         onChange={(e) => {
-          handleChange(e.target.value);
+          run(e.target.value);
         }}
+        // onChange={(e) => {
+        //   setKeyword((e as any).target.value);
+        // }}
       />
     </Stack>
   );

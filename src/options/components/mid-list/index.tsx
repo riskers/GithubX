@@ -1,26 +1,25 @@
+import { IStar } from '@/common/api';
 import Mid from '@/options/components/mid';
+import Search from '@/options/components/search';
 import { getGistListByGroup, getGistListByTag } from '@/options/slices/gistSlice';
 import { fetchGroups } from '@/options/slices/groupSlice';
 import { selectorItem } from '@/options/slices/selectedItemSlice';
 import { selectedStarSlice, selectorStar } from '@/options/slices/selectedStar';
-import { fetchStarsByGroup, fetchStarsByTag, IListState, starsSlice } from '@/options/slices/starsSlice';
+import { fetchStarsByGroup, fetchStarsByTag, IListState } from '@/options/slices/starsSlice';
 import { AppDispatch } from '@/options/store';
-import { addGist, getGistsListByGroup, getGistsListByTag } from '@/services/idb/gist';
+import { addGist } from '@/services/idb/gist';
 import { addGJT, deleteGJT } from '@/services/idb/gistsJTags';
 import { addStar } from '@/services/idb/stars';
 import { addSJT, deleteSJT } from '@/services/idb/starsJTags';
 import { addTagWithGid, addTagWithSid } from '@/services/idb/tag';
 import CodeOffRoundedIcon from '@mui/icons-material/CodeOffRounded';
-import { Link, Stack, TextField } from '@mui/material';
+import OpenInNewTwoToneIcon from '@mui/icons-material/OpenInNewTwoTone';
+import { Stack } from '@mui/material';
 import classNames from 'classnames';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useWindowSize } from 'react-use';
 import { FixedSizeList } from 'react-window';
-import OpenInNewTwoToneIcon from '@mui/icons-material/OpenInNewTwoTone';
-import { IStar } from '@/common/api';
-import { Box } from '@mui/system';
-import Search from '@/options/components/search';
 
 const StarRow = ({ data, index, style }) => {
   const dispatch: AppDispatch = useDispatch();
@@ -45,7 +44,7 @@ const StarRow = ({ data, index, style }) => {
   }, []);
 
   const handleChangeGroup = (groupId) => {
-    dispatch(fetchStarsByGroup(groupId));
+    dispatch(fetchStarsByGroup({ groupId }));
     dispatch(fetchGroups());
   };
 
@@ -179,43 +178,47 @@ const MidList: React.FC<{ content: IListState }> = (props) => {
   const dispatch = useDispatch();
   const BOX_HEIGHT = 60;
 
-  const handleSearchStars = (fullName: string) => {
-    if (selectedItem.active === 'GROUP') {
-      dispatch(fetchStarsByGroup({ groupId: selectedItem.group.id, description: fullName }));
-    } else {
-      dispatch(fetchStarsByTag({ tagId: selectedItem.tag.id, fullName }));
-    }
-  };
+  const handleSearchStars = React.useCallback(
+    (fullName: string) => {
+      if (selectedItem.active === 'GROUP') {
+        dispatch(fetchStarsByGroup({ groupId: selectedItem.group.id, description: fullName }));
+      } else {
+        dispatch(fetchStarsByTag({ tagId: selectedItem.tag.id, fullName }));
+      }
+    },
+    [selectedItem.group.id, selectedItem.tag.id, dispatch, selectedItem.active],
+  );
 
-  const handleSearchGists = (fullName: string) => {
-    if (selectedItem.active === 'GROUP') {
-      dispatch(getGistListByGroup({ groupId: selectedItem.group.id, description: fullName }));
-    } else {
-      dispatch(getGistListByTag({ tagId: selectedItem.tag.id, fullName }));
+  const handleSearchGists = React.useCallback(
+    (fullName: string) => {
+      if (selectedItem.active === 'GROUP') {
+        dispatch(getGistListByGroup({ groupId: selectedItem.group.id, description: fullName }));
+      } else {
+        dispatch(getGistListByTag({ tagId: selectedItem.tag.id, fullName }));
+      }
+    },
+    [selectedItem.group.id, selectedItem.tag.id, selectedItem.active, dispatch],
+  );
+
+  const showSearchStar = React.useMemo(() => {
+    if (selectedItem.type === 'STAR') {
+      if (selectedItem.active === 'GROUP') return selectedItem.group.id > -1;
+      if (selectedItem.active === 'TAG') return selectedItem.tag.id > -1;
     }
-  };
+  }, [selectedItem]);
+
+  const showSearchGist = React.useMemo(() => {
+    if (selectedItem.type === 'GIST') {
+      if (selectedItem.active === 'GROUP') return selectedItem.group.id > -1;
+      if (selectedItem.active === 'TAG') return selectedItem.tag.id > -1;
+    }
+  }, [selectedItem]);
 
   return (
     <div className="star-list">
-      {selectedItem.active && selectedItem.type === 'STAR' && (
-        <Search
-          height={BOX_HEIGHT}
-          placeholder="search star..."
-          onSearch={(keyword) => {
-            handleSearchStars(keyword);
-          }}
-        />
-      )}
+      {showSearchStar && <Search height={BOX_HEIGHT} placeholder="search star..." onSearch={handleSearchStars} />}
 
-      {selectedItem.active && selectedItem.type === 'GIST' && (
-        <Search
-          height={BOX_HEIGHT}
-          placeholder="search gist..."
-          onSearch={(keyword) => {
-            handleSearchGists(keyword);
-          }}
-        />
-      )}
+      {showSearchGist && <Search height={BOX_HEIGHT} placeholder="search gist..." onSearch={handleSearchGists} />}
 
       {content.data.length !== 0 ? (
         <FixedSizeList
