@@ -6,12 +6,19 @@ export const fetchGroups = createAsyncThunk('group/fetchGroups', async () => {
   return groupList;
 });
 
+export interface IGroupState {
+  loading: boolean;
+  data: IDBAPI.IGroup[];
+}
+
+const initialState: IGroupState = {
+  loading: false,
+  data: [],
+};
+
 export const groupSlice = createSlice({
   name: 'groupList',
-  initialState: {
-    loading: false,
-    data: [],
-  },
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -27,5 +34,7 @@ export const groupSlice = createSlice({
       });
   },
 });
+
+type x = typeof groupSlice.reducer;
 
 export default groupSlice.reducer;

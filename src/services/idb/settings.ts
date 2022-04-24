@@ -2,9 +2,9 @@ import { db } from '@/services/idb/db';
 
 export interface ISettings {
   /**
-   * github username
+   * github token
    */
-  username: string;
+  token: string;
 
   /**
    * create time
@@ -23,6 +23,11 @@ export const resetSettings = async (): Promise<void> => {
 
 export const getSettings = async (): Promise<ISettings> => {
   return await db.settings.toCollection().first();
+};
+
+export const getToken = async (): Promise<string> => {
+  const settings = await getSettings();
+  return settings.token;
 };
 
 export const setSettings = async (settings: ISettings): Promise<void> => {

@@ -1,4 +1,4 @@
-import { getRepoInfo } from '@/common/api';
+import { getRepoInfo, IStar } from '@/common/api';
 import { getFullName } from '@/common/tools';
 import {
   INTERCEPT_GETSTARINFO_B2C,
@@ -6,9 +6,10 @@ import {
   ACTION_SHOW_OPTION_PAGE,
   IAction,
   INTERCEPT_STARADD_C2B_DONE,
+  INTERCEPT_INTO_PAGE,
 } from '@/content_script/hooks/oneway-message/message';
 import { getGroupList, IGroup } from '@/services/idb/group';
-import { addStar, delStar } from '@/services/idb/stars';
+import { addStar, delStar, getStarInfoByFullName } from '@/services/idb/stars';
 import { addSJT, deleteSJTBySid } from '@/services/idb/starsJTags';
 import { getTagsList, ITag } from '@/services/idb/tag';
 
@@ -69,6 +70,51 @@ chrome.webRequest.onCompleted.addListener(
   },
 );
 
+export interface IInterceptIntoPage {
+  star: IStar;
+}
+
+/**
+ * into repo page intercept for add buttons
+ */
+chrome.webRequest.onCompleted.addListener(
+  async (details) => {
+    if (details.url.match(/\?/gi)) {
+      return;
+    }
+
+    const [tab] = await chrome.tabs.query({
+      active: true,
+      currentWindow: true,
+    });
+
+    // console.log(tab);
+    // console.log(details);
+
+    if (!tab) return;
+
+    const url = tab.url.replace('https://github.com/', '');
+    const star = await getStarInfoByFullName(url);
+    // console.log(star);
+
+    if (!star) return;
+
+    chrome.tabs.sendMessage<IAction<IInterceptIntoPage>>(tab.id, {
+      type: INTERCEPT_INTO_PAGE,
+      payload: {
+        star,
+      },
+    });
+  },
+  {
+    types: ['xmlhttprequest'],
+    urls: ['*://api.github.com/repos/*/*'],
+  },
+);
+
+/**
+ * message listener
+ */
 chrome.runtime.onMessage.addListener(async (request: IAction<any>) => {
   const { type } = request;
 

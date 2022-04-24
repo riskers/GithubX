@@ -20,7 +20,7 @@ a:hover {
   display: grid;
   grid-template-columns: 280px 400px 1fr;
   column-gap: 15px;
-  min-height: 100vh;
+  height: 100vh;
   overflow: hidden;
 }
 
@@ -28,10 +28,9 @@ a:hover {
   grid-column: 1/2;
   background: #13283a;
   color: #b8c2cc;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+  height: 100vh;
+  overflow-y: auto;
+  position: relative;
 }
 
 .group-container {
@@ -79,8 +78,7 @@ a:hover {
   grid-column: 2/3;
   border-left: 1px solid #dae1e7;
   border-right: 1px solid #dae1e7;
-  max-height: 100vh;
-  overflow-y: scroll;
+  height: 100vh;
 }
 
 .star{
@@ -89,7 +87,18 @@ a:hover {
   padding: 10px 17px;
   margin: 0;
   cursor: pointer;
-  /* min-height: 130px; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  position: relative;
+}
+
+.star:hover {
+  text-decoration: none;
+}
+
+.star .link {
+  margin-left: 10px;
 }
 
 .edit-area {

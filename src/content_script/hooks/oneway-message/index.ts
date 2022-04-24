@@ -1,4 +1,3 @@
-import { IInterceptStar } from '@/background/network';
 import { IAction } from '@/content_script/hooks/oneway-message/message';
 import { useEffect, useState } from 'react';
 

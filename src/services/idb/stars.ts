@@ -2,16 +2,17 @@ import { getAllStarListFromGithub, IStar } from '@/common/api';
 import { db } from '@/services/idb/db';
 import { getGroupInfo } from '@/services/idb/group';
 import { getTagsInStar } from '@/services/idb/tag';
+import { circularProgressClasses } from '@mui/material';
 
-export const resetStars = async (username: string): Promise<void> => {
+export const resetStars = async (): Promise<void> => {
   await db.stars.clear();
 
-  const res = await getAllStarListFromGithub(username);
+  const res = await getAllStarListFromGithub();
   await db.stars.bulkAdd(res);
 };
 
-export const syncStars = async (username: string): Promise<void> => {
-  const res = await getAllStarListFromGithub(username);
+export const syncStars = async (): Promise<void> => {
+  const res = await getAllStarListFromGithub();
 
   for (let star of res) {
     const s = await db.stars.where({ id: star.id }).first();
@@ -23,8 +24,15 @@ export const syncStars = async (username: string): Promise<void> => {
   }
 };
 
-export const getStarsListByGroup = async (groupId: number): Promise<IStar[]> => {
-  const starList = await db.stars
+export interface ISeachGroupParams {
+  groupId: number;
+  description?: string;
+}
+
+export const getStarsListByGroup = async (params: ISeachGroupParams): Promise<IStar[]> => {
+  const { groupId, description: fullName } = params;
+
+  let starList = await db.stars
     .where({
       groupId,
     })
@@ -42,8 +50,17 @@ export const getStarsListByGroup = async (groupId: number): Promise<IStar[]> => 
     star.tags = tags;
   }
 
+  if (fullName) {
+    starList = searchByFullName(starList, fullName);
+  }
+
   return starList;
 };
+
+export interface ISeachTagParams {
+  tagId: number;
+  fullName?: string;
+}
 
 /**
  * Many To Many
@@ -52,7 +69,8 @@ export const getStarsListByGroup = async (groupId: number): Promise<IStar[]> => 
  * 2. add group
  * 3. add tag
  */
-export const getStarsListByTag = async (tagId: number) => {
+export const getStarsListByTag = async (params: ISeachTagParams) => {
+  const { tagId, fullName } = params;
   const tidInSidList = await db.starsJTags
     .where({
       tid: tagId,
@@ -68,11 +86,23 @@ export const getStarsListByTag = async (tagId: number) => {
     (tidInSid as any).star.tags = tags;
   }
 
-  return tidInSidList
+  let res = tidInSidList
     .map((xx) => (xx as any).star)
     .sort((a, b) => {
       return a.updateTime - b.updateTime;
     });
+
+  if (fullName) {
+    res = searchByFullName(res, fullName);
+  }
+
+  return res;
+};
+
+const searchByFullName = (res, fullName: string) => {
+  return res.filter((star) => {
+    return new RegExp(fullName, 'ig').test(star.fullName);
+  });
 };
 
 export const getStarInfo = async (id: number): Promise<IStar> => {
@@ -84,9 +114,13 @@ export const getStarInfo = async (id: number): Promise<IStar> => {
   return starInfo;
 };
 
-export const getStarInfoByUrl = async (url: string) => {
-  const starInfo = await db.stars.where({ htmlUrl: url }).first();
-  return starInfo;
+export const getStarInfoByFullName = async (fullName) => {
+  console.log(fullName);
+  const star = await db.stars.where({ fullName }).first();
+
+  if (!star) return null;
+
+  return await getStarInfo(star.id);
 };
 
 /**

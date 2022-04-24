@@ -37,7 +37,7 @@ const EditGroup = (props: Pick<IGroup, 'id' | 'name'>) => {
 
   const handleDelete = async () => {
     await deleteGroup(props.id);
-    dispatch(selectedItemSlice.actions.selectGroup({ group: DEFAULT_GROUP }));
+    dispatch(selectedItemSlice.actions.starSelectGroup({ group: DEFAULT_GROUP }));
     dispatch(fetchGroups());
   };
 

@@ -1,17 +1,16 @@
 import Main from '@/options/components/main';
-import SideBar from '@/options/components/sidebar';
-import StarList from '@/options/components/star-list';
-import Settings from '@/options/components/setting';
+import MidList from '@/options/components/mid-list';
+import { RootState } from '@/options/store';
 import * as React from 'react';
-import { LinearProgress, Stack } from '@mui/material';
+import { useSelector } from 'react-redux';
 
 const Home = () => {
+  const stars = useSelector((state: RootState) => state.stars);
+
   return (
     <>
-      <SideBar />
-      <StarList />
+      <MidList content={stars} />
       <Main />
-      <Settings />
     </>
   );
 };

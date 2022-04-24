@@ -1,22 +1,30 @@
-import { getStarsListByGroup, getStarsListByTag } from '@/services/idb/stars';
+import { IStar } from '@/common/api';
+import { getStarsListByGroup, getStarsListByTag, ISeachGroupParams, ISeachTagParams } from '@/services/idb/stars';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
-export const fetchStarsByGroup = createAsyncThunk('stars/fetchStarsByGroup', async (groupId: number) => {
-  const stars = await getStarsListByGroup(groupId);
+export const fetchStarsByGroup = createAsyncThunk('stars/fetchStarsByGroup', async (params: ISeachGroupParams) => {
+  const stars = await getStarsListByGroup(params);
   return stars;
 });
 
-export const fetchStarsByTag = createAsyncThunk('stars/fetchStarsByTag', async (tagId: number) => {
-  const stars = await getStarsListByTag(tagId);
+export const fetchStarsByTag = createAsyncThunk('stars/fetchStarsByTag', async (params: ISeachTagParams) => {
+  const stars = await getStarsListByTag(params);
   return stars;
 });
+
+export interface IListState {
+  loading: boolean;
+  data: IStar[];
+}
+
+const initialState = {
+  loading: false,
+  data: [],
+};
 
 export const starsSlice = createSlice({
   name: 'stars',
-  initialState: {
-    loading: false,
-    data: [],
-  },
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -30,6 +38,7 @@ export const starsSlice = createSlice({
       .addCase(fetchStarsByGroup.rejected, (state) => {
         state.loading = false;
       })
+
       .addCase(fetchStarsByTag.pending, (state) => {
         state.loading = true;
       })

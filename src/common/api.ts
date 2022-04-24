@@ -1,10 +1,9 @@
-import { DEFAULT_GROUP, IGroup } from '@/services/idb/group';
-import { ITag } from '@/services/idb/tag';
+import { IItem } from '@/options/components/mid';
+import { IGist } from '@/services/idb/gist';
+import { DEFAULT_GROUP } from '@/services/idb/group';
+import { getToken } from '@/services/idb/settings';
 
-export interface IGithubStarResponse {
-  starred_at: string;
-  repo: IRepo;
-}
+import { Octokit } from 'octokit';
 
 export interface IRepo {
   id: number;
@@ -12,30 +11,80 @@ export interface IRepo {
   html_url: string;
 }
 
-export interface IStar {
-  readonly id: number;
+export interface IStar extends IItem {
   fullName: string;
-  htmlUrl: string;
-  groupId: number;
-  createTime?: number;
-  updateTime?: number;
-  group?: IGroup;
-  tags?: ITag[];
 }
 
-export const getAllStarListFromGithub = async (username: string): Promise<IStar[]> => {
+export const getUserInfo = async () => {
+  const token = await getToken();
+  const octokit = new Octokit({ auth: token });
+  return await octokit.rest.users.getAuthenticated();
+};
+
+const getGistsList = async (page: number) => {
+  const token = await getToken();
+  const octokit = new Octokit({ auth: token });
+  // https://docs.github.com/cn/rest/reference/gists#list-gists-for-the-authenticated-user
+  const res = await octokit.request('GET /gists', {
+    page,
+    per_page: 20,
+  });
+  return res.data;
+};
+
+export const getAllGistFromGithub = async () => {
+  let page = 1;
+  let ending = false;
+  let res: IGist[] = [];
+
+  while (!ending) {
+    const pres = await getGistsList(page);
+
+    const gists: IGist[] = pres.map((data) => {
+      return {
+        _id: data.id,
+        groupId: DEFAULT_GROUP.id,
+        description: data.description,
+        htmlUrl: data.html_url,
+        createTime: Date.now(),
+        updateTime: Date.now(),
+      };
+    });
+
+    page++;
+    if (pres.length === 0) {
+      ending = true;
+    }
+
+    res = res.concat(...gists);
+  }
+
+  return res;
+};
+
+export const getStarListFromGithub = async (page: number): Promise<IRepo[]> => {
+  const token = await getToken();
+  const octokit = new Octokit({ auth: token });
+
+  const res = await octokit.request(`GET /user/starred`, {
+    page,
+  });
+  return res.data;
+};
+
+export const getAllStarListFromGithub = async (): Promise<IStar[]> => {
   let page = 1;
   let ending = false;
   let res: IStar[] = [];
 
   while (!ending) {
-    const pres: IGithubStarResponse[] = await getStarListFromGithub(username, page);
+    const pres = await getStarListFromGithub(page);
 
     const stars: IStar[] = pres.map((data) => {
       return {
-        id: data.repo.id,
-        fullName: data.repo.full_name,
-        htmlUrl: data.repo.html_url,
+        id: data.id,
+        fullName: data.full_name,
+        htmlUrl: data.html_url,
         groupId: DEFAULT_GROUP.id,
         createTime: Date.now(),
         updateTime: Date.now(),
@@ -51,19 +100,6 @@ export const getAllStarListFromGithub = async (username: string): Promise<IStar[
   }
 
   return res;
-};
-
-export const getStarListFromGithub = async (username: string, page: number): Promise<IGithubStarResponse[]> => {
-  const url = `https://api.github.com/users/${username}/starred`;
-  const response = await fetch(`${url}?page=${page}`, {
-    headers: {
-      Accept: 'application/vnd.github.v3.star+json',
-    },
-  });
-
-  if (response.ok) {
-    return response.json();
-  }
 };
 
 export const getRepoInfo = async (fullName: string): Promise<Omit<IStar, 'groupId'>> => {
@@ -92,15 +128,19 @@ export interface IReadmeResponse {
 }
 
 export const getRepoContent = async (fullname: string): Promise<IReadmeResponse> => {
-  const url = `https://api.github.com/repos/${fullname}/readme`;
+  const token = await getToken();
+  const octokit = new Octokit({ auth: token });
+  const res = await octokit.request(`GET /repos/${fullname}/readme`);
+  return res.data;
+  // const url = `https://api.github.com/repos/${fullname}/readme`;
 
-  const response = await fetch(`${url}`, {
-    headers: {
-      Accept: 'application/vnd.github.v3+json',
-    },
-  });
+  // const response = await fetch(`${url}`, {
+  //   headers: {
+  //     Accept: 'application/vnd.github.v3+json',
+  //   },
+  // });
 
-  if (response.ok) {
-    return response.json();
-  }
+  // if (response.ok) {
+  //   return response.json();
+  // }
 };
