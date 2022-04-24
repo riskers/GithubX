@@ -1,29 +1,30 @@
-# GithubX
+<center>
+<img src="./src/assets/logo.png" width="200" />
+</center>
 
-> Chrome Extension enhance Github
+English | [中文](./README-cn.md)
 
-## Download
+## Overview
+
+GithubX: A Chrome Extension enhanced Github experience
+
+## Install
 
 [Chrome WebStore](https://chrome.google.com/webstore/detail/githubx/nmcddfeclkbhehidjoadbmkaajoppapo)
 
-## Organize Your Github Stars
+## How To Use
 
-Tag and group your github stars:
+[How To Use](https://github.com/riskers/github-plus-extension/wiki/How-to--use)
 
-![](https://i.imgur.com/dZlYXCi.png)
+## Features
 
-Popup window when you star a repo:
+[Features](https://github.com/riskers/github-plus-extension/wiki/Features)
 
-![](https://i.imgur.com/KOCn2xl.gif)
+## Data Security
 
-## Data is stored locally
-
-Can't sync data with multi drive.
+Data is stored in indexedDB locally.
+So can't sync data with multi drive.
 Only Storaged on Local drive.
-
-## TODO
-
-* [0.0.3](https://github.com/riskers/github-plus-extension/projects/3)
 
 ## Thanks OpenSource and Free Services
 
