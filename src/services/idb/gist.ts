@@ -23,7 +23,6 @@ export const getGistsListByGroup = async (params: ISeachGroupParams): Promise<IG
     .where({
       groupId,
     })
-    .reverse()
     .sortBy('updateTime');
 
   const group = await getGroupInfo(groupId);

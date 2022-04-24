@@ -36,7 +36,6 @@ export const getStarsListByGroup = async (params: ISeachGroupParams): Promise<IS
     .where({
       groupId,
     })
-    .reverse()
     .sortBy('updateTime');
 
   const group = await getGroupInfo(groupId);
