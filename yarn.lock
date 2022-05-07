@@ -1360,13 +1360,13 @@ aggregate-error@^3.1.0:
 
 ahooks-v3-count@^1.0.0:
   version "1.0.0"
-  resolved "https://pkgs.d.xiaomi.net:443/artifactory/api/npm/mi-npm/ahooks-v3-count/-/ahooks-v3-count-1.0.0.tgz#ddeb392e009ad6e748905b3cbf63a9fd8262ca80"
-  integrity sha1-3es5LgCa1udIkFs8v2Op/YJiyoA=
+  resolved "https://registry.yarnpkg.com/ahooks-v3-count/-/ahooks-v3-count-1.0.0.tgz#ddeb392e009ad6e748905b3cbf63a9fd8262ca80"
+  integrity sha512-V7uUvAwnimu6eh/PED4mCDjE7tokeZQLKlxg9lCTMPhN+NjsSbtdacByVlR1oluXQzD3MOw55wylDmQo4+S9ZQ==
 
-ahooks@^3.3.8:
-  version "3.3.8"
-  resolved "https://pkgs.d.xiaomi.net:443/artifactory/api/npm/mi-npm/ahooks/-/ahooks-3.3.8.tgz#57efcfd4749d35036adf6f0a8d43b1e8d49b014a"
-  integrity sha1-V+/P1HSdNQNq328KjUOx6NSbAUo=
+ahooks@^3.3.10:
+  version "3.3.10"
+  resolved "https://registry.yarnpkg.com/ahooks/-/ahooks-3.3.10.tgz#a65782b0ce29df3508b5ca76355fb3005d64a011"
+  integrity sha512-CNZQRnNkvbafV5qdGcx7AT81XJNPa7vAo1XoShvdI8s6oHigTrmc+kWkyWWEywiEchF992Z6oIQEXkSsL034fw==
   dependencies:
     "@types/js-cookie" "^2.x.x"
     ahooks-v3-count "^1.0.0"
@@ -3165,9 +3165,9 @@ date-fns@^1.27.2:
   integrity sha512-hBSVCvSmWC+QypYObzwGOd9wqdDpOt+0wl0KbU+R+uuZBS1jN8VsD1ss3irQDknRj5NvxiTF6oj/nDRnN/UQNw==
 
 dayjs@^1.9.1:
-  version "1.11.1"
-  resolved "https://pkgs.d.xiaomi.net:443/artifactory/api/npm/mi-npm/dayjs/-/dayjs-1.11.1.tgz#90b33a3dda3417258d48ad2771b415def6545eb0"
-  integrity sha1-kLM6Pdo0FyWNSK0ncbQV3vZUXrA=
+  version "1.11.2"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.2.tgz#fa0f5223ef0d6724b3d8327134890cfe3d72fbe5"
+  integrity sha512-F4LXf1OeU9hrSYRPTTj/6FbO4HTjPKXvEIC1P2kcnFurViINCVk3ZV0xAS3XVx9MkMsXbbqlK6hjseaYbgKEHw==
 
 debug@^2.2.0, debug@^2.3.3, debug@^2.6.8, debug@^2.6.9:
   version "2.6.9"
@@ -4533,8 +4533,8 @@ interpret@^2.2.0:
 
 intersection-observer@^0.12.0:
   version "0.12.0"
-  resolved "https://pkgs.d.xiaomi.net:443/artifactory/api/npm/mi-npm/intersection-observer/-/intersection-observer-0.12.0.tgz#6c84628f67ce8698e5f9ccf857d97718745837aa"
-  integrity sha1-bIRij2fOhpjl+cz4V9l3GHRYN6o=
+  resolved "https://registry.yarnpkg.com/intersection-observer/-/intersection-observer-0.12.0.tgz#6c84628f67ce8698e5f9ccf857d97718745837aa"
+  integrity sha512-2Vkz8z46Dv401zTWudDGwO7KiGHNDkMv417T5ItcNYfmvHR/1qCTVBO9vwH8zZmQ0WkA/1ARwpysR9bsnop4NQ==
 
 invariant@^2.2.0, invariant@^2.2.2:
   version "2.2.4"
