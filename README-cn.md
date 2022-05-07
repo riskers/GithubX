@@ -16,9 +16,9 @@ GithubX: 一款增强 Github 体验的 Chrome 插件
 
 [使用说明](https://github.com/riskers/github-plus-extension/wiki/%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E)
 
-## 功能
+## 功能演示
 
-[功能](https://github.com/riskers/github-plus-extension/wiki/%E5%8A%9F%E8%83%BD)
+[功能演示](https://github.com/riskers/github-plus-extension/wiki/%E5%8A%9F%E8%83%BD)
 
 ## 数据安全
 
