@@ -10,7 +10,7 @@ import * as ReactDOM from 'react-dom';
 window.addEventListener('load', () => {
   // REPO PAGE
   const dom = document.createElement('div');
-  document.body.querySelector('.Layout-sidebar').prepend(dom);
+  document.body.append(dom);
 
   ReactDOM.render(
     <ThemeProvider theme={theme}>
