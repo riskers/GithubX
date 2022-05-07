@@ -90,7 +90,7 @@ const EditGroup = (props: Pick<IGroup, 'id' | 'name'>) => {
               handleClose();
             }}
           >
-            Save
+            {chrome.i18n.getMessage('save')}
           </SmallButton>
           <SmallButton
             variant="contained"
@@ -102,7 +102,7 @@ const EditGroup = (props: Pick<IGroup, 'id' | 'name'>) => {
               handleClose();
             }}
           >
-            Delete
+            {chrome.i18n.getMessage('delete')}
           </SmallButton>
         </Stack>
       </Popover>

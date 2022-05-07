@@ -60,9 +60,9 @@ const Settings = () => {
         />
         <DialogContentText style={{ marginTop: 7 }}>
           <Link href="https://github.com/settings/tokens" target="_blank" underline="always" rel="noopener">
-            <Box component="span">Apply Github Token ?</Box>
+            <Box component="span">{chrome.i18n.getMessage('apply_github_token')}</Box>
           </Link>
-          <span style={{ marginLeft: 15, color: '#ccc' }}>storaged locally</span>
+          <span style={{ marginLeft: 15, color: '#ccc' }}>{chrome.i18n.getMessage('store_local')}</span>
         </DialogContentText>
       </DialogContent>
 
@@ -76,7 +76,7 @@ const Settings = () => {
               dispatch(resetAppData(token));
             }}
           >
-            OK
+            {chrome.i18n.getMessage('start')}
           </Button>
           {settings.loading && (
             <CircularProgress

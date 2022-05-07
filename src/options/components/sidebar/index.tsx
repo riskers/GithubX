@@ -90,10 +90,10 @@ const SideBar = () => {
         <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ padding: '13px' }}>
           <Logo />
           <ButtonGroup>
-            <Button onClick={handleOpenSettings} title="reset app">
+            <Button onClick={handleOpenSettings} title={chrome.i18n.getMessage('reset_app')}>
               <RefreshIcon sx={{ fontSize: 14 }} />
             </Button>
-            <Button title="Synchronize with the Github" onClick={handleSyncData}>
+            <Button title={chrome.i18n.getMessage('syn_with_github')} onClick={handleSyncData}>
               <GetAppRoundedIcon color="success" sx={{ fontSize: 14 }} />
             </Button>
           </ButtonGroup>
@@ -155,10 +155,10 @@ const SideBar = () => {
           </Box>
           <Box>
             <a href={REPORT_BUG_URL} target="_blank" style={{ marginRight: 10 }}>
-              Report Bug
+              {chrome.i18n.getMessage('report_bug')}
             </a>
             <a href={DISCUSS_URL} target="_blank">
-              Discuss feature
+              {chrome.i18n.getMessage('discuss_feature')}
             </a>
           </Box>
         </Stack>

@@ -1,0 +1,65 @@
+# manifest
+description:
+  en: Enhance Github
+  zh_CN: 增强 Github
+
+# common
+groups:
+  en: GROUPS
+  zh_CN: 分组
+tags:
+  en: TAGS
+  zh_CN: 标签
+
+# sidebar
+report_bug:
+  en: Report BUG
+  zh_CN: 报告 BUG
+discuss_feature:
+  en: Discuss Feature
+  zh_CN: 需求讨论
+reset_app:
+  en: reset app
+  zh_CN: 重置应用
+syn_with_github:
+  en: Synchronize with the Github
+  zh_CN: 和 Github 同步
+add_group:
+  en: Add a group
+  zh_CN: 添加分组
+enter_group_name:
+  en: Enter a group name...
+  zh_CN: 输入分组名称...
+save:
+  en: Save
+  zh_CN: 保存
+delete:
+  en: Delete
+  zh_CN: 删除
+
+# list
+edit:
+  en: Edit
+  zh_CN: 编辑
+
+# settings
+apply_github_token:
+  en: Apply Github Token ?
+  zh_CN: 申请 Github Token ?
+store_local:
+  en: storaged locally
+  zh_CN: 本地存储
+start:
+  en: Go
+  zh_CN: 开始
+
+# content page
+title:
+  en: Group and Tag
+  zh_CN: 分组和标签
+ok:
+  en: OK
+  zh_CN: 确定
+cancel:
+  en: Cancel
+  zh_CN: 取消

@@ -99,7 +99,7 @@ const EditTag: React.FC<IProps> = (props: IProps) => {
               handleClose();
             }}
           >
-            Save
+            {chrome.i18n.getMessage('save')}
           </SmallButton>
           <SmallButton
             variant="contained"
@@ -111,7 +111,7 @@ const EditTag: React.FC<IProps> = (props: IProps) => {
               handleClose();
             }}
           >
-            Delete
+            {chrome.i18n.getMessage('delete')}
           </SmallButton>
         </Stack>
       </Popover>

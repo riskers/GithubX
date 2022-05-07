@@ -21,7 +21,7 @@ const Tag: React.FC<IProps> = (props) => {
   const selectedItem = useSelector(selectorItem);
 
   return (
-    <Accordion title="TAGS" open>
+    <Accordion title={chrome.i18n.getMessage('tags')} open>
       {tags.data?.map((tag) => {
         return (
           <Stack

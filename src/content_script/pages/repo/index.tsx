@@ -52,11 +52,11 @@ const Repo: React.FC = () => {
 
   return (
     <Dialog open={open}>
-      <DialogTitle>Group and Tag</DialogTitle>
+      <DialogTitle>{chrome.i18n.getMessage('title')}</DialogTitle>
       <DialogContent sx={{ width: 460 }}>
         <FormControl fullWidth>
           <InputLabel variant="standard" htmlFor="uncontrolled-native-group">
-            Group
+            {chrome.i18n.getMessage('groups')}
           </InputLabel>
           <NativeSelect
             id="select-group"
@@ -83,7 +83,7 @@ const Repo: React.FC = () => {
 
         {tags.length !== 0 && (
           <FormControl fullWidth style={{ marginTop: 15 }}>
-            <InputLabel id="uncontrolled-native-tag">Tag</InputLabel>
+            <InputLabel id="uncontrolled-native-tag">{chrome.i18n.getMessage('tags')}</InputLabel>
             <Select
               labelId="uncontrolled-native-tag"
               variant="outlined"
@@ -127,7 +127,7 @@ const Repo: React.FC = () => {
             addStar();
           }}
         >
-          Cancel
+          {chrome.i18n.getMessage('cancel')}
         </Button>
         <Button
           autoFocus
@@ -135,7 +135,7 @@ const Repo: React.FC = () => {
             addStar();
           }}
         >
-          OK
+          {chrome.i18n.getMessage('ok')}
         </Button>
       </DialogActions>
     </Dialog>

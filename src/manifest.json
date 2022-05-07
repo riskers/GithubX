@@ -2,9 +2,10 @@
   "manifest_version": 3,
   "version": "0.0.4",
   "name": "GithubX",
-  "description": "Enhance Github",
+  "description": "__MSG_description__",
+  "default_locale": "en",
   "action": {
-    "default_title": "github-plus"
+    "default_title": "GithubX"
   },
   "icons": {
     "48": "assets/logo48.png"

@@ -27,7 +27,7 @@ const Group: React.FC<IProps> = (props) => {
 
   return (
     <>
-      <Accordion title="GROUPS" open>
+      <Accordion title={chrome.i18n.getMessage('groups')} open>
         {groups.data?.map((group) => {
           return (
             <Stack
@@ -90,7 +90,7 @@ const Group: React.FC<IProps> = (props) => {
             inputRef={ref}
             color="success"
             id="new-group"
-            label="Enter a group name..."
+            label={chrome.i18n.getMessage('enter_group_name')}
             autoFocus
             defaultValue=""
             onBlur={() => {
@@ -127,7 +127,7 @@ const Group: React.FC<IProps> = (props) => {
               setOpenNewGroup(true);
             }}
           >
-            Add a group
+            {chrome.i18n.getMessage('add_group')}
           </Button>
         )}
       </div>

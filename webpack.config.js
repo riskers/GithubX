@@ -3,6 +3,7 @@ const path = require('path');
 const ROOT = path.resolve(__dirname);
 const CopyPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const YamlLocalesWebpackPlugin = require('yaml-locales-webpack-plugin');
 
 const mode = process.env.MODE;
 
@@ -82,6 +83,10 @@ const config = {
         removeComments: true,
         collapseWhitespace: true,
       },
+    }),
+    new YamlLocalesWebpackPlugin({
+      yamlFile: 'src/i18n/messages.yaml',
+      defaultLanguage: 'en',
     }),
   ],
 };

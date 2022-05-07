@@ -8321,6 +8321,13 @@ yallist@^4.0.0:
   resolved "https://registry.npmmirror.com/yallist/-/yallist-4.0.0.tgz#9bb92790d9c0effec63be73519e11a35019a3a72"
   integrity sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==
 
+yaml-locales-webpack-plugin@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/yaml-locales-webpack-plugin/-/yaml-locales-webpack-plugin-1.1.5.tgz#e9903ef13763ba44297f539dd523ed5dd5ed0186"
+  integrity sha512-FdZhvjJMIM9r2Lcj7LX9UYRMInucOqLjo4m9Gs71eBFqKNTPhq+E7+OABLq0lvkdi7OonN8f+wQk92sLSZ4ufg==
+  dependencies:
+    js-yaml "^4.1.0"
+
 yaml@^1.7.2:
   version "1.10.2"
   resolved "https://registry.npmmirror.com/yaml/-/yaml-1.10.2.tgz#2301c5ffbf12b467de8da2333a459e29e7920e4b"

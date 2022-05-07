@@ -146,7 +146,7 @@ const Mid = (props: IProps) => {
 
           <Chip
             size="small"
-            label="Edit Tag"
+            label={chrome.i18n.getMessage('edit')}
             clickable
             style={{ background: '#f1f5f8', color: '#606f7b' }}
             className="edit-label"
