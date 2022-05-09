@@ -1,31 +1,33 @@
 import { resetGists } from '@/services/idb/gist';
 import { resetGistJTag } from '@/services/idb/gistsJTags';
 import { resetGroup } from '@/services/idb/group';
-import * as IDBAPI from '@/services/idb/settings';
 import { resetStars, syncStars } from '@/services/idb/stars';
 import { resetStarJTag } from '@/services/idb/starsJTags';
 import { resetTag } from '@/services/idb/tag';
+import { ISettings, settingInstance } from '@/services/settingInstance';
 import delay from '@/utils/delay';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const fetchSettings = createAsyncThunk('settings/fetchSettings', async () => {
-  const settings = await IDBAPI.getSettings();
+  const settings = await settingInstance.getSettings();
   return settings;
 });
 
 /**
  * reset app data
  */
-export const resetAppData = createAsyncThunk<IDBAPI.ISettings, string>('settings/clear', async (token: string) => {
-  await IDBAPI.resetSettings();
+export const resetAppData = createAsyncThunk<ISettings, string>('settings/clear', async (token: string) => {
   const setting = {
     token,
     createdTime: Date.now(),
     updatedTime: Date.now(),
   };
-  await IDBAPI.setSettings(setting);
+
+  await settingInstance.resetSettings();
+  await settingInstance.setSettings(setting);
 
   await resetStars();
+
   await resetGroup();
   await resetTag();
   await resetStarJTag();
@@ -38,7 +40,7 @@ export const resetAppData = createAsyncThunk<IDBAPI.ISettings, string>('settings
 });
 
 export const syncData = createAsyncThunk('settings/sync', async () => {
-  const setting = await IDBAPI.getSettings();
+  const setting = await settingInstance.getSettings();
 
   await syncStars();
 
@@ -51,7 +53,7 @@ export const syncData = createAsyncThunk('settings/sync', async () => {
   };
 });
 
-const initData: IDBAPI.ISettings = {
+const initData: ISettings = {
   token: null,
 };
 

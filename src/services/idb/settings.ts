@@ -1,35 +1,21 @@
 import { db } from '@/services/idb/db';
+import { ISettings, ISettingStrategy } from '@/services/settingInstance';
 
-export interface ISettings {
-  /**
-   * github token
-   */
-  token: string;
+export class IDBSetting implements ISettingStrategy {
+  public getSettings = async () => {
+    return await db.settings.toCollection().first();
+  };
 
-  /**
-   * create time
-   */
-  createdTime?: number;
+  public resetSettings = async () => {
+    await db.settings.clear();
+  };
 
-  /**
-   * update time
-   */
-  updatedTime?: number;
+  public getToken = async (): Promise<string> => {
+    const settings = await this.getSettings();
+    return settings.token;
+  };
+
+  public setSettings = async (settings: ISettings): Promise<void> => {
+    await db.settings.put(settings);
+  };
 }
-
-export const resetSettings = async (): Promise<void> => {
-  await db.settings.clear();
-};
-
-export const getSettings = async (): Promise<ISettings> => {
-  return await db.settings.toCollection().first();
-};
-
-export const getToken = async (): Promise<string> => {
-  const settings = await getSettings();
-  return settings.token;
-};
-
-export const setSettings = async (settings: ISettings): Promise<void> => {
-  await db.settings.put(settings);
-};

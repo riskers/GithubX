@@ -1,7 +1,7 @@
 import { IItem } from '@/options/components/mid';
 import { IGist } from '@/services/idb/gist';
 import { DEFAULT_GROUP } from '@/services/idb/group';
-import { getToken } from '@/services/idb/settings';
+import { settingInstance } from '@/services/settingInstance';
 
 import { Octokit } from 'octokit';
 
@@ -16,13 +16,13 @@ export interface IStar extends IItem {
 }
 
 export const getUserInfo = async () => {
-  const token = await getToken();
+  const token = await settingInstance.getToken();
   const octokit = new Octokit({ auth: token });
   return await octokit.rest.users.getAuthenticated();
 };
 
 const getGistsList = async (page: number) => {
-  const token = await getToken();
+  const token = await settingInstance.getToken();
   const octokit = new Octokit({ auth: token });
   // https://docs.github.com/cn/rest/reference/gists#list-gists-for-the-authenticated-user
   const res = await octokit.request('GET /gists', {
@@ -63,7 +63,7 @@ export const getAllGistFromGithub = async () => {
 };
 
 export const getStarListFromGithub = async (page: number): Promise<IRepo[]> => {
-  const token = await getToken();
+  const token = await settingInstance.getToken();
   const octokit = new Octokit({ auth: token });
 
   const res = await octokit.request(`GET /user/starred`, {
@@ -128,7 +128,7 @@ export interface IReadmeResponse {
 }
 
 export const getRepoContent = async (fullname: string): Promise<IReadmeResponse> => {
-  const token = await getToken();
+  const token = await settingInstance.getToken();
   const octokit = new Octokit({ auth: token });
   const res = await octokit.request(`GET /repos/${fullname}/readme`);
   return res.data;

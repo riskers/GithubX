@@ -2,9 +2,9 @@ import { IStar } from '@/common/api';
 import { IGist } from '@/services/idb/gist';
 import { IGistsJTags } from '@/services/idb/gistsJTags';
 import { IGroup } from '@/services/idb/group';
-import { ISettings } from '@/services/idb/settings';
 import { IStarsJTags } from '@/services/idb/starsJTags';
 import { ITag } from '@/services/idb/tag';
+import { ISettings } from '@/services/settingInstance';
 import Dexie, { Table } from 'dexie';
 import relationships from 'dexie-relationships';
 
