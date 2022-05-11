@@ -5,12 +5,15 @@ import SideBar from '@/options/components/sidebar';
 import Gist from '@/options/pages/Gist';
 import Home from '@/options/pages/Home';
 import store from '@/options/store';
+import setUpAxios from '@/services/db/setUpAxios';
 import { ThemeProvider } from '@mui/material/styles';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import './style.css';
+
+setUpAxios();
 
 const App: React.FC = () => {
   return (

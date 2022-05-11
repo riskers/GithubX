@@ -61,6 +61,7 @@
     "@mui/styles": "^5.6.0",
     "@reduxjs/toolkit": "^1.8.0",
     "ahooks": "^3.3.10",
+    "axios": "^0.27.2",
     "classnames": "^2.3.1",
     "dexie": "^3.2.1",
     "dexie-relationships": "^1.2.11",
