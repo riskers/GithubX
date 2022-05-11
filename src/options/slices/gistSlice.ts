@@ -1,5 +1,6 @@
 import { getGistsListByGroup, getGistsListByTag } from '@/services/idb/gist';
-import { ISeachGroupParams, ISeachTagParams } from '@/services/idb/stars';
+import { ISeachGroupParams, ISeachTagParams } from '@/services/starInstance';
+
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const getGistListByGroup = createAsyncThunk('gist/fetch/byGroup', async (params: ISeachGroupParams) => {

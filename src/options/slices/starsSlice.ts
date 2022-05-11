@@ -1,14 +1,14 @@
 import { IStar } from '@/common/api';
-import { getStarsListByGroup, getStarsListByTag, ISeachGroupParams, ISeachTagParams } from '@/services/idb/stars';
+import { ISeachGroupParams, ISeachTagParams, starInstace } from '@/services/starInstance';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const fetchStarsByGroup = createAsyncThunk('stars/fetchStarsByGroup', async (params: ISeachGroupParams) => {
-  const stars = await getStarsListByGroup(params);
+  const stars = await starInstace.getStarsListByGroup(params);
   return stars;
 });
 
 export const fetchStarsByTag = createAsyncThunk('stars/fetchStarsByTag', async (params: ISeachTagParams) => {
-  const stars = await getStarsListByTag(params);
+  const stars = await starInstace.getStarsListByTag(params);
   return stars;
 });
 

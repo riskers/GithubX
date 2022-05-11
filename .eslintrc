@@ -22,7 +22,8 @@
     "prettier/prettier": "error",
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
-    "@typescript-eslint/no-empty-interface": 0
+    "@typescript-eslint/no-empty-interface": 0,
+    "@typescript-eslint/method-signature-style": 0
   },
   "settings": {
     "react": {

@@ -1,10 +1,10 @@
 import { resetGists } from '@/services/idb/gist';
 import { resetGistJTag } from '@/services/idb/gistsJTags';
 import { resetGroup } from '@/services/idb/group';
-import { resetStars, syncStars } from '@/services/idb/stars';
 import { resetStarJTag } from '@/services/idb/starsJTags';
 import { resetTag } from '@/services/idb/tag';
 import { ISettings, settingInstance } from '@/services/settingInstance';
+import { starInstace } from '@/services/starInstance';
 import delay from '@/utils/delay';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
@@ -26,7 +26,7 @@ export const resetAppData = createAsyncThunk<ISettings, string>('settings/clear'
   await settingInstance.resetSettings();
   await settingInstance.setSettings(setting);
 
-  await resetStars();
+  await starInstace.resetStars();
 
   await resetGroup();
   await resetTag();
@@ -42,7 +42,7 @@ export const resetAppData = createAsyncThunk<ISettings, string>('settings/clear'
 export const syncData = createAsyncThunk('settings/sync', async () => {
   const setting = await settingInstance.getSettings();
 
-  await syncStars();
+  await starInstace.syncStars();
 
   await delay(1000);
 

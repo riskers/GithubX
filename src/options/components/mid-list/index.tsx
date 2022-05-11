@@ -9,9 +9,9 @@ import { fetchStarsByGroup, fetchStarsByTag, IListState } from '@/options/slices
 import { AppDispatch } from '@/options/store';
 import { addGist } from '@/services/idb/gist';
 import { addGJT, deleteGJT } from '@/services/idb/gistsJTags';
-import { addStar } from '@/services/idb/stars';
 import { addSJT, deleteSJT } from '@/services/idb/starsJTags';
 import { addTagWithGid, addTagWithSid } from '@/services/idb/tag';
+import { starInstace } from '@/services/starInstance';
 import CodeOffRoundedIcon from '@mui/icons-material/CodeOffRounded';
 import OpenInNewTwoToneIcon from '@mui/icons-material/OpenInNewTwoTone';
 import { Stack } from '@mui/material';
@@ -28,7 +28,7 @@ const StarRow = ({ data, index, style }) => {
   const selectedItem = useSelector(selectorItem);
 
   const addItemInGroup = React.useCallback(async (newStar) => {
-    await addStar(newStar);
+    await starInstace.addStar(newStar);
   }, []);
 
   const addTag = React.useCallback(async (tagName: string, itemId) => {

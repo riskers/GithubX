@@ -9,9 +9,9 @@ import {
   INTERCEPT_INTO_PAGE,
 } from '@/content_script/hooks/oneway-message/message';
 import { getGroupList, IGroup } from '@/services/idb/group';
-import { addStar, delStar, getStarInfoByFullName } from '@/services/idb/stars';
 import { addSJT, deleteSJTBySid } from '@/services/idb/starsJTags';
 import { getTagsList, ITag } from '@/services/idb/tag';
+import { starInstace } from '@/services/starInstance';
 
 export interface IIntercepotAddStar {
   fullName: string;
@@ -61,7 +61,7 @@ chrome.webRequest.onCompleted.addListener(
     const fullName = getFullName(details);
     const starInfo = await getRepoInfo(fullName);
 
-    await delStar(starInfo.id);
+    await starInstace.delStar(starInfo.id);
     await deleteSJTBySid(starInfo.id);
   },
   {
@@ -94,7 +94,7 @@ chrome.webRequest.onCompleted.addListener(
     if (!tab) return;
 
     const url = tab.url.replace('https://github.com/', '');
-    const star = await getStarInfoByFullName(url);
+    const star = await starInstace.getStarInfoByFullName(url);
     // console.log(star);
 
     if (!star) return;
@@ -132,7 +132,7 @@ chrome.runtime.onMessage.addListener(async (request: IAction<any>) => {
 
     const starInfo = await getRepoInfo(fullName);
 
-    await addStar({ ...starInfo, groupId, updateTime: Date.now(), createTime: Date.now() });
+    await starInstace.addStar({ ...starInfo, groupId, updateTime: Date.now(), createTime: Date.now() });
 
     for (let tagId of tagsId) {
       await addSJT(tagId, starInfo.id);

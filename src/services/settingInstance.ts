@@ -30,21 +30,24 @@ class SettingInstance implements ISettingStrategy {
   private settingStrategy: ISettingStrategy;
 
   public constructor() {
-    const dbSelect: ILocalStorage['SELECT_DB'] = localStorage.getItem('SELECT_DB') as ILocalStorage['SELECT_DB'];
-
-    switch (dbSelect) {
-      case 'DB':
-        this.settingStrategy = new APISetting();
-        break;
-      case 'IDB':
-        this.settingStrategy = new IDBSetting();
-        break;
-      default:
-        this.settingStrategy = new IDBSetting();
-    }
+    // const dbSelect: ILocalStorage['SELECT_DB'] = window.localStorage.getItem('SELECT_DB') as ILocalStorage['SELECT_DB'];
+    // switch (dbSelect) {
+    //   case 'DB':
+    this.settingStrategy = new APISetting();
+    //     break;
+    //   case 'IDB':
+    // this.settingStrategy = new IDBSetting();
+    //     break;
+    //   default:
+    //     this.settingStrategy = new IDBSetting();
+    // }
   }
+
   public getSettings = async () => {
-    return await this.settingStrategy.getSettings();
+    console.log('xxcsgjudsaukdfshkjjkladsf');
+    const settings = await this.settingStrategy.getSettings();
+    console.log(settings);
+    return settings;
   };
 
   public getToken = async () => {

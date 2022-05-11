@@ -17,6 +17,8 @@ const setUpAxios = () => {
       return Promise.reject(error);
     },
   );
+
+  axios.defaults.baseURL = 'http://localhost:8910';
 };
 
 export default setUpAxios;

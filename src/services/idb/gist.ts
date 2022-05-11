@@ -2,8 +2,8 @@ import { getAllGistFromGithub } from '@/common/api';
 import { IItem } from '@/options/components/mid';
 import { db } from '@/services/idb/db';
 import { getGroupInfo } from '@/services/idb/group';
-import { ISeachGroupParams, ISeachTagParams } from '@/services/idb/stars';
 import { getTagsInGist } from '@/services/idb/tag';
+import { ISeachGroupParams, ISeachTagParams } from '@/services/starInstance';
 
 export interface IGist extends IItem {
   _id: string;
