@@ -3,7 +3,7 @@ import EditGroup from '@/options/components/edit-group';
 import { fetchGroups, IGroupState } from '@/options/slices/groupSlice';
 import { NotifySlice } from '@/options/slices/notifySlice';
 import { selectorItem } from '@/options/slices/selectedItemSlice';
-import { addGroup, IGroup } from '@/services/idb/group';
+import { groupInstace, IGroupModal } from '@/services/groupInstance';
 import AddIcon from '@mui/icons-material/Add';
 import AllInboxIcon from '@mui/icons-material/AllInbox';
 import { Button, Chip, Stack, TextField } from '@mui/material';
@@ -15,7 +15,7 @@ interface IProps {
   groups: IGroupState;
   count: 'starCount' | 'gistCount';
   type: 'STAR' | 'GIST';
-  selectGroup: (group: IGroup) => void;
+  selectGroup: (group: IGroupModal) => void;
 }
 
 const Group: React.FC<IProps> = (props) => {
@@ -108,7 +108,7 @@ const Group: React.FC<IProps> = (props) => {
 
                 // input is not null and not repeat in groupList
                 if (groupName.trim() && !isRepeat) {
-                  addGroup(groupName);
+                  groupInstace.addGroup(groupName);
                   ref.current.value = '';
                   dispatch(fetchGroups());
                 }

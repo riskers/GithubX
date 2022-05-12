@@ -8,9 +8,7 @@ export class APIStars implements StarStrategy {
 
     const res = await getAllStarListFromGithub();
 
-    await axios.post('/api/star', {
-      data: JSON.stringify(res),
-    });
+    await axios.post('/api/star/list', [...res]);
   }
 
   public async syncStars(): Promise<void> {
@@ -58,8 +56,6 @@ export class APIStars implements StarStrategy {
   }
 
   public async addStar(star: IStar): Promise<void> {
-    await axios.post(`/api/star`, {
-      data: star,
-    });
+    await axios.post(`/api/star`, star);
   }
 }

@@ -1,14 +1,14 @@
-import * as IDBAPI from '@/services/idb/group';
+import { groupInstace, IGroupModal } from '@/services/groupInstance';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const fetchGroups = createAsyncThunk('group/fetchGroups', async () => {
-  const groupList = await IDBAPI.getGroupList();
+  const groupList = await groupInstace.getGroupList();
   return groupList;
 });
 
 export interface IGroupState {
   loading: boolean;
-  data: IDBAPI.IGroup[];
+  data: IGroupModal[];
 }
 
 const initialState: IGroupState = {

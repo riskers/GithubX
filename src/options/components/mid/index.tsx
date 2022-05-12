@@ -1,7 +1,7 @@
 import { fetchTags } from '@/options/slices/tagSlice';
 import { RootState } from '@/options/store';
-import { IGroup } from '@/services/idb/group';
-import { ITag } from '@/services/idb/tag';
+import { IGroupModal } from '@/services/groupInstance';
+import { ITagModel } from '@/services/tagInstance';
 import {
   Autocomplete,
   AutocompleteChangeDetails,
@@ -22,16 +22,16 @@ export interface IItem {
   groupId: number;
   createTime?: number;
   updateTime?: number;
-  group?: IGroup;
-  tags?: ITag[];
+  group?: IGroupModal;
+  tags?: ITagModel[];
 }
 
 interface IProps {
   item: IItem;
   addItemInGroup?: (item: IItem) => void;
   addTag: (tagName: string, itemId: IItem['id']) => void;
-  selectTag: (tag: ITag['id'], itemId: IItem['id']) => void;
-  deleteTag: (tag: ITag['id'], itemId: IItem['id']) => void;
+  selectTag: (tag: ITagModel['id'], itemId: IItem['id']) => void;
+  deleteTag: (tag: ITagModel['id'], itemId: IItem['id']) => void;
   handleChangeGroup: (groupId) => void;
   handleChangeTag: () => void;
 }
@@ -75,7 +75,7 @@ const Mid = (props: IProps) => {
             event,
             v,
             r: AutocompleteChangeReason,
-            d: AutocompleteChangeDetails<ITag> | AutocompleteChangeDetails<string>,
+            d: AutocompleteChangeDetails<ITagModel> | AutocompleteChangeDetails<string>,
             // eslint-disable-next-line max-params
           ) => {
             // console.log(v, r, d);
@@ -91,7 +91,7 @@ const Mid = (props: IProps) => {
             }
 
             if (r === 'selectOption') {
-              const tag = d.option as ITag;
+              const tag = d.option as ITagModel;
 
               const exist = item.tags.map((tag) => tag.name).some((tagName) => tagName === tag.name);
               if (exist) return;
@@ -100,7 +100,7 @@ const Mid = (props: IProps) => {
             }
 
             if (r === 'removeOption') {
-              const tag = d.option as ITag;
+              const tag = d.option as ITagModel;
               await deleteTag(tag.id, itemId);
             }
 
@@ -122,7 +122,7 @@ const Mid = (props: IProps) => {
 
             return option.name;
           }}
-          renderTags={(value: ITag[], getTagProps) => {
+          renderTags={(value: ITagModel[], getTagProps) => {
             return value.map((option, index) => {
               return <Chip color="success" label={option.name} key={index} size="small" {...getTagProps({ index })} />;
             });

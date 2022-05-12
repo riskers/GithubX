@@ -8,10 +8,10 @@ import {
   INTERCEPT_STARADD_C2B_DONE,
   INTERCEPT_INTO_PAGE,
 } from '@/content_script/hooks/oneway-message/message';
-import { getGroupList, IGroup } from '@/services/idb/group';
+import { groupInstace, IGroupModal } from '@/services/groupInstance';
 import { addSJT, deleteSJTBySid } from '@/services/idb/starsJTags';
-import { getTagsList, ITag } from '@/services/idb/tag';
 import { starInstace } from '@/services/starInstance';
+import { ITagModel, tagInstace } from '@/services/tagInstance';
 
 export interface IIntercepotAddStar {
   fullName: string;
@@ -21,8 +21,8 @@ export interface IIntercepotAddStar {
 
 export interface IInterceptStar {
   fullName: string;
-  groups: IGroup[];
-  tags: ITag[];
+  groups: IGroupModal[];
+  tags: ITagModel[];
 }
 /**
  * star request intercept
@@ -35,8 +35,8 @@ chrome.webRequest.onCompleted.addListener(
     });
 
     const fullName = getFullName(details);
-    const groups = await getGroupList();
-    const tags = await getTagsList();
+    const groups = await groupInstace.getGroupList();
+    const tags = await tagInstace.getTagsList();
 
     chrome.tabs.sendMessage<IAction<IInterceptStar>>(tab.id, {
       type: INTERCEPT_GETSTARINFO_B2C,

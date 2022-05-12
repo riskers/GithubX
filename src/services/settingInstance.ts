@@ -2,7 +2,7 @@ import { ILocalStorage } from '@/services/constants';
 import { APISetting } from '@/services/db/settings';
 import { IDBSetting } from '@/services/idb/settings';
 
-export interface ISettings {
+export interface ISettingModal {
   /**
    * github token
    */
@@ -21,9 +21,9 @@ export interface ISettings {
 
 export interface ISettingStrategy {
   resetSettings: () => Promise<void>;
-  getSettings: () => Promise<ISettings>;
+  getSettings: () => Promise<ISettingModal>;
   getToken: () => Promise<string>;
-  setSettings: (settings: ISettings) => Promise<void>;
+  setSettings: (settings: ISettingModal) => Promise<void>;
 }
 
 class SettingInstance implements ISettingStrategy {
@@ -44,9 +44,7 @@ class SettingInstance implements ISettingStrategy {
   }
 
   public getSettings = async () => {
-    console.log('xxcsgjudsaukdfshkjjkladsf');
     const settings = await this.settingStrategy.getSettings();
-    console.log(settings);
     return settings;
   };
 
@@ -54,7 +52,7 @@ class SettingInstance implements ISettingStrategy {
     return await this.settingStrategy.getToken();
   };
 
-  public setSettings = async (settings: ISettings) => {
+  public setSettings = async (settings: ISettingModal) => {
     await this.settingStrategy.setSettings(settings);
   };
 

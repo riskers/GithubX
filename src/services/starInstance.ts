@@ -1,4 +1,5 @@
 import { IStar } from '@/common/api';
+import { APIStars } from '@/services/db/stars';
 import { IDBStar } from '@/services/idb/stars';
 
 export interface ISeachGroupParams {
@@ -27,9 +28,9 @@ class StarInstance implements StarStrategy {
 
   public constructor() {
     // const dbSelect: ILocalStorage['SELECT_DB'] = window.localStorage.getItem('SELECT_DB') as ILocalStorage['SELECT_DB'];
-    this.starStrategy = new IDBStar();
+    // this.starStrategy = new IDBStar();
     // } else {
-    // this.starStrategy = new APIStar();
+    this.starStrategy = new APIStars();
     // }
   }
 

@@ -1,5 +1,5 @@
 import { IItem } from '@/options/components/mid';
-import { IGist } from '@/services/idb/gist';
+import { IGist } from '@/services/gistInstance';
 import { DEFAULT_GROUP } from '@/services/idb/group';
 import { settingInstance } from '@/services/settingInstance';
 
@@ -64,6 +64,7 @@ export const getAllGistFromGithub = async () => {
 
 export const getStarListFromGithub = async (page: number): Promise<IRepo[]> => {
   const token = await settingInstance.getToken();
+
   const octokit = new Octokit({ auth: token });
 
   const res = await octokit.request(`GET /user/starred`, {

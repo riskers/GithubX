@@ -1,8 +1,8 @@
 import { getAllStarListFromGithub, IStar } from '@/common/api';
+import { groupInstace } from '@/services/groupInstance';
 import { db } from '@/services/idb/db';
-import { getGroupInfo } from '@/services/idb/group';
-import { getTagsInStar } from '@/services/idb/tag';
 import { ISeachGroupParams, ISeachTagParams, StarStrategy } from '@/services/starInstance';
+import { tagInstace } from '@/services/tagInstance';
 import { circularProgressClasses } from '@mui/material';
 
 export class IDBStar implements StarStrategy {
@@ -35,14 +35,14 @@ export class IDBStar implements StarStrategy {
       })
       .sortBy('updateTime');
 
-    const group = await getGroupInfo(groupId);
+    const group = await groupInstace.getGroupInfo(groupId);
 
     for (let star of starList) {
       star.group = group;
     }
 
     for (const star of starList) {
-      const tags = await getTagsInStar(star.id);
+      const tags = await tagInstace.getTagsInStar(star.id);
       star.tags = tags;
     }
 
@@ -70,10 +70,10 @@ export class IDBStar implements StarStrategy {
 
     for (let tidInSid of tidInSidList) {
       const groupId = (tidInSid as any).star.groupId;
-      const group = await getGroupInfo(groupId);
+      const group = await groupInstace.getGroupInfo(groupId);
       (tidInSid as any).star.group = group;
 
-      const tags = await getTagsInStar(tidInSid.sid);
+      const tags = await tagInstace.getTagsInStar(tidInSid.sid);
       (tidInSid as any).star.tags = tags;
     }
 
@@ -93,8 +93,8 @@ export class IDBStar implements StarStrategy {
   public getStarInfo = async (id: number): Promise<IStar> => {
     const starInfo = await db.stars.where({ id }).first();
 
-    starInfo.tags = await getTagsInStar(id);
-    starInfo.group = await getGroupInfo(starInfo.groupId);
+    starInfo.tags = await tagInstace.getTagsInStar(id);
+    starInfo.group = await groupInstace.getGroupInfo(starInfo.groupId);
 
     return starInfo;
   };

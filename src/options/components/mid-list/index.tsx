@@ -7,11 +7,11 @@ import { selectorItem } from '@/options/slices/selectedItemSlice';
 import { selectedStarSlice, selectorStar } from '@/options/slices/selectedStar';
 import { fetchStarsByGroup, fetchStarsByTag, IListState } from '@/options/slices/starsSlice';
 import { AppDispatch } from '@/options/store';
-import { addGist } from '@/services/idb/gist';
+import { gistInstace } from '@/services/gistInstance';
 import { addGJT, deleteGJT } from '@/services/idb/gistsJTags';
 import { addSJT, deleteSJT } from '@/services/idb/starsJTags';
-import { addTagWithGid, addTagWithSid } from '@/services/idb/tag';
 import { starInstace } from '@/services/starInstance';
+import { tagInstace } from '@/services/tagInstance';
 import CodeOffRoundedIcon from '@mui/icons-material/CodeOffRounded';
 import OpenInNewTwoToneIcon from '@mui/icons-material/OpenInNewTwoTone';
 import { Stack } from '@mui/material';
@@ -32,7 +32,7 @@ const StarRow = ({ data, index, style }) => {
   }, []);
 
   const addTag = React.useCallback(async (tagName: string, itemId) => {
-    await addTagWithSid(tagName, itemId);
+    await tagInstace.addTagWithSid(tagName, itemId);
   }, []);
 
   const selectTag = React.useCallback(async (tagId, itemId) => {
@@ -107,11 +107,11 @@ const GistRow = ({ data, index, style }) => {
   const selectedItem = useSelector(selectorItem);
 
   const addInGroup = React.useCallback(async (newGist) => {
-    await addGist(newGist);
+    await gistInstace.addGist(newGist);
   }, []);
 
   const addTag = React.useCallback(async (tagName: string, itemId) => {
-    await addTagWithGid(tagName, itemId);
+    await tagInstace.addTagWithGid(tagName, itemId);
   }, []);
 
   const selectTag = React.useCallback(async (tagId, itemId) => {

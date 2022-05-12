@@ -1,5 +1,5 @@
 import { db } from '@/services/idb/db';
-import { ISettings, ISettingStrategy } from '@/services/settingInstance';
+import { ISettingModal, ISettingStrategy } from '@/services/settingInstance';
 
 export class IDBSetting implements ISettingStrategy {
   public getSettings = async () => {
@@ -15,7 +15,7 @@ export class IDBSetting implements ISettingStrategy {
     return settings.token;
   };
 
-  public setSettings = async (settings: ISettings): Promise<void> => {
+  public setSettings = async (settings: ISettingModal): Promise<void> => {
     await db.settings.put(settings);
   };
 }
