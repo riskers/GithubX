@@ -2,16 +2,15 @@ import { ISettingModal, ISettingStrategy } from '@/services/settingInstance';
 import axios from 'axios';
 
 export class APISetting implements ISettingStrategy {
-  public getSettings = async () => {
-    const res = await axios.get<ISettingModal>('/api/setting');
-    return res.data;
-  };
+  public async getSettings(): Promise<ISettingModal> {
+    return await axios.get('/api/setting');
+  }
 
-  public getToken = async () => {
+  public async getToken(): Promise<string> {
     const res = await this.getSettings();
-    console.log(res);
+
     return res.token;
-  };
+  }
 
   public setSettings = async (settings: ISettingModal) => {
     await axios.post('/api/setting', {
