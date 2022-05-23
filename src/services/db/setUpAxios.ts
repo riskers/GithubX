@@ -6,7 +6,6 @@ const setUpAxios = () => {
   axios.interceptors.response.use(
     (response) => {
       if (response.status === 200 && response.data.code === 0) {
-        console.log(response.data);
         return response.data.data;
       }
 

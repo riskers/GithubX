@@ -9,7 +9,7 @@ import {
   INTERCEPT_INTO_PAGE,
 } from '@/content_script/hooks/oneway-message/message';
 import { groupInstace, IGroupModal } from '@/services/groupInstance';
-import { addSJT, deleteSJTBySid } from '@/services/idb/starsJTags';
+import { sjtIntance } from '@/services/sjtInstance';
 import { starInstace } from '@/services/starInstance';
 import { ITagModel, tagInstace } from '@/services/tagInstance';
 
@@ -62,7 +62,7 @@ chrome.webRequest.onCompleted.addListener(
     const starInfo = await getRepoInfo(fullName);
 
     await starInstace.delStar(starInfo.id);
-    await deleteSJTBySid(starInfo.id);
+    await sjtIntance.deleteSJTBySid(starInfo.id);
   },
   {
     types: ['xmlhttprequest'],
@@ -88,14 +88,11 @@ chrome.webRequest.onCompleted.addListener(
       currentWindow: true,
     });
 
-    // console.log(tab);
-    // console.log(details);
-
-    if (!tab) return;
+    // exclude in background
+    if (!tab || !/github/.test(tab.url)) return;
 
     const url = tab.url.replace('https://github.com/', '');
     const star = await starInstace.getStarInfoByFullName(url);
-    // console.log(star);
 
     if (!star) return;
 
@@ -135,7 +132,7 @@ chrome.runtime.onMessage.addListener(async (request: IAction<any>) => {
     await starInstace.addStar({ ...starInfo, groupId, updateTime: Date.now(), createTime: Date.now() });
 
     for (let tagId of tagsId) {
-      await addSJT(tagId, starInfo.id);
+      await sjtIntance.addSJT(tagId, starInfo.id);
     }
 
     const [tab] = await chrome.tabs.query({

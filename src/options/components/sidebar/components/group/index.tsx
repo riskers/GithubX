@@ -108,7 +108,7 @@ const Group: React.FC<IProps> = (props) => {
 
                 // input is not null and not repeat in groupList
                 if (groupName.trim() && !isRepeat) {
-                  groupInstace.addGroup(groupName);
+                  await groupInstace.addGroup(groupName);
                   ref.current.value = '';
                   dispatch(fetchGroups());
                 }
@@ -135,4 +135,4 @@ const Group: React.FC<IProps> = (props) => {
   );
 };
 
-export default React.memo(Group);
+export default Group;

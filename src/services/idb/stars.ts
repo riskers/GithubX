@@ -1,11 +1,15 @@
 import { getAllStarListFromGithub, IStar } from '@/common/api';
 import { groupInstace } from '@/services/groupInstance';
 import { db } from '@/services/idb/db';
+import { sjtIntance } from '@/services/sjtInstance';
 import { ISeachGroupParams, ISeachTagParams, StarStrategy } from '@/services/starInstance';
 import { tagInstace } from '@/services/tagInstance';
-import { circularProgressClasses } from '@mui/material';
 
 export class IDBStar implements StarStrategy {
+  public delTag = async (tid: number, sid: number): Promise<void> => {
+    await sjtIntance.deleteSJT(tid, sid);
+  };
+
   public resetStars = async (): Promise<void> => {
     await db.stars.clear();
 

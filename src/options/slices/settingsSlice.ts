@@ -1,8 +1,8 @@
 import { gistInstace } from '@/services/gistInstance';
+import { gjtStance } from '@/services/gjtInstance';
 import { groupInstace } from '@/services/groupInstance';
-import { resetGistJTag } from '@/services/idb/gistsJTags';
-import { resetStarJTag } from '@/services/idb/starsJTags';
 import { ISettingModal, settingInstance } from '@/services/settingInstance';
+import { sjtIntance } from '@/services/sjtInstance';
 import { starInstace } from '@/services/starInstance';
 import { tagInstace } from '@/services/tagInstance';
 import delay from '@/utils/delay';
@@ -30,9 +30,9 @@ export const resetAppData = createAsyncThunk<ISettingModal, string>('settings/cl
 
   await groupInstace.resetGroup();
   await tagInstace.resetTag();
-  await resetStarJTag();
+  await sjtIntance.resetStarJTag();
   await gistInstace.resetGists();
-  await resetGistJTag();
+  await gjtStance.resetGistJTag();
 
   await delay(1000);
 

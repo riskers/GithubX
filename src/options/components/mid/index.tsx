@@ -28,10 +28,10 @@ export interface IItem {
 
 interface IProps {
   item: IItem;
-  addItemInGroup?: (item: IItem) => void;
-  addTag: (tagName: string, itemId: IItem['id']) => void;
-  selectTag: (tag: ITagModel['id'], itemId: IItem['id']) => void;
-  deleteTag: (tag: ITagModel['id'], itemId: IItem['id']) => void;
+  addItemInGroup?: (item: IItem) => Promise<void>;
+  addTag: (tagName: string, itemId: IItem['id']) => Promise<void>;
+  selectTag: (tag: ITagModel['id'], itemId: IItem['id']) => Promise<void>;
+  deleteTag: (tag: ITagModel['id'], itemId: IItem['id']) => Promise<void>;
   handleChangeGroup: (groupId) => void;
   handleChangeTag: () => void;
 }

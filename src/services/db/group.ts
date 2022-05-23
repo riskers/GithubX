@@ -1,10 +1,10 @@
 import { IGroupModal, IGroupStrategy } from '@/services/groupInstance';
+import { DEFAULT_GROUP } from '@/services/idb/group';
 import axios from 'axios';
 
 export class APIGroup implements IGroupStrategy {
   public async resetGroup(): Promise<void> {
-    await axios.delete('/api/group');
-    // add default group
+    await axios.post('/api/group/reset');
   }
 
   public async getGroupInfo(groupId: number): Promise<IGroupModal> {

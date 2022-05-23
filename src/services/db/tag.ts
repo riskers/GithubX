@@ -1,6 +1,5 @@
 import { ITagModel, ITagStrategy } from '@/services/tagInstance';
 import axios from 'axios';
-import qs from 'qs';
 
 export class APITag implements ITagStrategy {
   public async resetTag(): Promise<void> {
@@ -8,18 +7,15 @@ export class APITag implements ITagStrategy {
   }
 
   public async addTagWithSid(name: string, sid: number): Promise<number> {
-    const tag: ITagModel = await axios.post(
-      `/api/tag/s/${sid}`,
-      qs.stringify({
-        name,
-      }),
-    );
+    const tag: ITagModel = await axios.post(`/api/tag/s/${sid}`, {
+      name,
+    });
 
     return tag.id;
   }
 
   public async addTagWithGid(name: string, gid: number): Promise<number> {
-    const tag: ITagModel = await axios.post(`/api/tag/g/${gid}`, qs.stringify({ name }));
+    const tag: ITagModel = await axios.post(`/api/tag/g/${gid}`, { name });
 
     return tag.id;
   }

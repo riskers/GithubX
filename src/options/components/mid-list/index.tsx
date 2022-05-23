@@ -8,8 +8,8 @@ import { selectedStarSlice, selectorStar } from '@/options/slices/selectedStar';
 import { fetchStarsByGroup, fetchStarsByTag, IListState } from '@/options/slices/starsSlice';
 import { AppDispatch } from '@/options/store';
 import { gistInstace } from '@/services/gistInstance';
-import { addGJT, deleteGJT } from '@/services/idb/gistsJTags';
-import { addSJT, deleteSJT } from '@/services/idb/starsJTags';
+import { gjtStance } from '@/services/gjtInstance';
+import { sjtIntance } from '@/services/sjtInstance';
 import { starInstace } from '@/services/starInstance';
 import { tagInstace } from '@/services/tagInstance';
 import CodeOffRoundedIcon from '@mui/icons-material/CodeOffRounded';
@@ -36,11 +36,11 @@ const StarRow = ({ data, index, style }) => {
   }, []);
 
   const selectTag = React.useCallback(async (tagId, itemId) => {
-    await addSJT(tagId, itemId);
+    await sjtIntance.addSJT(tagId, itemId);
   }, []);
 
   const deleteTag = React.useCallback(async (tagId, itemId) => {
-    await deleteSJT(tagId, itemId);
+    await sjtIntance.deleteSJT(tagId, itemId);
   }, []);
 
   const handleChangeGroup = (groupId) => {
@@ -115,11 +115,11 @@ const GistRow = ({ data, index, style }) => {
   }, []);
 
   const selectTag = React.useCallback(async (tagId, itemId) => {
-    await addGJT(tagId, itemId);
+    await gjtStance.addGJT(tagId, itemId);
   }, []);
 
   const deleteTag = React.useCallback(async (tagId, itemId) => {
-    await deleteGJT(tagId, itemId);
+    await gjtStance.deleteGJT(tagId, itemId);
   }, []);
 
   const handleChangeGroup = (groupId) => {

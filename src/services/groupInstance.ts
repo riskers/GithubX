@@ -1,5 +1,4 @@
 import { APIGroup } from '@/services/db/group';
-import { IDBGroup } from '@/services/idb/group';
 
 export interface IGroupModal {
   id?: number;

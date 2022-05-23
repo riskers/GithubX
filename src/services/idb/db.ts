@@ -1,9 +1,9 @@
 import { IStar } from '@/common/api';
 import { IGist } from '@/services/gistInstance';
+import { IGJTModal } from '@/services/gjtInstance';
 import { IGroupModal } from '@/services/groupInstance';
-import { IGistsJTags } from '@/services/idb/gistsJTags';
-import { IStarsJTags } from '@/services/idb/starsJTags';
 import { ISettingModal } from '@/services/settingInstance';
+import { ISJTModal } from '@/services/sjtInstance';
 import { ITagModel } from '@/services/tagInstance';
 import Dexie, { Table } from 'dexie';
 import relationships from 'dexie-relationships';
@@ -13,8 +13,8 @@ class GithubPlusDB extends Dexie {
   public tags: Table<ITagModel, number>;
   public stars: Table<IStar, number>;
   public gists: Table<IGist, number>;
-  public starsJTags: Table<IStarsJTags, [number, number]>;
-  public gistsJTags: Table<IGistsJTags, [number, number]>;
+  public starsJTags: Table<ISJTModal, [number, number]>;
+  public gistsJTags: Table<IGJTModal, [number, number]>;
   public settings: Table<ISettingModal, number>;
 
   public constructor() {
