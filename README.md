@@ -16,14 +16,7 @@ GithubX: A Chrome Extension enhanced Github experience
 
 ## Develop
 
-```bash
-# install dependices
-> yarn
-# dev mode
-> yarn start
-```
-
-
+[Develop](https://github.com/riskers/GithubX/wiki/Develop)
 
 ## How To Use
 
