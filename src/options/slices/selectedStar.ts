@@ -1,10 +1,10 @@
-import { IStar } from '@/common/api';
 import { DEFAULT_SELECTED_ITEM } from '@/options/slices/selectedItemSlice';
 import { RootState } from '@/options/store';
 import { DEFAULT_GROUP } from '@/services/idb/group';
+import { IStarModel } from '@/services/model/star';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialState: IStar = {
+const initialState: IStarModel = {
   fullName: '',
   groupId: DEFAULT_GROUP.id,
   id: -1,
@@ -17,7 +17,7 @@ export const selectedStarSlice = createSlice({
   name: 'selectStar',
   initialState,
   reducers: {
-    selectStar: (state, action: PayloadAction<IStar>) => {
+    selectStar: (state, action: PayloadAction<IStarModel>) => {
       return action.payload;
     },
   },

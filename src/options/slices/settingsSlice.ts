@@ -1,15 +1,10 @@
-import { gistInstace } from '@/services/gistInstance';
-import { gjtStance } from '@/services/gjtInstance';
-import { groupInstace } from '@/services/groupInstance';
-import { ISettingModal, settingInstance } from '@/services/settingInstance';
-import { sjtIntance } from '@/services/sjtInstance';
-import { starInstace } from '@/services/starInstance';
-import { tagInstace } from '@/services/tagInstance';
+import { AS } from '@/services';
+import { ISettingModal } from '@/services/model/setting';
 import delay from '@/utils/delay';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const fetchSettings = createAsyncThunk('settings/fetchSettings', async () => {
-  const settings = await settingInstance.getSettings();
+  const settings = await AS.setting.getSettings();
   return settings;
 });
 
@@ -23,16 +18,16 @@ export const resetAppData = createAsyncThunk<ISettingModal, string>('settings/cl
     updatedTime: Date.now(),
   };
 
-  await settingInstance.resetSettings();
-  await settingInstance.setSettings(setting);
+  await AS.setting.resetSettings();
+  await AS.setting.setSettings(setting);
 
-  await starInstace.resetStars();
+  await AS.star.resetStars();
 
-  await groupInstace.resetGroup();
-  await tagInstace.resetTag();
-  await sjtIntance.resetStarJTag();
-  await gistInstace.resetGists();
-  await gjtStance.resetGistJTag();
+  await AS.group.resetGroup();
+  await AS.tag.resetTag();
+  await AS.sjt.resetStarJTag();
+  await AS.gist.resetGists();
+  await AS.gjt.resetGistJTag();
 
   await delay(1000);
 
@@ -40,9 +35,9 @@ export const resetAppData = createAsyncThunk<ISettingModal, string>('settings/cl
 });
 
 export const syncData = createAsyncThunk('settings/sync', async () => {
-  const setting = await settingInstance.getSettings();
+  const setting = await AS.setting.getSettings();
 
-  await starInstace.syncStars();
+  await AS.star.syncStars();
 
   await delay(1000);
 

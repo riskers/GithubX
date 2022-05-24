@@ -1,4 +1,4 @@
-import { getRepoInfo, IStar } from '@/common/api';
+import { getRepoInfo } from '@/common/api';
 import { getFullName } from '@/common/tools';
 import {
   INTERCEPT_GETSTARINFO_B2C,
@@ -8,10 +8,10 @@ import {
   INTERCEPT_STARADD_C2B_DONE,
   INTERCEPT_INTO_PAGE,
 } from '@/content_script/hooks/oneway-message/message';
-import { groupInstace, IGroupModal } from '@/services/groupInstance';
-import { sjtIntance } from '@/services/sjtInstance';
-import { starInstace } from '@/services/starInstance';
-import { ITagModel, tagInstace } from '@/services/tagInstance';
+import { AS } from '@/services';
+import { IGroupModel } from '@/services/model/group';
+import { IStarModel } from '@/services/model/star';
+import { ITagModel } from '@/services/model/tag';
 
 export interface IIntercepotAddStar {
   fullName: string;
@@ -21,7 +21,7 @@ export interface IIntercepotAddStar {
 
 export interface IInterceptStar {
   fullName: string;
-  groups: IGroupModal[];
+  groups: IGroupModel[];
   tags: ITagModel[];
 }
 /**
@@ -35,8 +35,8 @@ chrome.webRequest.onCompleted.addListener(
     });
 
     const fullName = getFullName(details);
-    const groups = await groupInstace.getGroupList();
-    const tags = await tagInstace.getTagsList();
+    const groups = await AS.group.getGroupList();
+    const tags = await AS.tag.getTagsList();
 
     chrome.tabs.sendMessage<IAction<IInterceptStar>>(tab.id, {
       type: INTERCEPT_GETSTARINFO_B2C,
@@ -61,8 +61,8 @@ chrome.webRequest.onCompleted.addListener(
     const fullName = getFullName(details);
     const starInfo = await getRepoInfo(fullName);
 
-    await starInstace.delStar(starInfo.id);
-    await sjtIntance.deleteSJTBySid(starInfo.id);
+    await AS.star.delStar(starInfo.id);
+    await AS.sjt.deleteSJTBySid(starInfo.id);
   },
   {
     types: ['xmlhttprequest'],
@@ -71,7 +71,7 @@ chrome.webRequest.onCompleted.addListener(
 );
 
 export interface IInterceptIntoPage {
-  star: IStar;
+  star: IStarModel;
 }
 
 /**
@@ -92,7 +92,7 @@ chrome.webRequest.onCompleted.addListener(
     if (!tab || !/github/.test(tab.url)) return;
 
     const url = tab.url.replace('https://github.com/', '');
-    const star = await starInstace.getStarInfoByFullName(url);
+    const star = await AS.star.getStarInfoByFullName(url);
 
     if (!star) return;
 
@@ -129,10 +129,10 @@ chrome.runtime.onMessage.addListener(async (request: IAction<any>) => {
 
     const starInfo = await getRepoInfo(fullName);
 
-    await starInstace.addStar({ ...starInfo, groupId, updateTime: Date.now(), createTime: Date.now() });
+    await AS.star.addStar({ ...starInfo, groupId, updateTime: Date.now(), createTime: Date.now() });
 
     for (let tagId of tagsId) {
-      await sjtIntance.addSJT(tagId, starInfo.id);
+      await AS.sjt.addSJT(tagId, starInfo.id);
     }
 
     const [tab] = await chrome.tabs.query({

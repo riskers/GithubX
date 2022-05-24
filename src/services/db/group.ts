@@ -1,4 +1,4 @@
-import { IGroupModal, IGroupStrategy } from '@/services/groupInstance';
+import { IGroupModel, IGroupStrategy } from '@/services/model/group';
 import { DEFAULT_GROUP } from '@/services/idb/group';
 import axios from 'axios';
 
@@ -7,11 +7,11 @@ export class APIGroup implements IGroupStrategy {
     await axios.post('/api/group/reset');
   }
 
-  public async getGroupInfo(groupId: number): Promise<IGroupModal> {
+  public async getGroupInfo(groupId: number): Promise<IGroupModel> {
     return await axios.get(`/api/group/${groupId}`);
   }
 
-  public async getGroupList(): Promise<IGroupModal[]> {
+  public async getGroupList(): Promise<IGroupModel[]> {
     return await axios.get('/api/group');
   }
 

@@ -1,5 +1,5 @@
-import { getAllStarListFromGithub, IStar } from '@/common/api';
-import { ISeachGroupParams, ISeachTagParams, StarStrategy } from '@/services/starInstance';
+import { getAllStarListFromGithub } from '@/common/api';
+import { ISeachGroupParams, ISeachTagParams, IStarModel, StarStrategy } from '@/services/model/star';
 import axios from 'axios';
 
 export class APIStars implements StarStrategy {
@@ -15,7 +15,7 @@ export class APIStars implements StarStrategy {
     // const res = await getAllStarListFromGithub();
   }
 
-  public async getStarsListByGroup(params: ISeachGroupParams): Promise<IStar[]> {
+  public async getStarsListByGroup(params: ISeachGroupParams): Promise<IStarModel[]> {
     const { groupId, description: fullName } = params;
 
     return await axios.get('/api/star', {
@@ -26,7 +26,7 @@ export class APIStars implements StarStrategy {
     });
   }
 
-  public async getStarsListByTag(params: ISeachTagParams): Promise<IStar[]> {
+  public async getStarsListByTag(params: ISeachTagParams): Promise<IStarModel[]> {
     const { tagId, fullName } = params;
 
     return await axios.get('/api/star', {
@@ -37,11 +37,11 @@ export class APIStars implements StarStrategy {
     });
   }
 
-  public async getStarInfo(id: number): Promise<IStar> {
+  public async getStarInfo(id: number): Promise<IStarModel> {
     return await axios.get(`/api/star/${id}`);
   }
 
-  public async getStarInfoByFullName(fullName: string): Promise<IStar> {
+  public async getStarInfoByFullName(fullName: string): Promise<IStarModel> {
     const list = await axios.get('/api/star', {
       params: {
         fullName,
@@ -55,7 +55,7 @@ export class APIStars implements StarStrategy {
     await axios.delete(`/api/star/${id}`);
   }
 
-  public async addStar(star: IStar): Promise<void> {
+  public async addStar(star: IStarModel): Promise<void> {
     await axios.post(`/api/star`, star);
   }
 }

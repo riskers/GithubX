@@ -1,17 +1,17 @@
-import { IStar } from '@/common/api';
-import { IGist } from '@/services/gistInstance';
-import { IGJTModal } from '@/services/gjtInstance';
-import { IGroupModal } from '@/services/groupInstance';
-import { ISettingModal } from '@/services/settingInstance';
-import { ISJTModal } from '@/services/sjtInstance';
-import { ITagModel } from '@/services/tagInstance';
+import { IGist } from '@/services/model/gist';
+import { IGJTModal } from '@/services/model/gjt';
+import { IGroupModel } from '@/services/model/group';
+import { ISettingModal } from '@/services/model/setting';
+import { ISJTModal } from '@/services/model/sjt';
+import { IStarModel } from '@/services/model/star';
+import { ITagModel } from '@/services/model/tag';
 import Dexie, { Table } from 'dexie';
 import relationships from 'dexie-relationships';
 
 class GithubPlusDB extends Dexie {
-  public groups: Table<IGroupModal, number>;
+  public groups: Table<IGroupModel, number>;
   public tags: Table<ITagModel, number>;
-  public stars: Table<IStar, number>;
+  public stars: Table<IStarModel, number>;
   public gists: Table<IGist, number>;
   public starsJTags: Table<ISJTModal, [number, number]>;
   public gistsJTags: Table<IGJTModal, [number, number]>;

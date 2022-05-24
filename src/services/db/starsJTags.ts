@@ -1,4 +1,4 @@
-import { ISJTStrategy } from '@/services/sjtInstance';
+import { ISJTStrategy } from '@/services/model/sjt';
 import axios from 'axios';
 
 export class APISjt implements ISJTStrategy {

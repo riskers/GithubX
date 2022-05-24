@@ -1,5 +1,5 @@
-import { db } from '@/services/idb/db';
-import { ISettingModal, ISettingStrategy } from '@/services/settingInstance';
+import { db } from '@/services/idb/IDBSetUp';
+import { ISettingModal, ISettingStrategy } from '@/services/model/setting';
 
 export class IDBSetting implements ISettingStrategy {
   public getSettings = async () => {

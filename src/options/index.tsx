@@ -5,7 +5,7 @@ import SideBar from '@/options/components/sidebar';
 import Gist from '@/options/pages/Gist';
 import Home from '@/options/pages/Home';
 import store from '@/options/store';
-import setUpAxios from '@/services/db/setUpAxios';
+import setUpAxios from '@/services/db/APISetUp';
 import { ThemeProvider } from '@mui/material/styles';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';

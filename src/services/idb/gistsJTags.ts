@@ -1,5 +1,5 @@
-import { IGJTStrategy } from '@/services/gjtInstance';
-import { db } from '@/services/idb/db';
+import { IGJTStrategy } from '@/services/model/gjt';
+import { db } from '@/services/idb/IDBSetUp';
 
 export class IDBGjt implements IGJTStrategy {
   public async resetGistJTag(): Promise<void> {

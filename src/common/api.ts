@@ -1,9 +1,10 @@
 import { IItem } from '@/options/components/mid';
-import { IGist } from '@/services/gistInstance';
+import { IGist } from '@/services/model/gist';
 import { DEFAULT_GROUP } from '@/services/idb/group';
-import { settingInstance } from '@/services/settingInstance';
 
 import { Octokit } from 'octokit';
+import { AS } from '@/services';
+import { IStarModel } from '@/services/model/star';
 
 export interface IRepo {
   id: number;
@@ -11,18 +12,14 @@ export interface IRepo {
   html_url: string;
 }
 
-export interface IStar extends IItem {
-  fullName: string;
-}
-
 export const getUserInfo = async () => {
-  const token = await settingInstance.getToken();
+  const token = await AS.setting.getToken();
   const octokit = new Octokit({ auth: token });
   return await octokit.rest.users.getAuthenticated();
 };
 
 const getGistsList = async (page: number) => {
-  const token = await settingInstance.getToken();
+  const token = await AS.setting.getToken();
   const octokit = new Octokit({ auth: token });
   // https://docs.github.com/cn/rest/reference/gists#list-gists-for-the-authenticated-user
   const res = await octokit.request('GET /gists', {
@@ -63,7 +60,7 @@ export const getAllGistFromGithub = async () => {
 };
 
 export const getStarListFromGithub = async (page: number): Promise<IRepo[]> => {
-  const token = await settingInstance.getToken();
+  const token = await AS.setting.getToken();
 
   const octokit = new Octokit({ auth: token });
 
@@ -73,15 +70,15 @@ export const getStarListFromGithub = async (page: number): Promise<IRepo[]> => {
   return res.data;
 };
 
-export const getAllStarListFromGithub = async (): Promise<IStar[]> => {
+export const getAllStarListFromGithub = async (): Promise<IStarModel[]> => {
   let page = 1;
   let ending = false;
-  let res: IStar[] = [];
+  let res: IStarModel[] = [];
 
   while (!ending) {
     const pres = await getStarListFromGithub(page);
 
-    const stars: IStar[] = pres.map((data) => {
+    const stars: IStarModel[] = pres.map((data) => {
       return {
         id: data.id,
         fullName: data.full_name,
@@ -103,7 +100,7 @@ export const getAllStarListFromGithub = async (): Promise<IStar[]> => {
   return res;
 };
 
-export const getRepoInfo = async (fullName: string): Promise<Omit<IStar, 'groupId'>> => {
+export const getRepoInfo = async (fullName: string): Promise<Omit<IStarModel, 'groupId'>> => {
   const url = `https://api.github.com/repos/${fullName}`;
 
   const response = await fetch(url, {
@@ -129,7 +126,7 @@ export interface IReadmeResponse {
 }
 
 export const getRepoContent = async (fullname: string): Promise<IReadmeResponse> => {
-  const token = await settingInstance.getToken();
+  const token = await AS.setting.getToken();
   const octokit = new Octokit({ auth: token });
   const res = await octokit.request(`GET /repos/${fullname}/readme`);
   return res.data;

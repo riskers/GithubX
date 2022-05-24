@@ -1,4 +1,4 @@
-import { ISettingModal, ISettingStrategy } from '@/services/settingInstance';
+import { ISettingModal, ISettingStrategy } from '@/services/model/setting';
 import axios from 'axios';
 
 export class APISetting implements ISettingStrategy {

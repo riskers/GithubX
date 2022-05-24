@@ -1,9 +1,8 @@
 import { getAllGistFromGithub } from '@/common/api';
-import { IGist, IGistStrategy } from '@/services/gistInstance';
-import { groupInstace } from '@/services/groupInstance';
-import { db } from '@/services/idb/db';
-import { ISeachGroupParams, ISeachTagParams } from '@/services/starInstance';
-import { tagInstace } from '@/services/tagInstance';
+import { AS } from '@/services';
+import { IGist, IGistStrategy } from '@/services/model/gist';
+import { db } from '@/services/idb/IDBSetUp';
+import { ISeachGroupParams, ISeachTagParams } from '@/services/model/star';
 
 export class IDBGist implements IGistStrategy {
   public resetGists = async () => {
@@ -21,14 +20,14 @@ export class IDBGist implements IGistStrategy {
       })
       .sortBy('updateTime');
 
-    const group = await groupInstace.getGroupInfo(groupId);
+    const group = await AS.group.getGroupInfo(groupId);
 
     for (let gist of gistList) {
       gist.group = group;
     }
 
     for (const gist of gistList) {
-      const tags = await tagInstace.getTagsInGist(gist.id);
+      const tags = await AS.tag.getTagsInGist(gist.id);
       gist.tags = tags;
     }
 
@@ -49,10 +48,10 @@ export class IDBGist implements IGistStrategy {
 
     for (let tidInGid of tidInGidList) {
       const groupId = (tidInGid as any).star.groupId;
-      const group = await groupInstace.getGroupInfo(groupId);
+      const group = await AS.group.getGroupInfo(groupId);
       (tidInGid as any).star.group = group;
 
-      const tags = await tagInstace.getTagsInGist(tidInGid.gid);
+      const tags = await AS.tag.getTagsInGist(tidInGid.gid);
       (tidInGid as any).gist.tags = tags;
     }
 

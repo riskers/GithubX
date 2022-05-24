@@ -1,4 +1,4 @@
-import { ITagModel, ITagStrategy } from '@/services/tagInstance';
+import { ITagModel, ITagStrategy } from '@/services/model/tag';
 import axios from 'axios';
 
 export class APITag implements ITagStrategy {

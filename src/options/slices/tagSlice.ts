@@ -1,11 +1,12 @@
-import { ITagModel, tagInstace } from '@/services/tagInstance';
+import { AS } from '@/services';
+import { ITagModel } from '@/services/model/tag';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 /**
  * update tags in side bar
  */
 export const fetchTags = createAsyncThunk('tag/fetchTags', async () => {
-  const tagList = await tagInstace.getTagsList();
+  const tagList = await AS.tag.getTagsList();
   return tagList;
 });
 

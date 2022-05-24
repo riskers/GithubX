@@ -1,7 +1,7 @@
-import { IGroupModal, IGroupStrategy } from '@/services/groupInstance';
-import { db } from '@/services/idb/db';
+import { IGroupModel, IGroupStrategy } from '@/services/model/group';
+import { db } from '@/services/idb/IDBSetUp';
 
-export const DEFAULT_GROUP: IGroupModal = {
+export const DEFAULT_GROUP: IGroupModel = {
   id: 0,
   name: 'UNGROUP',
 };
@@ -12,7 +12,7 @@ export class IDBGroup implements IGroupStrategy {
     await db.groups.put(DEFAULT_GROUP);
   };
 
-  public getGroupInfo = async (groupId: number): Promise<IGroupModal> => {
+  public getGroupInfo = async (groupId: number): Promise<IGroupModel> => {
     return await db.groups
       .where({
         id: groupId,
@@ -20,7 +20,7 @@ export class IDBGroup implements IGroupStrategy {
       .first();
   };
 
-  public getGroupList = async (): Promise<IGroupModal[]> => {
+  public getGroupList = async (): Promise<IGroupModel[]> => {
     const groupList = await db.groups.toArray();
 
     for (const group of groupList) {

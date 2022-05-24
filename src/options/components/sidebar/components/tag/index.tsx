@@ -7,7 +7,7 @@ import * as React from 'react';
 import SellIcon from '@mui/icons-material/Sell';
 import { useSelector } from 'react-redux';
 import EditTag from '@/options/components/edit-tag';
-import { ITagModel } from '@/services/tagInstance';
+import { ITagModel } from '@/services/model/tag';
 
 interface IProps {
   tags: ITagState;

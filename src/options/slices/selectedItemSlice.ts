@@ -1,7 +1,7 @@
 import { RootState } from '@/options/store';
-import { IGroupModal } from '@/services/groupInstance';
+import { IGroupModel } from '@/services/model/group';
 import { DEFAULT_GROUP } from '@/services/idb/group';
-import { ITagModel } from '@/services/tagInstance';
+import { ITagModel } from '@/services/model/tag';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const NO_SELECT_GROUP = { id: -1, name: '' };
@@ -24,7 +24,7 @@ interface ISelectItem {
   /**
    * select may be group
    */
-  group: IGroupModal;
+  group: IGroupModel;
 
   /**
    * select may be tag

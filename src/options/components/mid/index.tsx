@@ -1,7 +1,7 @@
 import { fetchTags } from '@/options/slices/tagSlice';
 import { RootState } from '@/options/store';
-import { IGroupModal } from '@/services/groupInstance';
-import { ITagModel } from '@/services/tagInstance';
+import { IGroupModel } from '@/services/model/group';
+import { ITagModel } from '@/services/model/tag';
 import {
   Autocomplete,
   AutocompleteChangeDetails,
@@ -22,7 +22,7 @@ export interface IItem {
   groupId: number;
   createTime?: number;
   updateTime?: number;
-  group?: IGroupModal;
+  group?: IGroupModel;
   tags?: ITagModel[];
 }
 

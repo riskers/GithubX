@@ -1,13 +1,11 @@
-import { getAllStarListFromGithub, IStar } from '@/common/api';
-import { groupInstace } from '@/services/groupInstance';
-import { db } from '@/services/idb/db';
-import { sjtIntance } from '@/services/sjtInstance';
-import { ISeachGroupParams, ISeachTagParams, StarStrategy } from '@/services/starInstance';
-import { tagInstace } from '@/services/tagInstance';
+import { getAllStarListFromGithub } from '@/common/api';
+import { AS } from '@/services';
+import { db } from '@/services/idb/IDBSetUp';
+import { ISeachGroupParams, ISeachTagParams, IStarModel, StarStrategy } from '@/services/model/star';
 
 export class IDBStar implements StarStrategy {
   public delTag = async (tid: number, sid: number): Promise<void> => {
-    await sjtIntance.deleteSJT(tid, sid);
+    await AS.sjt.deleteSJT(tid, sid);
   };
 
   public resetStars = async (): Promise<void> => {
@@ -30,7 +28,7 @@ export class IDBStar implements StarStrategy {
     }
   };
 
-  public getStarsListByGroup = async (params: ISeachGroupParams): Promise<IStar[]> => {
+  public getStarsListByGroup = async (params: ISeachGroupParams): Promise<IStarModel[]> => {
     const { groupId, description: fullName } = params;
 
     let starList = await db.stars
@@ -39,14 +37,14 @@ export class IDBStar implements StarStrategy {
       })
       .sortBy('updateTime');
 
-    const group = await groupInstace.getGroupInfo(groupId);
+    const group = await AS.group.getGroupInfo(groupId);
 
     for (let star of starList) {
       star.group = group;
     }
 
     for (const star of starList) {
-      const tags = await tagInstace.getTagsInStar(star.id);
+      const tags = await AS.tag.getTagsInStar(star.id);
       star.tags = tags;
     }
 
@@ -74,10 +72,10 @@ export class IDBStar implements StarStrategy {
 
     for (let tidInSid of tidInSidList) {
       const groupId = (tidInSid as any).star.groupId;
-      const group = await groupInstace.getGroupInfo(groupId);
+      const group = await AS.group.getGroupInfo(groupId);
       (tidInSid as any).star.group = group;
 
-      const tags = await tagInstace.getTagsInStar(tidInSid.sid);
+      const tags = await AS.tag.getTagsInStar(tidInSid.sid);
       (tidInSid as any).star.tags = tags;
     }
 
@@ -94,11 +92,11 @@ export class IDBStar implements StarStrategy {
     return res;
   };
 
-  public getStarInfo = async (id: number): Promise<IStar> => {
+  public getStarInfo = async (id: number): Promise<IStarModel> => {
     const starInfo = await db.stars.where({ id }).first();
 
-    starInfo.tags = await tagInstace.getTagsInStar(id);
-    starInfo.group = await groupInstace.getGroupInfo(starInfo.groupId);
+    starInfo.tags = await AS.tag.getTagsInStar(id);
+    starInfo.group = await AS.group.getGroupInfo(starInfo.groupId);
 
     return starInfo;
   };
@@ -119,7 +117,7 @@ export class IDBStar implements StarStrategy {
       .delete();
   };
 
-  public addStar = async (star: IStar): Promise<void> => {
+  public addStar = async (star: IStarModel): Promise<void> => {
     await db.stars.put(star);
   };
 }

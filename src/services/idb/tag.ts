@@ -1,7 +1,6 @@
-import { gjtStance } from '@/services/gjtInstance';
-import { db } from '@/services/idb/db';
-import { sjtIntance } from '@/services/sjtInstance';
-import { ITagModel, ITagStrategy } from '@/services/tagInstance';
+import { AS } from '@/services';
+import { db } from '@/services/idb/IDBSetUp';
+import { ITagModel, ITagStrategy } from '@/services/model/tag';
 
 export class IDBTag implements ITagStrategy {
   public resetTag = async (): Promise<void> => {
@@ -13,7 +12,7 @@ export class IDBTag implements ITagStrategy {
       name,
     });
 
-    await sjtIntance.addSJT(tagId, sid);
+    await AS.sjt.addSJT(tagId, sid);
 
     return tagId;
   };
@@ -23,7 +22,7 @@ export class IDBTag implements ITagStrategy {
       name,
     });
 
-    await gjtStance.addGJT(tagId, gid);
+    await AS.gjt.addGJT(tagId, gid);
 
     return tagId;
   };
@@ -79,6 +78,6 @@ export class IDBTag implements ITagStrategy {
 
   public deleteTag = async (tagId: number): Promise<void> => {
     await db.tags.where({ id: tagId }).delete();
-    await sjtIntance.deleteSJTByTid(tagId);
+    await AS.sjt.deleteSJTByTid(tagId);
   };
 }

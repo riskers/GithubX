@@ -1,4 +1,4 @@
-import { IGJTStrategy } from '@/services/gjtInstance';
+import { IGJTStrategy } from '@/services/model/gjt';
 import axios from 'axios';
 
 export class APIGjt implements IGJTStrategy {

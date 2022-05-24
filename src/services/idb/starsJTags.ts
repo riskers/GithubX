@@ -1,5 +1,5 @@
-import { db } from '@/services/idb/db';
-import { ISJTStrategy } from '@/services/sjtInstance';
+import { db } from '@/services/idb/IDBSetUp';
+import { ISJTStrategy } from '@/services/model/sjt';
 
 export class IDBSjt implements ISJTStrategy {
   public async resetStarJTag(): Promise<void> {
