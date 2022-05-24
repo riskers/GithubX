@@ -12,6 +12,8 @@ GithubX: 一款增强 Github 体验的 Chrome 插件
 
 [Chrome WebStore](https://chrome.google.com/webstore/detail/githubx/nmcddfeclkbhehidjoadbmkaajoppapo)
 
+> 如果你不能访问 Chrome 商店，你可以本地[编译安装插件](https://github.com/riskers/GithubX/wiki/Build-and-Install-the-extension-in-developer-mode)。
+
 ## 使用说明
 
 [使用说明](https://github.com/riskers/github-plus-extension/wiki/%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E)

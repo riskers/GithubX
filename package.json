@@ -6,7 +6,7 @@
     "build": "npm run clean && MODE=production webpack --mode=production && npm run pack",
     "lint": "eslint src --ext=ts,tsx",
     "clean": "rimraf chrome",
-    "pack": "cd chrome && bestzip ../github-plus.zip *"
+    "pack": "cd chrome && bestzip ../GithubX.zip *"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": "eslint"

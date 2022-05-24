@@ -12,6 +12,19 @@ GithubX: A Chrome Extension enhanced Github experience
 
 [Chrome WebStore](https://chrome.google.com/webstore/detail/githubx/nmcddfeclkbhehidjoadbmkaajoppapo)
 
+> If you can't visit Chrome WebStore, you can [build and install the extension](https://github.com/riskers/GithubX/wiki/Build-and-Install-the-extension-in-developer-mode) by youself.
+
+## Develop
+
+```bash
+# install dependices
+> yarn
+# dev mode
+> yarn start
+```
+
+
+
 ## How To Use
 
 [How To Use](https://github.com/riskers/github-plus-extension/wiki/How-to--use)
