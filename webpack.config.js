@@ -17,6 +17,7 @@ const entry = {
 const config = {
   entry: entry,
   mode: mode,
+  experiments: { topLevelAwait: true },
   output: {
     path: ROOT + '/chrome',
     filename: '[name].bundle.js',

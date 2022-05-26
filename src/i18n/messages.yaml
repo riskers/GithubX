@@ -43,6 +43,9 @@ edit:
   zh_CN: 编辑
 
 # settings
+setting_title:
+  en: Settings
+  zh_CN: 设置
 apply_github_token:
   en: Apply Github Token ?
   zh_CN: 申请 Github Token ?

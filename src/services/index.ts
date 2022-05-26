@@ -5,9 +5,6 @@ import { APISetting } from '@/services/db/settings';
 import { APIStars } from '@/services/db/stars';
 import { APISjt } from '@/services/db/starsJTags';
 import { APITag } from '@/services/db/tag';
-import { IGistStrategy } from '@/services/model/gist';
-import { IGJTStrategy } from '@/services/model/gjt';
-import { IGroupStrategy } from '@/services/model/group';
 import { IDBGist } from '@/services/idb/gist';
 import { IDBGjt } from '@/services/idb/gistsJTags';
 import { IDBGroup } from '@/services/idb/group';
@@ -15,6 +12,9 @@ import { IDBSetting } from '@/services/idb/settings';
 import { IDBStar } from '@/services/idb/stars';
 import { IDBSjt } from '@/services/idb/starsJTags';
 import { IDBTag } from '@/services/idb/tag';
+import { IGistStrategy } from '@/services/model/gist';
+import { IGJTStrategy } from '@/services/model/gjt';
+import { IGroupStrategy } from '@/services/model/group';
 import { ISettingStrategy } from '@/services/model/setting';
 import { ISJTStrategy } from '@/services/model/sjt';
 import { StarStrategy } from '@/services/model/star';
@@ -31,17 +31,7 @@ interface IService {
   sjt: ISJTStrategy;
 }
 
-class Service implements IService {
-  private static _instance: Service;
-
-  public static getInstance() {
-    if (!this._instance) {
-      this._instance = new Service();
-    }
-
-    return this._instance;
-  }
-
+export class Service implements IService {
   public tag: ITagStrategy;
   public group: IGroupStrategy;
   public setting: ISettingStrategy;
@@ -50,30 +40,28 @@ class Service implements IService {
   public gjt: IGJTStrategy;
   public sjt: ISJTStrategy;
 
-  public constructor() {
-    (async () => {
-      const dbSelect = await storeGetPosition();
-
-      if (dbSelect === 'IDB') {
-        this.tag = new IDBTag();
-        this.group = new IDBGroup();
-        this.setting = new IDBSetting();
-        this.star = new IDBStar();
-        this.gist = new IDBGist();
-        this.gjt = new IDBGjt();
-        this.sjt = new IDBSjt();
-      } else {
-        this.tag = new APITag();
-        this.group = new APIGroup();
-        this.setting = new APISetting();
-        this.star = new APIStars();
-        this.gist = new APIGist();
-        this.gjt = new APIGjt();
-        this.sjt = new APISjt();
-      }
-    })();
+  public constructor(position: string) {
+    if (position === 'IDB') {
+      this.tag = new IDBTag();
+      this.group = new IDBGroup();
+      this.setting = new IDBSetting();
+      this.star = new IDBStar();
+      this.gist = new IDBGist();
+      this.gjt = new IDBGjt();
+      this.sjt = new IDBSjt();
+    } else {
+      this.tag = new APITag();
+      this.group = new APIGroup();
+      this.setting = new APISetting();
+      this.star = new APIStars();
+      this.gist = new APIGist();
+      this.gjt = new APIGjt();
+      this.sjt = new APISjt();
+    }
   }
 }
 
+const selectPositon = await storeGetPosition();
+
 // App Service
-export const AS = Service.getInstance();
+export const AS = new Service(selectPositon.v);

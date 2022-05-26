@@ -2,6 +2,7 @@ import { fetchGroups } from '@/options/slices/groupSlice';
 import { fetchSettings, resetAppData, settingsSlice } from '@/options/slices/settingsSlice';
 import { fetchTags } from '@/options/slices/tagSlice';
 import { RootState } from '@/options/store';
+import { DEFAULT_STORE_POSITION, STORE_POSITION } from '@/utils/store';
 import {
   Button,
   CircularProgress,
@@ -11,6 +12,9 @@ import {
   DialogContentText,
   DialogTitle,
   Link,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
   TextField,
   Tooltip,
 } from '@mui/material';
@@ -44,8 +48,24 @@ const Settings = () => {
 
   return (
     <Dialog open={settings.open} fullWidth onClose={handleCloseSettings}>
-      <DialogTitle>Settings</DialogTitle>
+      <DialogTitle>{chrome.i18n.getMessage('setting_title')}</DialogTitle>
       <DialogContent>
+        <Select
+          id="select-store-position"
+          size="small"
+          value={DEFAULT_STORE_POSITION.v}
+          style={{ marginTop: 10 }}
+          onChange={async (event: SelectChangeEvent) => {}}
+        >
+          {STORE_POSITION.map((position) => {
+            return (
+              <MenuItem key={position.v} value={position.v}>
+                {position.desc}
+              </MenuItem>
+            );
+          })}
+        </Select>
+
         <TextField
           id="token"
           variant="standard"

@@ -1,6 +1,4 @@
-import { IInterceptIntoPage } from '@/background/network';
 import theme from '@/common/theme';
-import { IAction, INTERCEPT_INTO_PAGE } from '@/content_script/hooks/oneway-message/message';
 import Repo from '@/content_script/pages/repo';
 import Buttons from '@/content_script/pages/repo/buttons';
 import { ThemeProvider } from '@mui/material';
