@@ -4,6 +4,8 @@
 
 English | [中文](./README-cn.md)
 
+![![](https://img.shields.io/chrome-web-store/v/nmcddfeclkbhehidjoadbmkaajoppapo?style=for-the-badge)](https://chrome.google.com/webstore/detail/githubx/nmcddfeclkbhehidjoadbmkaajoppapo)
+
 ## Overview
 
 GithubX: A Chrome Extension enhanced Github experience

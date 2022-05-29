@@ -4,6 +4,8 @@
 
 [英文](./README.md) | 中文
 
+![![](https://img.shields.io/chrome-web-store/v/nmcddfeclkbhehidjoadbmkaajoppapo?style=for-the-badge)](https://chrome.google.com/webstore/detail/githubx/nmcddfeclkbhehidjoadbmkaajoppapo)
+
 ## 应用概述
 
 GithubX: 一款增强 Github 体验的 Chrome 插件
