@@ -1,3 +1,4 @@
+import { NotifySlice } from '@/options/slices/notifySlice';
 import { fetchTags } from '@/options/slices/tagSlice';
 import { RootState } from '@/options/store';
 import { IGroupModel } from '@/services/model/group';
@@ -84,10 +85,19 @@ const Mid = (props: IProps) => {
 
             if (r === 'createOption') {
               const option = d.option as string;
-              const exist = item.tags.map((tag) => tag.name).some((tagName) => tagName === option);
+              const exist = allTagsList.map((tag) => tag.name).some((tagName) => tagName === option);
 
-              if (exist) return;
-              await addTag(option, itemId);
+              if (exist) {
+                dispatch(
+                  NotifySlice.actions.open({
+                    message: `Tag [${option}] had added`,
+                  }),
+                );
+
+                return;
+              } else {
+                await addTag(option, itemId);
+              }
             }
 
             if (r === 'selectOption') {
