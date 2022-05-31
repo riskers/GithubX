@@ -2,10 +2,11 @@ import Mid from '@/options/components/mid';
 import Search from '@/options/components/search';
 import { getGistListByGroup, getGistListByTag } from '@/options/slices/gistSlice';
 import { fetchGroups } from '@/options/slices/groupSlice';
+import { searchSlice } from '@/options/slices/searchSlice';
 import { selectorItem } from '@/options/slices/selectedItemSlice';
 import { selectedStarSlice, selectorStar } from '@/options/slices/selectedStar';
 import { fetchStarsByGroup, fetchStarsByTag, IListState } from '@/options/slices/starsSlice';
-import { AppDispatch } from '@/options/store';
+import { AppDispatch, RootState } from '@/options/store';
 import { AS } from '@/services';
 import { IStarModel } from '@/services/model/star';
 import CodeOffRoundedIcon from '@mui/icons-material/CodeOffRounded';
@@ -22,6 +23,7 @@ const StarRow = ({ data, index, style }) => {
   const star: IStarModel = data[index];
   const selectedStar = useSelector(selectorStar);
   const selectedItem = useSelector(selectorItem);
+  const { keyword } = useSelector((state: RootState) => state.search);
 
   const addItemInGroup = React.useCallback(async (newStar) => {
     await AS.star.addStar(newStar);
@@ -40,15 +42,15 @@ const StarRow = ({ data, index, style }) => {
   }, []);
 
   const handleChangeGroup = (groupId) => {
-    dispatch(fetchStarsByGroup({ groupId }));
+    dispatch(fetchStarsByGroup({ groupId, description: keyword }));
     dispatch(fetchGroups());
   };
 
   const handleChangeTag = () => {
     if (selectedItem.active === 'GROUP') {
-      dispatch(fetchStarsByGroup({ groupId: selectedItem.group.id }));
+      dispatch(fetchStarsByGroup({ groupId: selectedItem.group.id, description: keyword }));
     } else {
-      dispatch(fetchStarsByTag({ tagId: selectedItem.tag.id }));
+      dispatch(fetchStarsByTag({ tagId: selectedItem.tag.id, fullName: keyword }));
     }
   };
 
@@ -101,6 +103,7 @@ const GistRow = ({ data, index, style }) => {
   const dispatch: AppDispatch = useDispatch();
   const gist = data[index];
   const selectedItem = useSelector(selectorItem);
+  const { keyword } = useSelector((state: RootState) => state.search);
 
   const addInGroup = React.useCallback(async (newGist) => {
     await AS.gist.addGist(newGist);
@@ -119,7 +122,7 @@ const GistRow = ({ data, index, style }) => {
   }, []);
 
   const handleChangeGroup = (groupId) => {
-    dispatch(getGistListByGroup(groupId));
+    dispatch(getGistListByGroup({ groupId, description: keyword }));
     dispatch(fetchGroups());
   };
 
