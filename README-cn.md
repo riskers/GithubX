@@ -29,10 +29,11 @@ GithubX: 一款增强 Github 体验的 Chrome 插件
 
 [功能演示](https://github.com/riskers/github-plus-extension/wiki/%E5%8A%9F%E8%83%BD)
 
-## 数据安全
+## 数据存储
 
-数据都存储在本地 IndexedDB 中。
-所以，也**无法在多设备之间同步**。
+数据默认存储在 IndexedDB 中，所以无法在多设备之间同步数据。
+
+> 如果你确实在多个设备之间同步数据的需求，你可以自己部署 [GithubX-API](https://github.com/riskers/githubx-api)。更多查看[文档](https://github.com/riskers/GithubX/wiki/%E9%83%A8%E7%BD%B2-GithubX-API)。
 
 ## 感谢这些开源软件
 

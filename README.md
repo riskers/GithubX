@@ -29,11 +29,11 @@ GithubX: A Chrome Extension enhanced Github experience
 
 [Features](https://github.com/riskers/github-plus-extension/wiki/Features)
 
-## Data Security
+## Data Store
 
-Data is stored in indexedDB locally.
-So can't sync data with multi drive.
-Only Storaged on Local drive.
+Data is stored in indexedDB default. So can't sync data with multi drive. Only Storaged on Local drive.
+
+> If you want use this extension on multi devices, you can deploy [GithubX-API](https://github.com/riskers/githubx-api) yourself. More details view [doc](https://github.com/riskers/GithubX/wiki/%E9%83%A8%E7%BD%B2-GithubX-API) please.
 
 ## Thanks OpenSource and Free Services
 

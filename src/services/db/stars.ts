@@ -1,14 +1,14 @@
 import { getAllStarListFromGithub } from '@/common/api';
+import { R } from '@/services/db/APISetUp';
 import { ISeachGroupParams, ISeachTagParams, IStarModel, StarStrategy } from '@/services/model/star';
-import axios from 'axios';
 
 export class APIStars implements StarStrategy {
   public async resetStars(): Promise<void> {
-    await axios.delete('/api/star');
+    await R.delete('/api/star');
 
     const res = await getAllStarListFromGithub();
 
-    await axios.post('/api/star/list', [...res]);
+    await R.post('/api/star/list', [...res]);
   }
 
   public async syncStars(): Promise<void> {
@@ -18,7 +18,7 @@ export class APIStars implements StarStrategy {
   public async getStarsListByGroup(params: ISeachGroupParams): Promise<IStarModel[]> {
     const { groupId, description: fullName } = params;
 
-    return await axios.get('/api/star', {
+    return await R.get('/api/star', {
       params: {
         groupId,
         fullName,
@@ -29,7 +29,7 @@ export class APIStars implements StarStrategy {
   public async getStarsListByTag(params: ISeachTagParams): Promise<IStarModel[]> {
     const { tagId, fullName } = params;
 
-    return await axios.get('/api/star', {
+    return await R.get('/api/star', {
       params: {
         tagId,
         fullName,
@@ -38,11 +38,11 @@ export class APIStars implements StarStrategy {
   }
 
   public async getStarInfo(id: number): Promise<IStarModel> {
-    return await axios.get(`/api/star/${id}`);
+    return await R.get(`/api/star/${id}`);
   }
 
   public async getStarInfoByFullName(fullName: string): Promise<IStarModel> {
-    const list = await axios.get('/api/star', {
+    const list = await R.get('/api/star', {
       params: {
         fullName,
       },
@@ -52,10 +52,10 @@ export class APIStars implements StarStrategy {
   }
 
   public async delStar(id: number): Promise<void> {
-    await axios.delete(`/api/star/${id}`);
+    await R.delete(`/api/star/${id}`);
   }
 
   public async addStar(star: IStarModel): Promise<void> {
-    await axios.post(`/api/star`, star);
+    await R.post(`/api/star`, star);
   }
 }

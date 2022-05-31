@@ -35,6 +35,7 @@ chrome.webRequest.onCompleted.addListener(
     });
 
     const fullName = getFullName(details);
+
     const groups = await AS.group.getGroupList();
     const tags = await AS.tag.getTagsList();
 

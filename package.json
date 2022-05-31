@@ -61,6 +61,7 @@
     "@mui/material": "^5.6.0",
     "@mui/styles": "^5.6.0",
     "@reduxjs/toolkit": "^1.8.0",
+    "@vespaiach/axios-fetch-adapter": "^0.3.0",
     "ahooks": "^3.3.10",
     "axios": "^0.27.2",
     "classnames": "^2.3.1",
@@ -78,6 +79,7 @@
     "react-window": "^1.8.6",
     "redux": "^4.1.2",
     "rehype-sanitize": "^5.0.1",
-    "remark-gfm": "^3.0.1"
+    "remark-gfm": "^3.0.1",
+    "use-chrome-storage": "^1.0.7"
   }
 }

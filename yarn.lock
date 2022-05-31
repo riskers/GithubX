@@ -1187,6 +1187,11 @@
     "@typescript-eslint/types" "5.14.0"
     eslint-visitor-keys "^3.0.0"
 
+"@vespaiach/axios-fetch-adapter@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@vespaiach/axios-fetch-adapter/-/axios-fetch-adapter-0.3.0.tgz#abbd23478260a317165d0c52297306af9d39bb24"
+  integrity sha512-X3U9VANu+8R4Wu/77bAUiUSqgeTelDFZeJcGZDe63DiFcPI6onjrMWrG3py/N4Qf8qCU3YLq+wO2d8V6ftYcaw==
+
 "@webassemblyjs/ast@1.11.1":
   version "1.11.1"
   resolved "https://registry.npmmirror.com/@webassemblyjs/ast/-/ast-1.11.1.tgz#2bfd767eae1a6996f432ff7e8d7fc75679c0b6a7"
@@ -8077,6 +8082,11 @@ urix@^0.1.0:
   version "0.1.0"
   resolved "https://registry.npmmirror.com/urix/-/urix-0.1.0.tgz#da937f7a62e21fec1fd18d49b35c2935067a6c72"
   integrity sha512-Am1ousAhSLBeB9cG/7k7r2R0zj50uDRlZHPGbazid5s9rlF1F/QKYObEKSIunSjIOkJZqwRRLpvewjEkM7pSqg==
+
+use-chrome-storage@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/use-chrome-storage/-/use-chrome-storage-1.0.7.tgz#c882390481ab871f1fd2a827918d7a6cfc55ea37"
+  integrity sha512-TfkYuDQiTrNojChLdqjkWM4mE6S+RR7WHRfbI6kwAnSc8wO+yGE7hboF28+zvVi6ZLvYTtLaK5Pz6/jrq1GdQw==
 
 use@^3.1.0:
   version "3.1.1"

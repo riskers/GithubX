@@ -6,10 +6,6 @@ import { green } from '@mui/material/colors';
 import { Box } from '@mui/system';
 import React from 'react';
 
-// interface IProps {
-//   // starInfo: IStar;
-// }
-
 /**
  * INJECT IN REPO PAGE
  */

@@ -33,6 +33,8 @@ const store = configureStore({
   devTools: process.env.NODE_ENV !== 'production',
 });
 
+export type Store = typeof store;
+
 export type RootState = ReturnType<typeof store.getState>;
 
 export type AppDispatch = ThunkDispatch<RootState, any, AnyAction>;

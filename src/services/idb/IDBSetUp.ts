@@ -1,7 +1,6 @@
 import { IGist } from '@/services/model/gist';
 import { IGJTModal } from '@/services/model/gjt';
 import { IGroupModel } from '@/services/model/group';
-import { ISettingModal } from '@/services/model/setting';
 import { ISJTModal } from '@/services/model/sjt';
 import { IStarModel } from '@/services/model/star';
 import { ITagModel } from '@/services/model/tag';
@@ -15,7 +14,6 @@ class GithubPlusDB extends Dexie {
   public gists: Table<IGist, number>;
   public starsJTags: Table<ISJTModal, [number, number]>;
   public gistsJTags: Table<IGJTModal, [number, number]>;
-  public settings: Table<ISettingModal, number>;
 
   public constructor() {
     super('GithubPlusDB', { addons: [relationships] });
@@ -26,7 +24,6 @@ class GithubPlusDB extends Dexie {
       starsJTags: '[sid+tid], sid -> stars.id, tid -> tags.id',
       gists: '++id, groupId -> groups.id',
       gistsJTags: '[gid+tid], gid -> gists.id, tid -> tags.id',
-      settings: '++id',
     });
   }
 }

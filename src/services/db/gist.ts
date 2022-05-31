@@ -1,6 +1,6 @@
+import { R } from '@/services/db/APISetUp';
 import { IGist, IGistStrategy } from '@/services/model/gist';
 import { ISeachGroupParams, ISeachTagParams } from '@/services/model/star';
-import axios from 'axios';
 
 export class APIGist implements IGistStrategy {
   public async resetGists(): Promise<void> {}
@@ -8,7 +8,7 @@ export class APIGist implements IGistStrategy {
   public async getGistsListByGroup(params: ISeachGroupParams): Promise<IGist[]> {
     const { groupId, description } = params;
 
-    return await axios.get('/api/gist', {
+    return await R.get('/api/gist', {
       params: {
         groupId,
         description,
@@ -19,7 +19,7 @@ export class APIGist implements IGistStrategy {
   public async getGistsListByTag(params: ISeachTagParams): Promise<IGist[]> {
     const { tagId, fullName: description } = params;
 
-    return await axios.get('/api/gist', {
+    return await R.get('/api/gist', {
       params: {
         tagId,
         description,
@@ -28,10 +28,10 @@ export class APIGist implements IGistStrategy {
   }
 
   public async addGist(gist: IGist): Promise<void> {
-    await axios.post(`/api/gist`, gist);
+    await R.post(`/api/gist`, gist);
   }
 
   public async delGist(id: number): Promise<void> {
-    await axios.delete(`/api/gist/${id}`);
+    await R.delete(`/api/gist/${id}`);
   }
 }

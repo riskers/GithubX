@@ -1,12 +1,18 @@
+import { API_URL_KEY, clear, getValue, TOKEN_KEY } from '@/common/storage';
 import { AS } from '@/services';
-import { ISettingModal } from '@/services/model/setting';
 import delay from '@/utils/delay';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const fetchSettings = createAsyncThunk('settings/fetchSettings', async () => {
-  const settings = await AS.setting.getSettings();
-  return settings;
+  const token = await getValue(TOKEN_KEY);
+  return {
+    token,
+  };
 });
+
+interface ISettingModal {
+  token: string;
+}
 
 /**
  * reset app data
@@ -14,15 +20,9 @@ export const fetchSettings = createAsyncThunk('settings/fetchSettings', async ()
 export const resetAppData = createAsyncThunk<ISettingModal, string>('settings/clear', async (token: string) => {
   const setting = {
     token,
-    createdTime: Date.now(),
-    updatedTime: Date.now(),
   };
 
-  await AS.setting.resetSettings();
-  await AS.setting.setSettings(setting);
-
   await AS.star.resetStars();
-
   await AS.group.resetGroup();
   await AS.tag.resetTag();
   await AS.sjt.resetStarJTag();
@@ -31,25 +31,25 @@ export const resetAppData = createAsyncThunk<ISettingModal, string>('settings/cl
 
   await delay(1000);
 
+  window.location.reload();
+
   return setting;
 });
 
 export const syncData = createAsyncThunk('settings/sync', async () => {
-  const setting = await AS.setting.getSettings();
+  const token = await getValue(TOKEN_KEY);
 
   await AS.star.syncStars();
 
   await delay(1000);
 
   return {
-    ...setting,
-    createdTime: Date.now(),
-    updatedTime: Date.now(),
+    token,
   };
 });
 
 const initData: ISettingModal = {
-  token: null,
+  token: '',
 };
 
 export const settingsSlice = createSlice({
@@ -76,13 +76,11 @@ export const settingsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchSettings.fulfilled, (state, action) => {
-        if (!action.payload) {
+        if (!action.payload.token) {
           state.data.token = '';
           state.open = true;
         } else {
           state.data.token = action.payload.token;
-          state.data.createdTime = action.payload.createdTime;
-          state.data.updatedTime = action.payload.updatedTime;
         }
       })
 
@@ -91,8 +89,6 @@ export const settingsSlice = createSlice({
       })
       .addCase(resetAppData.fulfilled, (state, action) => {
         state.data.token = action.payload.token;
-        state.data.createdTime = action.payload.createdTime;
-        state.data.updatedTime = action.payload.updatedTime;
         state.loading = false;
         state.open = false;
       })
@@ -102,8 +98,6 @@ export const settingsSlice = createSlice({
       })
       .addCase(syncData.fulfilled, (state, action) => {
         state.data.token = action.payload.token;
-        state.data.createdTime = action.payload.createdTime;
-        state.data.updatedTime = action.payload.updatedTime;
         state.loading = false;
       });
   },
