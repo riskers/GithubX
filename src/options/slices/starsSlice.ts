@@ -1,20 +1,20 @@
-import { IStar } from '@/common/api';
-import { getStarsListByGroup, getStarsListByTag, ISeachGroupParams, ISeachTagParams } from '@/services/idb/stars';
+import { AS } from '@/services';
+import { ISeachGroupParams, ISeachTagParams, IStarModel } from '@/services/model/star';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const fetchStarsByGroup = createAsyncThunk('stars/fetchStarsByGroup', async (params: ISeachGroupParams) => {
-  const stars = await getStarsListByGroup(params);
+  const stars = await AS.star.getStarsListByGroup(params);
   return stars;
 });
 
 export const fetchStarsByTag = createAsyncThunk('stars/fetchStarsByTag', async (params: ISeachTagParams) => {
-  const stars = await getStarsListByTag(params);
+  const stars = await AS.star.getStarsListByTag(params);
   return stars;
 });
 
 export interface IListState {
   loading: boolean;
-  data: IStar[];
+  data: IStarModel[];
 }
 
 const initialState = {

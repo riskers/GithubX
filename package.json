@@ -6,7 +6,7 @@
     "build": "npm run clean && MODE=production webpack --mode=production && npm run pack",
     "lint": "eslint src --ext=ts,tsx",
     "clean": "rimraf chrome",
-    "pack": "cd chrome && bestzip ../github-plus.zip *"
+    "pack": "cd chrome && bestzip ../GithubX.zip *"
   },
   "lint-staged": {
     "src/**/*.{ts,tsx}": "eslint"
@@ -14,6 +14,7 @@
   "devDependencies": {
     "@octokit/types": "^6.34.0",
     "@types/chrome": "^0.0.179",
+    "@types/qs": "^6.9.7",
     "@types/react": "^17.0.39",
     "@types/react-dom": "^17.0.13",
     "@types/react-window": "^1.8.2",
@@ -60,7 +61,9 @@
     "@mui/material": "^5.6.0",
     "@mui/styles": "^5.6.0",
     "@reduxjs/toolkit": "^1.8.0",
+    "@vespaiach/axios-fetch-adapter": "^0.3.0",
     "ahooks": "^3.3.10",
+    "axios": "^0.27.2",
     "classnames": "^2.3.1",
     "dexie": "^3.2.1",
     "dexie-relationships": "^1.2.11",
@@ -76,6 +79,7 @@
     "react-window": "^1.8.6",
     "redux": "^4.1.2",
     "rehype-sanitize": "^5.0.1",
-    "remark-gfm": "^3.0.1"
+    "remark-gfm": "^3.0.1",
+    "use-chrome-storage": "^1.0.7"
   }
 }

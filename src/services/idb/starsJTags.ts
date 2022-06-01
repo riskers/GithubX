@@ -1,44 +1,35 @@
-import { db } from '@/services/idb/db';
+import { db } from '@/services/idb/IDBSetUp';
+import { ISJTStrategy } from '@/services/model/sjt';
 
-export interface IStarsJTags {
-  id?: number;
-  /**
-   * star id
-   */
-  sid: number;
-  /**
-   * tag id
-   */
-  tid: number;
-}
+export class IDBSjt implements ISJTStrategy {
+  public async resetStarJTag(): Promise<void> {
+    await db.starsJTags.clear();
+  }
 
-export const resetStarJTag = async () => {
-  await db.starsJTags.clear();
-};
-
-export const addSJT = async (tid: number, sid: number) => {
-  await db.starsJTags.add({
-    tid,
-    sid,
-  });
-};
-
-export const deleteSJT = async (tid: number, sid: number) => {
-  await db.starsJTags.where({ tid, sid }).delete();
-};
-
-export const deleteSJTBySid = async (sid: number) => {
-  await db.starsJTags
-    .where({
-      sid,
-    })
-    .delete();
-};
-
-export const deleteSJTByTid = async (tid: number) => {
-  await db.starsJTags
-    .where({
+  public async addSJT(tid: number, sid: number): Promise<void> {
+    await db.starsJTags.add({
       tid,
-    })
-    .delete();
-};
+      sid,
+    });
+  }
+
+  public async deleteSJT(tid: number, sid: number): Promise<void> {
+    await db.starsJTags.where({ tid, sid }).delete();
+  }
+
+  public async deleteSJTBySid(sid: number): Promise<void> {
+    await db.starsJTags
+      .where({
+        sid,
+      })
+      .delete();
+  }
+
+  public async deleteSJTByTid(tid: number): Promise<void> {
+    await db.starsJTags
+      .where({
+        tid,
+      })
+      .delete();
+  }
+}

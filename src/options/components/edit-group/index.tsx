@@ -1,4 +1,3 @@
-import { DEFAULT_GROUP, deleteGroup, IGroup, updateGroup } from '@/services/idb/group';
 import { fetchGroups } from '@/options/slices/groupSlice';
 import styled from '@emotion/styled';
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded';
@@ -6,6 +5,9 @@ import { Button, IconButton, Popover, Stack, TextField } from '@mui/material';
 import * as React from 'react';
 import { useDispatch } from 'react-redux';
 import { selectedItemSlice } from '@/options/slices/selectedItemSlice';
+import { IGroupModel } from '@/services/model/group';
+import { DEFAULT_GROUP } from '@/services/idb/group';
+import { AS } from '@/services';
 
 const SmallButton = styled(Button)(() => {
   return {
@@ -16,7 +18,7 @@ const SmallButton = styled(Button)(() => {
   };
 });
 
-const EditGroup = (props: Pick<IGroup, 'id' | 'name'>) => {
+const EditGroup = (props: Pick<IGroupModel, 'id' | 'name'>) => {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const open = Boolean(anchorEl);
@@ -31,12 +33,12 @@ const EditGroup = (props: Pick<IGroup, 'id' | 'name'>) => {
   };
 
   const handleUpdate = async () => {
-    await updateGroup(props.id, ref.current.value);
+    await AS.group.updateGroup(props.id, ref.current.value);
     dispatch(fetchGroups());
   };
 
   const handleDelete = async () => {
-    await deleteGroup(props.id);
+    await AS.group.deleteGroup(props.id);
     dispatch(selectedItemSlice.actions.starSelectGroup({ group: DEFAULT_GROUP }));
     dispatch(fetchGroups());
   };

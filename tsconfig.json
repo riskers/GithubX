@@ -2,8 +2,9 @@
   "compilerOptions": {
     "sourceMap": true,
     "noImplicitAny": false,
-    "module": "commonjs",
-    "target": "es6",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "target": "es2017",
     "lib": [
       "es2015",
       "es2017",

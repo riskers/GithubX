@@ -1,44 +1,31 @@
-import { db } from '@/services/idb/db';
+import { IGJTStrategy } from '@/services/model/gjt';
+import { db } from '@/services/idb/IDBSetUp';
 
-export interface IGistsJTags {
-  id?: number;
-  /**
-   * gist id
-   */
-  gid: number;
-  /**
-   * tag id
-   */
-  tid: number;
-}
-
-export const resetGistJTag = async () => {
-  await db.gistsJTags.clear();
-};
-
-export const addGJT = async (tid: number, gid: number) => {
-  await db.gistsJTags.add({
-    tid,
-    gid,
-  });
-};
-
-export const deleteGJT = async (tid: number, gid: number) => {
-  await db.gistsJTags.where({ tid, gid }).delete();
-};
-
-export const deleteGJTBySid = async (gid: number) => {
-  await db.gistsJTags
-    .where({
-      gid: gid,
-    })
-    .delete();
-};
-
-export const deleteSJTByTid = async (tid: number) => {
-  await db.gistsJTags
-    .where({
+export class IDBGjt implements IGJTStrategy {
+  public async resetGistJTag(): Promise<void> {
+    await db.gistsJTags.clear();
+  }
+  public async addGJT(tid: number, gid: number): Promise<void> {
+    await db.gistsJTags.add({
       tid,
-    })
-    .delete();
-};
+      gid,
+    });
+  }
+  public async deleteGJT(tid: number, gid: number): Promise<void> {
+    await db.gistsJTags.where({ tid, gid }).delete();
+  }
+  public async deleteGJTBySid(gid: number): Promise<void> {
+    await db.gistsJTags
+      .where({
+        gid: gid,
+      })
+      .delete();
+  }
+  public async deleteSJTByTid(tid: number): Promise<void> {
+    await db.gistsJTags
+      .where({
+        tid,
+      })
+      .delete();
+  }
+}

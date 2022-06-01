@@ -7,13 +7,13 @@ import * as React from 'react';
 import SellIcon from '@mui/icons-material/Sell';
 import { useSelector } from 'react-redux';
 import EditTag from '@/options/components/edit-tag';
-import { ITag } from '@/services/idb/tag';
+import { ITagModel } from '@/services/model/tag';
 
 interface IProps {
   tags: ITagState;
   count: 'starCount' | 'gistCount';
   type: 'STAR' | 'GIST';
-  selectTag: (tag: ITag) => void;
+  selectTag: (tag: ITagModel) => void;
 }
 
 const Tag: React.FC<IProps> = (props) => {

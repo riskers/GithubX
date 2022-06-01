@@ -3,6 +3,13 @@ import { fetchSettings, resetAppData, settingsSlice } from '@/options/slices/set
 import { fetchTags } from '@/options/slices/tagSlice';
 import { RootState } from '@/options/store';
 import {
+  API_STORE_POSITION,
+  API_URL_KEY,
+  DEFAULT_STORE_POSITION,
+  STORE_POSITION,
+  STORE_POSITION_KEY,
+} from '@/common/storage';
+import {
   Button,
   CircularProgress,
   Dialog,
@@ -10,31 +17,35 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  FormControl,
+  FormHelperText,
   Link,
+  MenuItem,
+  Select,
   TextField,
-  Tooltip,
+  Typography,
 } from '@mui/material';
 import { Box } from '@mui/system';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { usePrevious } from 'react-use';
+import { useChromeStorageLocal } from 'use-chrome-storage';
+import { DEPLOY_HELP_URL } from '@/common/constants';
+import { TOKEN_KEY } from '../../../common/storage';
 
 const Settings = () => {
   const dispatch = useDispatch();
 
   const settings = useSelector((state: RootState) => state.settings);
-  const [token, setToken] = React.useState<string>('');
-
-  const updateTime = usePrevious(settings.data.updatedTime);
-  const isUpdate = React.useMemo(() => {
-    return updateTime === settings.data.updatedTime;
-  }, [settings.data.updatedTime, updateTime]);
+  const [position, setPosition] = useChromeStorageLocal(STORE_POSITION_KEY, DEFAULT_STORE_POSITION.v);
+  const [apiUrl, setApiUrl] = useChromeStorageLocal(API_URL_KEY, '');
+  const [token, setToken] = useChromeStorageLocal(TOKEN_KEY, '');
 
   React.useEffect(() => {
     dispatch(fetchSettings());
     dispatch(fetchGroups());
     dispatch(fetchTags());
-  }, [dispatch, isUpdate]);
+  }, [dispatch]);
 
   const handleCloseSettings = () => {
     if (!settings.loading) {
@@ -44,26 +55,70 @@ const Settings = () => {
 
   return (
     <Dialog open={settings.open} fullWidth onClose={handleCloseSettings}>
-      <DialogTitle>Settings</DialogTitle>
-      <DialogContent>
-        <TextField
-          id="token"
-          variant="standard"
-          autoFocus
-          value={token}
-          size="small"
-          fullWidth
-          placeholder="Github Token ..."
-          onChange={(e) => {
-            setToken(e.target.value);
-          }}
-        />
-        <DialogContentText style={{ marginTop: 7 }}>
-          <Link href="https://github.com/settings/tokens" target="_blank" underline="always" rel="noopener">
-            <Box component="span">{chrome.i18n.getMessage('apply_github_token')}</Box>
-          </Link>
-          <span style={{ marginLeft: 15, color: '#ccc' }}>{chrome.i18n.getMessage('store_local')}</span>
-        </DialogContentText>
+      <DialogTitle>{chrome.i18n.getMessage('setting_title')}</DialogTitle>
+      <DialogContent dividers>
+        <Typography> {chrome.i18n.getMessage('select_store_position')} </Typography>
+        <Box sx={{ '& > :not(style)': { m: 1 } }}>
+          <FormControl>
+            <Select
+              id="select-store-position"
+              size="small"
+              value={position}
+              onChange={(event) => {
+                const p = event.target.value as typeof STORE_POSITION[number]['v'];
+                setPosition(p);
+              }}
+            >
+              {STORE_POSITION.map((position) => {
+                return (
+                  <MenuItem key={position.v} value={position.v}>
+                    {position.desc}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+            <FormHelperText>
+              <span style={{ marginLeft: 15, color: '#ccc' }}>
+                {position}
+                {/* {chrome.i18n.getMessage(`store_${position?.toLowerCase()}`)} */}
+              </span>
+            </FormHelperText>
+          </FormControl>
+
+          {position === API_STORE_POSITION.v && (
+            <TextField
+              variant="standard"
+              id="api-url"
+              size="small"
+              label={chrome.i18n.getMessage('setting_api_url')}
+              value={apiUrl}
+              onChange={(event) => {
+                setApiUrl(event.target.value);
+              }}
+              helperText={<Link href={DEPLOY_HELP_URL}>help</Link>}
+            />
+          )}
+        </Box>
+
+        <Box display="flex" sx={{ '& > :not(style)': { m: 1 } }}>
+          <TextField
+            margin="dense"
+            id="token"
+            variant="standard"
+            value={token}
+            size="small"
+            fullWidth
+            placeholder="Your Github Token ..."
+            onChange={(e) => {
+              setToken(e.target.value);
+            }}
+            helperText={
+              <Link href="https://github.com/settings/tokens" target="_blank" underline="always" rel="noopener">
+                <Box component="span">{chrome.i18n.getMessage('apply_github_token')}</Box>
+              </Link>
+            }
+          />
+        </Box>
       </DialogContent>
 
       <DialogActions>

@@ -1,105 +1,88 @@
 import { getAllGistFromGithub } from '@/common/api';
-import { IItem } from '@/options/components/mid';
-import { db } from '@/services/idb/db';
-import { getGroupInfo } from '@/services/idb/group';
-import { ISeachGroupParams, ISeachTagParams } from '@/services/idb/stars';
-import { getTagsInGist } from '@/services/idb/tag';
+import { AS } from '@/services';
+import { IGist, IGistStrategy } from '@/services/model/gist';
+import { db } from '@/services/idb/IDBSetUp';
+import { ISeachGroupParams, ISeachTagParams } from '@/services/model/star';
 
-export interface IGist extends IItem {
-  _id: string;
-  description: string;
-}
+export class IDBGist implements IGistStrategy {
+  public resetGists = async () => {
+    await db.gists.clear();
 
-export const resetGists = async () => {
-  await db.gists.clear();
+    const res = await getAllGistFromGithub();
+    await db.gists.bulkAdd(res);
+  };
 
-  const res = await getAllGistFromGithub();
-  await db.gists.bulkAdd(res);
-};
+  public getGistsListByGroup = async (params: ISeachGroupParams): Promise<IGist[]> => {
+    const { groupId, description: fullName } = params;
+    let gistList = await db.gists
+      .where({
+        groupId,
+      })
+      .sortBy('updateTime');
 
-export const getGistsListByGroup = async (params: ISeachGroupParams): Promise<IGist[]> => {
-  const { groupId, description: fullName } = params;
-  let gistList = await db.gists
-    .where({
-      groupId,
-    })
-    .sortBy('updateTime');
+    const group = await AS.group.getGroupInfo(groupId);
 
-  const group = await getGroupInfo(groupId);
+    for (let gist of gistList) {
+      gist.group = group;
+    }
 
-  for (let gist of gistList) {
-    gist.group = group;
-  }
+    for (const gist of gistList) {
+      const tags = await AS.tag.getTagsInGist(gist.id);
+      gist.tags = tags;
+    }
 
-  for (const gist of gistList) {
-    const tags = await getTagsInGist(gist.id);
-    gist.tags = tags;
-  }
+    if (fullName) {
+      gistList = this.searchByDescription(gistList, fullName);
+    }
 
-  if (fullName) {
-    gistList = searchByDescription(gistList, fullName);
-  }
+    return gistList;
+  };
 
-  return gistList;
-};
+  public getGistsListByTag = async (params: ISeachTagParams) => {
+    const { tagId, fullName } = params;
+    const tidInGidList = await db.gistsJTags
+      .where({
+        tid: tagId,
+      })
+      .with({ tag: 'tid', gist: 'gid' });
 
-const searchByDescription = (res: IGist[], fullName: string) => {
-  return res.filter((gist) => {
-    return new RegExp(fullName, 'ig').test(gist.description);
-  });
-};
+    for (let tidInGid of tidInGidList) {
+      const groupId = (tidInGid as any).star.groupId;
+      const group = await AS.group.getGroupInfo(groupId);
+      (tidInGid as any).star.group = group;
 
-/**
- * Many To Many
- *
- * 1. get star list where tag id = tagId
- * 2. add group
- * 3. add tag
- */
-export const getGistsListByTag = async (params: ISeachTagParams) => {
-  const { tagId, fullName } = params;
-  const tidInGidList = await db.gistsJTags
-    .where({
-      tid: tagId,
-    })
-    .with({ tag: 'tid', gist: 'gid' });
+      const tags = await AS.tag.getTagsInGist(tidInGid.gid);
+      (tidInGid as any).gist.tags = tags;
+    }
 
-  for (let tidInGid of tidInGidList) {
-    const groupId = (tidInGid as any).star.groupId;
-    const group = await getGroupInfo(groupId);
-    (tidInGid as any).star.group = group;
+    let res = tidInGidList
+      .map((xx) => (xx as any).gist)
+      .sort((a, b) => {
+        return a.updateTime - b.updateTime;
+      });
 
-    const tags = await getTagsInGist(tidInGid.gid);
-    (tidInGid as any).gist.tags = tags;
-  }
+    if (fullName) {
+      res = this.searchByDescription(res, fullName);
+    }
 
-  let res = tidInGidList
-    .map((xx) => (xx as any).gist)
-    .sort((a, b) => {
-      return a.updateTime - b.updateTime;
+    return res;
+  };
+
+  public addGist = async (gist: IGist): Promise<void> => {
+    await db.gists.put(gist);
+  };
+
+  public delGist = async (id: number): Promise<void> => {
+    await db.gists
+      .where({
+        id,
+      })
+      .delete();
+  };
+
+  private searchByDescription = (res: IGist[], fullName: string) => {
+    return res.filter((gist) => {
+      return new RegExp(fullName, 'ig').test(gist.description);
     });
-
-  if (fullName) {
-    res = searchByDescription(res, fullName);
-  }
-
-  return res;
-};
-
-/**
- * save and update gist
- */
-export const addGist = async (gist: IGist): Promise<void> => {
-  await db.gists.put(gist);
-};
-
-/**
- * delete gist
- */
-export const delGist = async (id: number): Promise<void> => {
-  await db.gists
-    .where({
-      id,
-    })
-    .delete();
-};
+  };
+}

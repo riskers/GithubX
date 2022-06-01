@@ -43,12 +43,21 @@ edit:
   zh_CN: 编辑
 
 # settings
+setting_title:
+  en: Settings
+  zh_CN: 设置
 apply_github_token:
   en: Apply Github Token ?
   zh_CN: 申请 Github Token ?
-store_local:
-  en: storaged locally
-  zh_CN: 本地存储
+select_store_position:
+  en: Select storage location
+  zh_CN: 选择存储位置
+store_idb:
+  en: storaged in IndexedDB
+  zh_CN: 存储在 IndexedDB 中
+store_db:
+  en: storaged on your service (need deploy)
+  zh_CN: 存储在你自己的服务中 (需要部署)
 start:
   en: Go
   zh_CN: 开始

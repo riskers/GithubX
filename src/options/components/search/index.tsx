@@ -1,11 +1,14 @@
+import { searchSlice } from '@/options/slices/searchSlice';
 import { Stack, TextField } from '@mui/material';
 import { useDebounceFn } from 'ahooks';
 import * as React from 'react';
+import { useDispatch } from 'react-redux';
 
 const Search: React.FC<{ height: number; placeholder: string; onSearch: (keyword: string) => void }> = (props) => {
   const { height, placeholder, onSearch } = props;
 
-  const [keyword, setKeyword] = React.useState();
+  const [keyword, setKeyword] = React.useState<string>('');
+  const dispatch = useDispatch();
 
   const { run } = useDebounceFn(
     (v) => {
@@ -16,7 +19,8 @@ const Search: React.FC<{ height: number; placeholder: string; onSearch: (keyword
 
   React.useEffect(() => {
     onSearch(keyword);
-  }, [onSearch, keyword]);
+    dispatch(searchSlice.actions.change({ keyword }));
+  }, [dispatch, onSearch, keyword]);
 
   return (
     <Stack
@@ -36,9 +40,6 @@ const Search: React.FC<{ height: number; placeholder: string; onSearch: (keyword
         onChange={(e) => {
           run(e.target.value);
         }}
-        // onChange={(e) => {
-        //   setKeyword((e as any).target.value);
-        // }}
       />
     </Stack>
   );

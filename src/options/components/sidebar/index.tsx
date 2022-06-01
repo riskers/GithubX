@@ -11,8 +11,8 @@ import { settingsSlice, syncData } from '@/options/slices/settingsSlice';
 import { fetchStarsByGroup, fetchStarsByTag } from '@/options/slices/starsSlice';
 import { fetchTags } from '@/options/slices/tagSlice';
 import { RootState } from '@/options/store';
-import { IGroup } from '@/services/idb/group';
-import { ITag } from '@/services/idb/tag';
+import { IGroupModel } from '@/services/model/group';
+import { ITagModel } from '@/services/model/tag';
 import GetAppRoundedIcon from '@mui/icons-material/GetAppRounded';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import { Box, Button, ButtonGroup, Stack, Tab, Tabs } from '@mui/material';
@@ -45,7 +45,7 @@ const SideBar = () => {
   }, [dispatch]);
 
   const hanleStarSelectGroup = React.useCallback(
-    (group: IGroup) => {
+    (group: IGroupModel) => {
       dispatch(selectedItemSlice.actions.starSelectGroup({ group }));
       dispatch(fetchStarsByGroup({ groupId: group.id }));
     },
@@ -53,7 +53,7 @@ const SideBar = () => {
   );
 
   const hanleGistSelectGroup = React.useCallback(
-    (group: IGroup) => {
+    (group: IGroupModel) => {
       dispatch(selectedItemSlice.actions.gistSelectGroup({ group }));
       dispatch(getGistListByGroup({ groupId: group.id }));
     },
@@ -61,7 +61,7 @@ const SideBar = () => {
   );
 
   const handleStarSelectTag = React.useCallback(
-    (tag: ITag) => {
+    (tag: ITagModel) => {
       dispatch(selectedItemSlice.actions.starSelectTag({ tag }));
       dispatch(fetchStarsByTag({ tagId: tag.id }));
     },
@@ -69,7 +69,7 @@ const SideBar = () => {
   );
 
   const handleGistSelectTag = React.useCallback(
-    (tag: ITag) => {
+    (tag: ITagModel) => {
       dispatch(selectedItemSlice.actions.gistSelectTag({ tag }));
       dispatch(getGistListByTag({ tagId: tag.id }));
     },
