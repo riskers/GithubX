@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "version": "0.0.4",
+  "version": "1.0.0-beta",
   "name": "GithubX",
   "description": "__MSG_description__",
   "default_locale": "en",

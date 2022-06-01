@@ -12,6 +12,7 @@ import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import './style.css';
+import gtag from '@/utils/gtag';
 
 setUpAxios(R, store);
 
@@ -36,3 +37,10 @@ const App: React.FC = () => {
 };
 
 ReactDOM.render(<App />, document.getElementById('app'));
+
+window.dataLayer = window.dataLayer || [];
+function gtag(a1: any, a2: any) {
+  (window.dataLayer as any).push([a1, a2]);
+}
+gtag('js', new Date());
+gtag('config', 'G-W8J4DHFYPV');

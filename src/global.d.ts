@@ -9,3 +9,9 @@ declare module 'dexie' {
     with: (spec: Object) => Promise<Array<T>>;
   }
 }
+
+declare global {
+  interface Window {
+    dataLayer?: any;
+  }
+}
