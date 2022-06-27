@@ -1,5 +1,5 @@
 import { IInterceptIntoPage } from '@/background/network';
-import { ACTION_SHOW_OPTION_PAGE, IAction } from '@/content_script/hooks/oneway-message/message';
+import { ACTION_SHOW_OPTION_PAGE, IAction, INTERCEPT_INTO_PAGE } from '@/content_script/hooks/oneway-message/message';
 import { IStarModel } from '@/services/model/star';
 import { Chip, Stack } from '@mui/material';
 import { green } from '@mui/material/colors';
@@ -7,13 +7,13 @@ import { Box } from '@mui/system';
 import React from 'react';
 
 /**
- * INJECT IN REPO PAGE
+ * INJECT IN REPO PAGE SHOW TAG AND GROUP
  */
 const Buttons: React.FC<{}> = () => {
   const [starInfo, setStarInfo] = React.useState<IStarModel>(null);
 
   const openOptionPage = () => {
-    chrome.runtime.sendMessage({ type: ACTION_SHOW_OPTION_PAGE });
+    chrome.runtime.sendMessage({ type: INTERCEPT_INTO_PAGE });
   };
 
   React.useEffect(() => {
