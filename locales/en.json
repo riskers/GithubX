@@ -1,0 +1,65 @@
+{
+  "description": {
+    "message": "Enhance Github"
+  },
+  "groups": {
+    "message": "GROUPS"
+  },
+  "tags": {
+    "message": "TAGS"
+  },
+  "report_bug": {
+    "message": "Report BUG"
+  },
+  "discuss_feature": {
+    "message": "Discuss Feature"
+  },
+  "reset_app": {
+    "message": "reset app"
+  },
+  "syn_with_github": {
+    "message": "Synchronize with the Github"
+  },
+  "add_group": {
+    "message": "Add a group"
+  },
+  "enter_group_name": {
+    "message": "Enter a group name..."
+  },
+  "save": {
+    "message": "Save"
+  },
+  "delete": {
+    "message": "Delete"
+  },
+  "edit": {
+    "message": "Edit"
+  },
+  "setting_title": {
+    "message": "Settings"
+  },
+  "apply_github_token": {
+    "message": "Apply Github Token ?"
+  },
+  "select_store_position": {
+    "message": "Select storage location"
+  },
+  "store_idb": {
+    "message": "storaged in IndexedDB"
+  },
+  "store_db": {
+    "message": "storaged on your service (need deploy)"
+  },
+  "start": {
+    "message": "Go"
+  },
+  "title": {
+    "message": "Group and Tag"
+  },
+  "ok": {
+    "message": "OK"
+  },
+  "cancel": {
+    "message": "Cancel"
+  }
+}

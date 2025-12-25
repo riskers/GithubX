@@ -13,3 +13,10 @@ yarn-error.log
 *.pem
 update.xml
 chrome/*
+
+node_modules
+.output
+stats.html
+stats-*.json
+.wxt
+web-ext.config.ts

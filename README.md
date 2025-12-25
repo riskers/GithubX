@@ -1,5 +1,5 @@
 <center>
-<img src="./src/assets/logo.png" width="200" />
+<img src="./public/logo.png" width="200" />
 </center>
 
 English | [中文](./README-cn.md)

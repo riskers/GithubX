@@ -1,27 +1,7 @@
 {
+  "extends": "./.wxt/tsconfig.json",
   "compilerOptions": {
-    "sourceMap": true,
-    "noImplicitAny": false,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "target": "es2017",
-    "lib": [
-      "es2015",
-      "es2017",
-      "es2019",
-      "dom"
-    ],
-    "removeComments": true,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "jsx": "react",
-    "allowJs": false,
-    "baseUrl": "./src",
-    "paths": {
-      "@/*": ["*"]
-    }
-  },
-  "exclude": [
-    "node_modules"
-  ]
+    "allowImportingTsExtensions": true,
+    "jsx": "react-jsx"
+  }
 }

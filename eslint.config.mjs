@@ -1,0 +1,30 @@
+import autoImports from './.wxt/eslint-auto-imports.mjs';
+
+export default [
+  autoImports,
+  {
+    root: true,
+    parser: '@typescript-eslint/parser',
+    extends: ['alloy', 'alloy/react', 'alloy/typescript', 'prettier'],
+    plugins: ['prettier', 'react-hooks'],
+    globals: {
+      chrome: true,
+    },
+    env: {
+      browser: true,
+      node: true,
+    },
+    rules: {
+      'prettier/prettier': 'error',
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+      '@typescript-eslint/no-empty-interface': 0,
+      '@typescript-eslint/method-signature-style': 0,
+    },
+    settings: {
+      react: {
+        version: 'detect',
+      },
+    },
+  },
+];

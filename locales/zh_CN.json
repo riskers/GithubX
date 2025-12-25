@@ -1,0 +1,65 @@
+{
+  "description": {
+    "message": "增强 Github"
+  },
+  "groups": {
+    "message": "分组"
+  },
+  "tags": {
+    "message": "标签"
+  },
+  "report_bug": {
+    "message": "报告 BUG"
+  },
+  "discuss_feature": {
+    "message": "需求讨论"
+  },
+  "reset_app": {
+    "message": "重置应用"
+  },
+  "syn_with_github": {
+    "message": "和 Github 同步"
+  },
+  "add_group": {
+    "message": "添加分组"
+  },
+  "enter_group_name": {
+    "message": "输入分组名称..."
+  },
+  "save": {
+    "message": "保存"
+  },
+  "delete": {
+    "message": "删除"
+  },
+  "edit": {
+    "message": "编辑"
+  },
+  "setting_title": {
+    "message": "设置"
+  },
+  "apply_github_token": {
+    "message": "申请 Github Token ?"
+  },
+  "select_store_position": {
+    "message": "选择存储位置"
+  },
+  "store_idb": {
+    "message": "存储在 IndexedDB 中"
+  },
+  "store_db": {
+    "message": "存储在你自己的服务中 (需要部署)"
+  },
+  "start": {
+    "message": "开始"
+  },
+  "title": {
+    "message": "分组和标签"
+  },
+  "ok": {
+    "message": "确定"
+  },
+  "cancel": {
+    "message": "取消"
+  }
+}
