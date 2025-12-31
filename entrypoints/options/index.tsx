@@ -20,7 +20,6 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { HashRouter, Route, Routes } from 'react-router-dom';
-import './style.css';
 // import gtag from '@/utils/gtag';
 
 setUpAxios(R, store);

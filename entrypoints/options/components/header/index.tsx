@@ -3,7 +3,7 @@ import { Stack } from '@mui/material';
 import * as React from 'react';
 
 const Logo = () => {
-  const img = chrome.runtime.getURL('assets/logo.png');
+  const img = chrome.runtime.getURL('logo.png');
   return (
     <Stack direction="row" alignItems="center">
       <a style={{ width: 70 }} href={GITHUB_URL} target="_blank" title="Star GithubX">

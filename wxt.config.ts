@@ -1,4 +1,5 @@
 import { defineConfig } from 'wxt';
+import tailwindcss from "@tailwindcss/vite";
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
@@ -8,6 +9,11 @@ export default defineConfig({
     },
   },
   modules: ['@wxt-dev/module-react', '@wxt-dev/i18n/module'],
+  vite: () => ({
+    plugins: [
+      tailwindcss()
+    ],
+  }),
   manifest: {
     action: {
       default_title: 'GithubX',
