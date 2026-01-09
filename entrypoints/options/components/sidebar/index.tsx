@@ -1,24 +1,20 @@
-import { DISCUSS_URL, GITHUB_URL, REPORT_BUG_URL } from '@/common/constants';
-import { getVersion } from '@/common/tools';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Logo from '@/entrypoints/options/components/header';
-import Settings from '@/entrypoints/options/components/setting';
-import TabPanel, { TABS } from '@/entrypoints/options/components/sidebar/components/tab-panel';
+import { TABS } from '@/entrypoints/options/components/sidebar/components/tab-panel';
 import Tag from '@/entrypoints/options/components/sidebar/components/tag';
-import { getGistListByGroup, getGistListByTag } from '@/entrypoints/options/slices/gistSlice';
 import { fetchGroups } from '@/entrypoints/options/slices/groupSlice';
-import { selectedItemSlice, selectorItem } from '@/entrypoints/options/slices/selectedItemSlice';
+import { selectedItemSlice } from '@/entrypoints/options/slices/selectedItemSlice';
 import { settingsSlice, syncData } from '@/entrypoints/options/slices/settingsSlice';
-import { fetchStarsByGroup, fetchStarsByTag } from '@/entrypoints/options/slices/starsSlice';
 import { fetchTags } from '@/entrypoints/options/slices/tagSlice';
 import { RootState } from '@/entrypoints/options/store';
 import { IGroupModel } from '@/services/model/group';
 import { ITagModel } from '@/services/model/tag';
 import GetAppRoundedIcon from '@mui/icons-material/GetAppRounded';
 import RefreshIcon from '@mui/icons-material/Refresh';
-import { Box, Button, ButtonGroup, Stack, Tab, Tabs } from '@mui/material';
+import { Box, Button, ButtonGroup, Stack } from '@mui/material';
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Outlet, useLocation, useMatch, useNavigate, useResolvedPath } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Group from './components/group';
 
 const SideBar = () => {
@@ -27,15 +23,23 @@ const SideBar = () => {
   const tags = useSelector((state: RootState) => state.tags);
 
   const location = useLocation();
-  let resolved = useResolvedPath(location.pathname);
-  let match = useMatch({ path: resolved.pathname, end: true });
-
-  const initIndex = React.useMemo(() => {
-    // return TABS.findIndex((tab) => match.pathname === tab.url);
-  }, [match]);
-
-  // const [tabIndex, setTabIndex] = React.useState<number>(initIndex);
   const navigate = useNavigate();
+
+  const activeTab = React.useMemo<(typeof TABS)[number]['type']>(() => {
+    const matchedTab = TABS.find((tab) => tab.url === location.pathname);
+    return matchedTab?.type ?? TABS[0].type;
+  }, [location.pathname]);
+
+  const handleTabValueChange = React.useCallback(
+    (value: string) => {
+      const matchedTab = TABS.find((tab) => tab.type === value);
+      if (!matchedTab) return;
+
+      navigate(matchedTab.url, { replace: false });
+      dispatch(selectedItemSlice.actions.selectType({ type: matchedTab.type }));
+    },
+    [dispatch, navigate],
+  );
 
   React.useEffect(() => {
     (async () => {
@@ -86,7 +90,7 @@ const SideBar = () => {
 
   return (
     <div className="github-plus-app">
-      <div className="sidebar">
+      <div>
         <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ padding: '13px' }}>
           <Logo />
           <ButtonGroup>
@@ -100,50 +104,40 @@ const SideBar = () => {
         </Stack>
 
         <Box>
-          <Box style={{ padding: 13 }}>
-            <Tabs
-              centered
-              variant="fullWidth"
-              // value={tabIndex}
-              onChange={(event, index) => {
-                navigate(TABS[index].url, { replace: false });
-                dispatch(selectedItemSlice.actions.selectType({ type: TABS[index].type }));
-                // setTabIndex(index);
-              }}
-            >
-              {TABS.map((tab) => {
-                return (
-                  <Tab
-                    disableRipple
-                    label={tab.title}
-                    key={tab.index}
-                    sx={{
-                      '&': {
-                        color: '#ccc',
-                      },
-                    }}
-                  />
-                );
-              })}
-            </Tabs>
-          </Box>
-
-          <TabPanel value={TABS[0].index} /* index={tabIndex} */ index={0}>
-            <Box style={{ paddingBottom: 30 }}>
-              <Group groups={groups} type="STAR" count="starCount" selectGroup={hanleStarSelectGroup} />
-              <Tag tags={tags} type="STAR" count="starCount" selectTag={handleStarSelectTag} />
+          <Tabs value={activeTab} onValueChange={handleTabValueChange}>
+            <Box>
+              <TabsList className="w-full bg-transparent">
+                {TABS.map((tab) => {
+                  return (
+                    <TabsTrigger
+                      key={tab.type}
+                      value={tab.type}
+                      className="flex-1 rounded-none border-x-0 border-t-0 border-b-2 border-b-transparent text-muted-foreground shadow-none data-[state=active]:border-b-primary data-[state=active]:bg-transparent data-[state=active]:text-primary data-[state=active]:shadow-none"
+                    >
+                      {tab.title}
+                    </TabsTrigger>
+                  );
+                })}
+              </TabsList>
             </Box>
-          </TabPanel>
 
-          <TabPanel value={TABS[1].index} /* index={tabIndex} */ index={1}>
-            <Box style={{ paddingBottom: 30 }}>
-              <Group groups={groups} type="GIST" count="gistCount" selectGroup={hanleGistSelectGroup} />
-              <Tag tags={tags} type="GIST" count="gistCount" selectTag={handleGistSelectTag} />
-            </Box>
-          </TabPanel>
+            <TabsContent value="STAR">
+              <Box style={{ paddingBottom: 30 }}>
+                <Group groups={groups} type="STAR" count="starCount" selectGroup={hanleStarSelectGroup} />
+                <Tag tags={tags} type="STAR" count="starCount" selectTag={handleStarSelectTag} />
+              </Box>
+            </TabsContent>
+
+            <TabsContent value="GIST">
+              <Box style={{ paddingBottom: 30 }}>
+                <Group groups={groups} type="GIST" count="gistCount" selectGroup={hanleGistSelectGroup} />
+                <Tag tags={tags} type="GIST" count="gistCount" selectTag={handleGistSelectTag} />
+              </Box>
+            </TabsContent>
+          </Tabs>
         </Box>
 
-        <Stack
+        {/* <Stack
           direction="row"
           justifyContent="space-between"
           style={{ padding: 13, position: 'fixed', bottom: 0, width: 260, background: '#13283a' }}
@@ -161,12 +155,12 @@ const SideBar = () => {
               {chrome.i18n.getMessage('discuss_feature')}
             </a>
           </Box>
-        </Stack>
+        </Stack> */}
       </div>
 
-      <Settings />
+      {/* <Settings />
 
-      <Outlet />
+      <Outlet /> */}
     </div>
   );
 };

@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "precommit": "lint-staged",
-    "lint": "eslint src --ext=ts,tsx",
+    "lint": "eslint \"{common,components,entrypoints,services,utils}/**/*.{ts,tsx}\"",
     "dev": "wxt",
     "dev:firefox": "wxt -b firefox",
     "build": "wxt build",
@@ -16,7 +16,7 @@
     "postinstall": "wxt prepare"
   },
   "lint-staged": {
-    "src/**/*.{ts,tsx}": "eslint"
+    "**/*.{ts,tsx}": "eslint"
   },
   "devDependencies": {
     "@octokit/types": "^16.0.0",
@@ -51,6 +51,7 @@
     "@mui/lab": "^5.0.0-alpha.76",
     "@mui/material": "^5.6.0",
     "@mui/styles": "^5.6.0",
+    "@radix-ui/react-tabs": "^1.1.13",
     "@reduxjs/toolkit": "^1.8.0",
     "@tailwindcss/vite": "^4.1.18",
     "@vespaiach/axios-fetch-adapter": "^0.3.0",
