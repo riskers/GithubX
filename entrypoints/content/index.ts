@@ -1,6 +1,6 @@
 export default defineContentScript({
   matches: ['https://*.github.com/*'],
-  main() {
+  async main() {
     console.log('Hello content.');
   },
 });

@@ -1,14 +1,21 @@
-export default defineBackground({
-  main() {
-    console.log('Hello background!')
-    // console.log('Hello background!', { id: browser.runtime.id });
-  },
+export default defineBackground(() => {
+  console.log('Hello background!');
+
+  browser.action.onClicked.addListener(async () => {
+    await browser.runtime.openOptionsPage();
+  });
+
+  // installed hook
+  browser.runtime.onInstalled.addListener((details) => {
+    // first install
+    if (details.reason === chrome.runtime.OnInstalledReason.INSTALL) {
+      // ...
+      chrome.runtime.openOptionsPage();
+    }
+
+    // update version
+    if (details.reason === chrome.runtime.OnInstalledReason.UPDATE) {
+      // ....
+    }
+  });
 });
-
-// import setUpAxios, { R } from '@/services/db/APISetUp';
-// import './openOptionPage';
-// import './installed';
-// import './network';
-// import store from '../options/store';
-
-// setUpAxios(R, store);
